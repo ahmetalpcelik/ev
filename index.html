@@ -176,18 +176,69 @@
 
 <footer>son güncelleme: az önce ✦</footer>
 <script>
-// ── STATE ─────────────────────────────────────────────
+// ── CONFIG — JSONBin.io ────────────────────────────────
+const BIN_ID  = '69a7526bae596e708f5c2c90';
+const API_KEY = '$2a$10$qq80rttHtv2yy5PMTLhF6ujBNUWDSI3OMUkFQaeDUw3sUfJixgTk2';
+
+// ── STATE ──────────────────────────────────────────────
 const days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 const now=new Date();
 document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
-let todos      = JSON.parse(localStorage.getItem('evim_todos'))      ?? [];
-let categories = JSON.parse(localStorage.getItem('evim_cats'))       ?? [{id:'cat_1',name:'sebze & meyve',items:[]},{id:'cat_2',name:'temel',items:[]},{id:'cat_3',name:'diğer',items:[]}];
-function saveTodos(){localStorage.setItem('evim_todos',JSON.stringify(todos));}
-function saveCats(){localStorage.setItem('evim_cats',JSON.stringify(categories));}
+const DEFAULT_CATS=[
+  {id:'cat_1',name:'sebze & meyve',items:[]},
+  {id:'cat_2',name:'temel',items:[]},
+  {id:'cat_3',name:'diğer',items:[]}
+];
 
-let dragItem = null;
+let todos      = [];
+let categories = JSON.parse(JSON.stringify(DEFAULT_CATS));
+let dragItem   = null;
+let saveTimer  = null;
+
+// ── JSONBIN SYNC ───────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+      headers: { 'X-Access-Key': API_KEY }
+    });
+    if (!res.ok) throw new Error('fetch failed');
+    const json = await res.json();
+    const data = json.record;
+    todos      = data.todos      ?? [];
+    categories = data.categories ?? JSON.parse(JSON.stringify(DEFAULT_CATS));
+  } catch(e) {
+    // Fallback to localStorage if offline
+    todos      = JSON.parse(localStorage.getItem('evim_todos') || '[]');
+    categories = JSON.parse(localStorage.getItem('evim_cats')  || 'null') ?? JSON.parse(JSON.stringify(DEFAULT_CATS));
+  }
+  renderTodayTodos();
+  renderShop();
+}
+
+function save() {
+  // Debounce: 800ms sonra kaydet (çok sık istek atmasın)
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const data = { todos, categories };
+    // localStorage backup
+    localStorage.setItem('evim_todos', JSON.stringify(todos));
+    localStorage.setItem('evim_cats',  JSON.stringify(categories));
+    // JSONBin sync
+    try {
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Access-Key': API_KEY },
+        body: JSON.stringify(data)
+      });
+    } catch(e) { /* offline — localStorage backup yeterli */ }
+  }, 800);
+}
+
+// saveTodos ve saveCats artık ikisi de save() çağırır
+function saveTodos() { save(); }
+function saveCats()  { save(); }
 
 // ── TODOS ─────────────────────────────────────────────
 function renderTodayTodos(){
@@ -361,7 +412,7 @@ document.getElementById('shopInput').addEventListener('keydown',e=>{if(e.key==='
 document.getElementById('newCatInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCategory();});
 
 // ── INIT ──────────────────────────────────────────────
-renderTodayTodos();renderShop();
+loadData();
 </script>
 </body>
 </html>
