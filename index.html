@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>evim ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F0E8;
+    --card: #FEFCF7;
+    --ink: #1A1612;
+    --muted: #8A7F74;
+    --accent: #C4552A;
+    --accent2: #3A6B4A;
+    --border: rgba(26,22,18,0.1);
+    --shadow: 0 2px 20px rgba(26,22,18,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px 60px;
+  }
+
+  /* subtle grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .greeting h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .greeting h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .greeting .date {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .header-pill {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* STATS ROW */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .stat-card .label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 8px;
+  }
+
+  .stat-card .number {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .stat-card .sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .stat-card.accent-card {
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  .stat-card.accent-card .label,
+  .stat-card.accent-card .number,
+  .stat-card.accent-card .sub {
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* CARD BASE */
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  .card-tag {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .tag-green { background: #DCF0E3; color: var(--accent2); }
+  .tag-orange { background: #FAE5DC; color: var(--accent); }
+
+  /* TODO LIST */
+  .todo-list { list-style: none; }
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .todo-item:last-child { border-bottom: none; }
+
+  .todo-item.done { opacity: 0.4; }
+  .todo-item.done .todo-text { text-decoration: line-through; }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .todo-item.done .checkbox {
+    background: var(--accent2);
+    border-color: var(--accent2);
+  }
+
+  .checkmark {
+    width: 10px;
+    height: 10px;
+    stroke: white;
+    stroke-width: 2.5;
+    fill: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .todo-item.done .checkmark { opacity: 1; }
+
+  .todo-text {
+    font-size: 0.9rem;
+    flex: 1;
+    transition: color 0.2s;
+  }
+
+  .todo-priority {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .p-high { background: #FAE5DC; color: var(--accent); }
+  .p-med { background: #FEF3CD; color: #8A6800; }
+  .p-low { background: #E8F5E9; color: var(--accent2); }
+
+  /* ADD INPUT */
+  .add-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .add-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .add-input:focus { border-color: var(--accent); }
+  .add-input::placeholder { color: var(--muted); }
+
+  .add-btn {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+
+  .add-btn:hover { opacity: 0.8; transform: scale(0.98); }
+
+  /* SHOPPING LIST */
+  .shop-section { margin-bottom: 14px; }
+
+  .shop-section-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shop-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .shop-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .shop-chip:hover { border-color: var(--accent); }
+
+  .shop-chip.bought {
+    background: #F0F0EC;
+    border-color: transparent;
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  .shop-chip .qty {
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent2);
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation: fadeUp 0.6s 0.15s ease both; }
+  .card:nth-child(2) { animation: fadeUp 0.6s 0.25s ease both; }
+  .card:nth-child(3) { animation: fadeUp 0.6s 0.35s ease both; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 40px;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="greeting">
+      <h1>merhaba, <em>bugün</em><br>neler var?</h1>
+      <p class="date" id="dateDisplay"></p>
+    </div>
+    <div class="header-pill">evim ✦</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat-card accent-card">
+      <div class="label">Tamamlanan</div>
+      <div class="number" id="doneCount">0</div>
+      <div class="sub">görev bugün</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Kalan</div>
+      <div class="number" id="remainCount">0</div>
+      <div class="sub">görev bekliyor</div>
+    </div>
+  </div>
+
+  <!-- GÖREV LİSTESİ -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">görevler</h2>
+      <span class="card-tag tag-orange">bugün</span>
+    </div>
+    <ul class="todo-list" id="todoList"></ul>
+    <div class="add-row">
+      <input class="add-input" id="todoInput" placeholder="yeni görev ekle…" />
+      <button class="add-btn" onclick="addTodo()">ekle</button>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>ilerleme</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALIŞVERİŞ LİSTESİ -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">alışveriş</h2>
+      <span class="card-tag tag-green">market</span>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-label">sebze & meyve</div>
+      <div class="shop-grid" id="shopVeg"></div>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-label">temel</div>
+      <div class="shop-grid" id="shopBasic"></div>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-label">diğer</div>
+      <div class="shop-grid" id="shopOther"></div>
+    </div>
+
+    <div class="add-row">
+      <input class="add-input" id="shopInput" placeholder="ürün ekle…" />
+      <button class="add-btn" onclick="addShop()">ekle</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>son güncelleme: az önce ✦</footer>
+
+<script>
+  // Date
+  const d = new Date();
+  const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  document.getElementById('dateDisplay').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+
+  // TODOS
+  let todos = [
+    { text: 'odayı topla', priority: 'high', done: false },
+    { text: 'çamaşır yıka', priority: 'med', done: false },
+    { text: 'kitap oku (30 dk)', priority: 'low', done: true },
+    { text: 'e-postaları kontrol et', priority: 'med', done: false },
+  ];
+
+  function renderTodos() {
+    const list = document.getElementById('todoList');
+    list.innerHTML = '';
+    todos.forEach((t, i) => {
+      const li = document.createElement('li');
+      li.className = 'todo-item' + (t.done ? ' done' : '');
+      li.style.animationDelay = (i * 0.06) + 's';
+      li.innerHTML = `
+        <div class="checkbox">
+          <svg class="checkmark" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg>
+        </div>
+        <span class="todo-text">${t.text}</span>
+        <span class="todo-priority p-${t.priority}">${t.priority === 'high' ? 'öncelikli' : t.priority === 'med' ? 'orta' : 'düşük'}</span>
+      `;
+      li.onclick = () => { todos[i].done = !todos[i].done; renderTodos(); };
+      list.appendChild(li);
+    });
+    updateStats();
+  }
+
+  function updateStats() {
+    const done = todos.filter(t => t.done).length;
+    const total = todos.length;
+    document.getElementById('doneCount').textContent = done;
+    document.getElementById('remainCount').textContent = total - done;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function addTodo() {
+    const input = document.getElementById('todoInput');
+    const val = input.value.trim();
+    if (!val) return;
+    todos.unshift({ text: val, priority: 'med', done: false });
+    input.value = '';
+    renderTodos();
+  }
+
+  document.getElementById('todoInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTodo();
+  });
+
+  // SHOPPING
+  let shopItems = {
+    veg: [
+      { name: 'domates', qty: '500g', bought: false },
+      { name: 'salatalık', qty: '3 adet', bought: false },
+      { name: 'limon', qty: '2 adet', bought: true },
+    ],
+    basic: [
+      { name: 'süt', qty: '1L', bought: false },
+      { name: 'yumurta', qty: '10 adet', bought: false },
+      { name: 'ekmek', qty: '1 somun', bought: true },
+    ],
+    other: [
+      { name: 'deterjan', qty: '1 paket', bought: false },
+      { name: 'zeytinyağı', qty: '500ml', bought: false },
+    ]
+  };
+
+  function renderChips(containerId, items, category) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = '';
+    items.forEach((item, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'shop-chip' + (item.bought ? ' bought' : '');
+      chip.innerHTML = `${item.name} <span class="qty">${item.qty}</span>`;
+      chip.onclick = () => {
+        shopItems[category][i].bought = !shopItems[category][i].bought;
+        renderShop();
+      };
+      el.appendChild(chip);
+    });
+  }
+
+  function renderShop() {
+    renderChips('shopVeg', shopItems.veg, 'veg');
+    renderChips('shopBasic', shopItems.basic, 'basic');
+    renderChips('shopOther', shopItems.other, 'other');
+  }
+
+  function addShop() {
+    const input = document.getElementById('shopInput');
+    const val = input.value.trim();
+    if (!val) return;
+    shopItems.other.push({ name: val, qty: '', bought: false });
+    input.value = '';
+    renderShop();
+  }
+
+  document.getElementById('shopInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addShop();
+  });
+
+  // INIT
+  renderTodos();
+  renderShop();
+</script>
+</body>
+</html>
