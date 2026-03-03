@@ -182,29 +182,19 @@ const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağust
 const now=new Date();
 document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
-let todos=[
-  {text:'odayı topla',done:false},
-  {text:'çamaşır yıka',done:false},
-  {text:'kitap oku (30 dk)',done:true},
-  {text:'e-postaları kontrol et',done:false},
+const D_TODOS=[
+  {text:'odayı topla',done:false},{text:'çamaşır yıka',done:false},
+  {text:'kitap oku (30 dk)',done:true},{text:'e-postaları kontrol et',done:false}
 ];
-
-let categories=[
-  {id:'cat_1',name:'sebze & meyve',items:[
-    {name:'domates',qty:'500g',bought:false},
-    {name:'salatalık',qty:'3 adet',bought:false},
-    {name:'limon',qty:'2 adet',bought:true}
-  ]},
-  {id:'cat_2',name:'temel',items:[
-    {name:'süt',qty:'1L',bought:false},
-    {name:'yumurta',qty:'10 adet',bought:false},
-    {name:'ekmek',qty:'1 somun',bought:true}
-  ]},
-  {id:'cat_3',name:'diğer',items:[
-    {name:'deterjan',qty:'1 paket',bought:false},
-    {name:'zeytinyağı',qty:'500ml',bought:false}
-  ]}
+const D_CATS=[
+  {id:'cat_1',name:'sebze & meyve',items:[{name:'domates',qty:'500g',bought:false},{name:'salatalık',qty:'3 adet',bought:false},{name:'limon',qty:'2 adet',bought:true}]},
+  {id:'cat_2',name:'temel',items:[{name:'süt',qty:'1L',bought:false},{name:'yumurta',qty:'10 adet',bought:false},{name:'ekmek',qty:'1 somun',bought:true}]},
+  {id:'cat_3',name:'diğer',items:[{name:'deterjan',qty:'1 paket',bought:false},{name:'zeytinyağı',qty:'500ml',bought:false}]}
 ];
+let todos      = JSON.parse(localStorage.getItem('evim_todos'))      || D_TODOS;
+let categories = JSON.parse(localStorage.getItem('evim_cats'))       || D_CATS;
+function saveTodos(){localStorage.setItem('evim_todos',JSON.stringify(todos));}
+function saveCats(){localStorage.setItem('evim_cats',JSON.stringify(categories));}
 
 let dragItem = null;
 
@@ -214,8 +204,8 @@ function renderTodayTodos(){
   todos.forEach((t,i)=>{
     const li=document.createElement('li');li.className='todo-item'+(t.done?' done':'');
     li.innerHTML=`<div class="checkbox"><svg class="checkmark" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div><span class="todo-text">${t.text}</span><button class="delete-btn" title="sil">&#215;</button>`;
-    li.querySelector('.delete-btn').addEventListener('click',e=>{e.stopPropagation();todos.splice(i,1);renderTodayTodos();});
-    li.addEventListener('click',()=>{todos[i].done=!todos[i].done;renderTodayTodos();});
+    li.querySelector('.delete-btn').addEventListener('click',e=>{e.stopPropagation();todos.splice(i,1);saveTodos();renderTodayTodos();});
+    li.addEventListener('click',()=>{todos[i].done=!todos[i].done;saveTodos();renderTodayTodos();});
     list.appendChild(li);
   });
   if(!list.children.length)list.innerHTML='<div class="empty-state">bugün görev yok &#127881;</div>';
@@ -231,7 +221,7 @@ function updateStats(){
 }
 function addTodo(){
   const input=document.getElementById('todoInput'),val=input.value.trim();
-  if(!val)return;todos.unshift({text:val,done:false});input.value='';renderTodayTodos();
+  if(!val)return;todos.unshift({text:val,done:false});saveTodos();input.value='';renderTodayTodos();
 }
 document.getElementById('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
 
@@ -253,7 +243,7 @@ function renderShop(){
     nameEl.className='shop-cat-name';
     nameEl.value=cat.name;
     nameEl.spellcheck=false;
-    nameEl.addEventListener('blur',()=>{cat.name=nameEl.value.trim()||cat.name;nameEl.value=cat.name;updateCatSelect();});
+    nameEl.addEventListener('blur',()=>{cat.name=nameEl.value.trim()||cat.name;nameEl.value=cat.name;saveCats();updateCatSelect();});
     nameEl.addEventListener('keydown',e=>{if(e.key==='Enter')nameEl.blur();});
 
     const delBtn=document.createElement('button');
@@ -262,7 +252,7 @@ function renderShop(){
     delBtn.innerHTML='&#215;';
     delBtn.onclick=()=>{
       if(cat.items.length>0&&!confirm(`"${cat.name}" kategorisindeki ${cat.items.length} ürün de silinecek. Devam?`))return;
-      categories=categories.filter(c=>c.id!==cat.id);
+      categories=categories.filter(c=>c.id!==cat.id);saveCats();
       renderShop();
     };
 
@@ -283,7 +273,7 @@ function renderShop(){
       const fromCat=categories.find(c=>c.id===dragItem.catId);
       if(!fromCat)return;
       const [item]=fromCat.items.splice(dragItem.itemIdx,1);
-      cat.items.push(item);
+      cat.items.push(item);saveCats();
       dragItem=null;
       renderShop();
     });
@@ -304,17 +294,17 @@ function renderShop(){
       // Toggle bought — click on chip (not buttons)
       chip.addEventListener('click',e=>{
         if(e.target.closest('.chip-delete')||e.target.closest('.chip-check'))return;
-        item.bought=!item.bought;renderShop();
+        item.bought=!item.bought;saveCats();renderShop();
       });
 
       // Toggle via check circle
       chip.querySelector('.chip-check').addEventListener('click',e=>{
-        e.stopPropagation();item.bought=!item.bought;renderShop();
+        e.stopPropagation();item.bought=!item.bought;saveCats();renderShop();
       });
 
       // Delete
       chip.querySelector('.chip-delete').addEventListener('click',e=>{
-        e.stopPropagation();cat.items.splice(idx,1);renderShop();
+        e.stopPropagation();cat.items.splice(idx,1);saveCats();renderShop();
       });
 
       // Drag
@@ -340,7 +330,7 @@ function renderShop(){
       const fromCat=categories.find(c=>c.id===dragItem.catId);
       if(!fromCat)return;
       const [item]=fromCat.items.splice(dragItem.itemIdx,1);
-      cat.items.push(item);
+      cat.items.push(item);saveCats();
       dragItem=null;renderShop();
     });
 
@@ -365,14 +355,14 @@ function addShopItem(){
   const val=input.value.trim();if(!val)return;
   const catId=document.getElementById('catSelect').value;
   const cat=categories.find(c=>c.id===catId);
-  if(cat)cat.items.push({name:val,qty:'',bought:false});
+  if(cat){cat.items.push({name:val,qty:'',bought:false});saveCats();}
   input.value='';renderShop();
 }
 
 function addCategory(){
   const input=document.getElementById('newCatInput');
   const val=input.value.trim();if(!val)return;
-  categories.push({id:'cat_'+Date.now(),name:val,items:[]});
+  categories.push({id:'cat_'+Date.now(),name:val,items:[]});saveCats();
   input.value='';renderShop();
 }
 
