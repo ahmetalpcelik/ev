@@ -39,6 +39,7 @@
   .card-title{font-family:'Instrument Serif',serif;font-size:1.25rem;font-weight:400}
   .card-tag{font-size:.7rem;padding:4px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
   .tag-green{background:#DCF0E3;color:var(--accent2)}.tag-orange{background:#FAE5DC;color:var(--accent)}.tag-blue{background:#DCE8F0;color:#2A5C7A}
+  /* TODO */
   .todo-list{list-style:none}
   .todo-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s}
   .todo-item:last-child{border-bottom:none}
@@ -52,9 +53,8 @@
   .todo-item.done .checkmark{opacity:1}
   .todo-text{font-size:.9rem;flex:1}
   .delete-btn{width:24px;height:24px;border-radius:50%;border:none;background:transparent;color:var(--muted);font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;transition:opacity .15s,background .15s,color .15s}
-  .chip-delete{width:16px;height:16px;border-radius:50%;border:none;background:transparent;color:var(--muted);font-size:.95rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;transition:opacity .15s,color .15s}
-  @media(hover:hover){.delete-btn{opacity:0}.todo-item:hover .delete-btn{opacity:1}.delete-btn:hover{background:#FAE5DC;color:var(--accent)}.chip-delete{opacity:0}.shop-chip:hover .chip-delete{opacity:1}.chip-delete:hover{color:var(--accent)}}
-  @media(hover:none){.delete-btn{opacity:.4}.chip-delete{opacity:.4}}
+  @media(hover:hover){.delete-btn{opacity:0}.todo-item:hover .delete-btn{opacity:1}.delete-btn:hover{background:#FAE5DC;color:var(--accent)}}
+  @media(hover:none){.delete-btn{opacity:.4}}
   .add-row{display:flex;gap:8px;margin-top:16px}
   .add-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s}
   .add-input:focus{border-color:var(--accent)}.add-input::placeholder{color:var(--muted)}
@@ -64,12 +64,7 @@
   .progress-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-bottom:8px}
   .progress-bar{height:4px;background:var(--border);border-radius:100px;overflow:hidden}
   .progress-fill{height:100%;background:var(--accent2);border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-  .shop-section{margin-bottom:14px}
-  .shop-section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:500;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-  .shop-grid{display:flex;flex-wrap:wrap;gap:8px}
-  .shop-chip{display:flex;align-items:center;gap:5px;padding:6px 8px 6px 12px;border-radius:100px;border:1.5px solid var(--border);background:white;font-size:.82rem;cursor:pointer;transition:all .2s;user-select:none}
-  .shop-chip:hover{border-color:var(--accent)}.shop-chip.bought{background:#F0F0EC;border-color:transparent;opacity:.5;text-decoration:line-through}
-  .shop-chip .qty{font-size:.7rem;color:var(--muted)}
+  /* CALENDAR */
   .cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:16px}
   .cal-nav-btn{background:transparent;border:1.5px solid var(--border);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:.9rem;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:border-color .2s}
   .cal-nav-btn:hover{border-color:var(--accent)}
@@ -91,6 +86,41 @@
   .event-title{font-size:.88rem;flex:1}
   .gcal-note{font-size:.72rem;color:var(--muted);margin-top:10px;display:flex;align-items:center;gap:5px}
   .gcal-note.hidden{display:none}
+  /* SHOPPING — kategoriler */
+  .shop-categories{display:flex;flex-direction:column;gap:16px}
+  .shop-cat{border-radius:12px;border:2px dashed transparent;transition:border-color .2s,background .2s;padding:4px}
+  .shop-cat.drag-over{border-color:var(--accent2);background:rgba(58,107,74,0.05)}
+  .shop-cat-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .shop-cat-name{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:500;flex:1;padding:3px 6px;border-radius:6px;border:1px solid transparent;background:transparent;font-family:'DM Sans',sans-serif;cursor:text;outline:none;transition:border-color .2s,background .2s}
+  .shop-cat-name:focus{border-color:var(--border);background:var(--bg);color:var(--ink)}
+  .shop-cat-del{background:transparent;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:2px 4px;border-radius:4px;transition:color .15s,opacity .15s;opacity:0}
+  .shop-cat-header:hover .shop-cat-del{opacity:1}
+  .shop-cat-del:hover{color:var(--accent)}
+  .shop-grid{display:flex;flex-wrap:wrap;gap:8px;min-height:28px}
+  .shop-grid.drag-over{background:rgba(58,107,74,0.04);border-radius:8px}
+  .shop-chip{display:flex;align-items:center;gap:5px;padding:6px 8px 6px 10px;border-radius:100px;border:1.5px solid var(--border);background:white;font-size:.82rem;cursor:grab;transition:all .2s;user-select:none;position:relative}
+  .shop-chip:active{cursor:grabbing}
+  .shop-chip:hover{border-color:var(--accent2)}
+  .shop-chip.bought{background:#F0F0EC;border-color:transparent;opacity:.5;text-decoration:line-through}
+  .shop-chip.dragging{opacity:.4;transform:scale(.95)}
+  .shop-chip .qty{font-size:.7rem;color:var(--muted)}
+  .chip-check{width:14px;height:14px;border:1.5px solid var(--border);border-radius:50%;flex-shrink:0;cursor:pointer;transition:all .2s;background:white;display:flex;align-items:center;justify-content:center}
+  .shop-chip.bought .chip-check{background:var(--accent2);border-color:var(--accent2)}
+  .chip-check-mark{width:7px;height:7px;stroke:white;stroke-width:2.5;fill:none;opacity:0;transition:opacity .15s}
+  .shop-chip.bought .chip-check-mark{opacity:1}
+  .chip-delete{width:16px;height:16px;border-radius:50%;border:none;background:transparent;color:var(--muted);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:opacity .15s,color .15s;line-height:1}
+  @media(hover:hover){.chip-delete{opacity:0}.shop-chip:hover .chip-delete{opacity:1}.chip-delete:hover{color:var(--accent)}}
+  @media(hover:none){.chip-delete{opacity:.4}}
+  .shop-add-row{display:flex;gap:8px;margin-top:4px;align-items:center}
+  .shop-add-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s}
+  .shop-add-input:focus{border-color:var(--accent)}.shop-add-input::placeholder{color:var(--muted)}
+  .cat-select{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;cursor:pointer;transition:border-color .2s}
+  .cat-select:focus{border-color:var(--accent)}
+  .add-cat-row{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+  .add-cat-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s}
+  .add-cat-input:focus{border-color:var(--accent2)}.add-cat-input::placeholder{color:var(--muted)}
+  .add-cat-btn{background:var(--accent2);color:white;border:none;border-radius:10px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+  .add-cat-btn:hover{opacity:.85}
   .empty-state{text-align:center;padding:20px 0 8px;color:var(--muted);font-size:.82rem}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .card:nth-child(1){animation:fadeUp .6s .1s ease both}
@@ -150,7 +180,7 @@
   <div class="card">
     <div class="card-header">
       <h2 class="card-title">takvim</h2>
-      <span class="card-tag tag-blue" id="calTag">yükleniyor…</span>
+      <span class="card-tag tag-blue" id="calTag">takvim</span>
     </div>
     <div class="cal-nav">
       <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8249;</button>
@@ -168,27 +198,20 @@
       <h2 class="card-title">alışveriş</h2>
       <span class="card-tag tag-green">market</span>
     </div>
-    <div class="shop-section">
-      <div class="shop-section-label">sebze &amp; meyve</div>
-      <div class="shop-grid" id="shopVeg"></div>
+    <div class="shop-categories" id="shopCategories"></div>
+    <div class="shop-add-row" style="margin-top:16px">
+      <input class="shop-add-input" id="shopInput" placeholder="ürün ekle…" />
+      <select class="cat-select" id="catSelect"></select>
+      <button class="add-btn" onclick="addShopItem()">ekle</button>
     </div>
-    <div class="shop-section">
-      <div class="shop-section-label">temel</div>
-      <div class="shop-grid" id="shopBasic"></div>
-    </div>
-    <div class="shop-section">
-      <div class="shop-section-label">diğer</div>
-      <div class="shop-grid" id="shopOther"></div>
-    </div>
-    <div class="add-row">
-      <input class="add-input" id="shopInput" placeholder="ürün ekle…" />
-      <button class="add-btn" onclick="addShop()">ekle</button>
+    <div class="add-cat-row">
+      <input class="add-cat-input" id="newCatInput" placeholder="yeni kategori…" />
+      <button class="add-cat-btn" onclick="addCategory()">+ kategori</button>
     </div>
   </div>
 </div>
 
 <footer>son güncelleme: az önce ✦</footer>
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const CLIENT_ID   = '910025400339-7pketrvnruqosp2ptpn3demje495bbq7.apps.googleusercontent.com';
@@ -196,22 +219,25 @@ const SCOPES      = 'https://www.googleapis.com/auth/calendar.readonly';
 const CALENDAR_ID = 'primary';
 const CONN_KEY    = 'evim_gcal_connected';
 
-let accessToken = null, isConnected = false, tokenClient = null, tokenRefreshTimer = null;
-let calViewDate = new Date(), selectedDate = new Date(); selectedDate.setHours(0,0,0,0);
-let gcalEvents = {}; // { 'YYYY-MM-DD': [{title, time}] }
+let accessToken=null,isConnected=false,tokenClient=null,tokenRefreshTimer=null;
+let calViewDate=new Date(),selectedDate=new Date();selectedDate.setHours(0,0,0,0);
+let gcalEvents={};
 
-let todos = [
+let todos=[
   {text:'odayı topla',done:false},
   {text:'çamaşır yıka',done:false},
   {text:'kitap oku (30 dk)',done:true},
   {text:'e-postaları kontrol et',done:false},
 ];
 
-let shopItems = {
-  veg:  [{name:'domates',qty:'500g',bought:false},{name:'salatalık',qty:'3 adet',bought:false},{name:'limon',qty:'2 adet',bought:true}],
-  basic:[{name:'süt',qty:'1L',bought:false},{name:'yumurta',qty:'10 adet',bought:false},{name:'ekmek',qty:'1 somun',bought:true}],
-  other:[{name:'deterjan',qty:'1 paket',bought:false},{name:'zeytinyağı',qty:'500ml',bought:false}]
-};
+// Kategoriler: [{id, name, items:[{name,qty,bought}]}]
+let categories=[
+  {id:'cat_1',name:'sebze & meyve',items:[{name:'domates',qty:'500g',bought:false},{name:'salatalık',qty:'3 adet',bought:false},{name:'limon',qty:'2 adet',bought:true}]},
+  {id:'cat_2',name:'temel',items:[{name:'süt',qty:'1L',bought:false},{name:'yumurta',qty:'10 adet',bought:false},{name:'ekmek',qty:'1 somun',bought:true}]},
+  {id:'cat_3',name:'diğer',items:[{name:'deterjan',qty:'1 paket',bought:false},{name:'zeytinyağı',qty:'500ml',bought:false}]},
+];
+
+let dragItem=null; // {catId, itemIdx}
 
 const days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
@@ -226,11 +252,8 @@ function getEvents(ds){return(gcalEvents[ds]||[]).sort((a,b)=>(a.time||'99:99').
 // ── AUTH ──────────────────────────────────────────────
 function initTokenClient(){
   if(!window.google||tokenClient)return;
-  tokenClient=google.accounts.oauth2.initTokenClient({
-    client_id:CLIENT_ID, scope:SCOPES, callback:onToken
-  });
+  tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:onToken});
 }
-
 function onToken(resp){
   if(resp.error){
     if(['interaction_required','login_required','consent_required'].includes(resp.error)){
@@ -244,9 +267,7 @@ function onToken(resp){
   clearTimeout(tokenRefreshTimer);
   tokenRefreshTimer=setTimeout(silentRefresh,45*60*1000);
 }
-
 function silentRefresh(){if(tokenClient)tokenClient.requestAccessToken({prompt:''});}
-
 function handleAuth(){
   if(isConnected){
     try{google.accounts.oauth2.revoke(accessToken,()=>{});}catch(e){}
@@ -254,14 +275,9 @@ function handleAuth(){
     localStorage.removeItem(CONN_KEY);clearTimeout(tokenRefreshTimer);
     updateAuthUI();renderCalendar();renderTodayTodos();return;
   }
-  initTokenClient();
-  tokenClient.requestAccessToken({prompt:'consent'});
+  initTokenClient();tokenClient.requestAccessToken({prompt:'consent'});
 }
-
-function tryAutoLogin(){
-  if(localStorage.getItem(CONN_KEY)==='1'){initTokenClient();silentRefresh();}
-}
-
+function tryAutoLogin(){if(localStorage.getItem(CONN_KEY)==='1'){initTokenClient();silentRefresh();}}
 function updateAuthUI(){
   document.getElementById('authBtn').classList.toggle('connected',isConnected);
   document.getElementById('authLabel').textContent=isConnected?'bağlı':'Google ile bağlan';
@@ -269,11 +285,10 @@ function updateAuthUI(){
   document.getElementById('calTag').textContent=isConnected?'google calendar':'takvim';
   document.getElementById('gcalNote').classList.toggle('hidden',!isConnected);
 }
-
 document.querySelector('script[src*="gsi"]').addEventListener('load',tryAutoLogin);
 window.addEventListener('load',()=>{if(window.google)tryAutoLogin();});
 
-// ── GCAL FETCH ────────────────────────────────────────
+// ── GCAL ──────────────────────────────────────────────
 async function gcalFetch(url){
   if(!accessToken)return null;
   const res=await fetch(url,{headers:{'Authorization':`Bearer ${accessToken}`}});
@@ -281,45 +296,27 @@ async function gcalFetch(url){
   if(!res.ok)return null;
   return res.json();
 }
-
 async function fetchGCalEvents(){
   if(!isConnected)return;
   const start=new Date(calViewDate.getFullYear(),calViewDate.getMonth(),1);
   const end=new Date(calViewDate.getFullYear(),calViewDate.getMonth()+1,1);
   const todayD=new Date();
   const tMin=new Date(Math.min(+start,+todayD));tMin.setDate(1);
-
-  const params=new URLSearchParams({
-    timeMin:tMin.toISOString(),timeMax:end.toISOString(),
-    singleEvents:'true',orderBy:'startTime',maxResults:'250'
-  });
-
-  const data=await gcalFetch(
-    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?${params}`
-  );
+  const params=new URLSearchParams({timeMin:tMin.toISOString(),timeMax:end.toISOString(),singleEvents:'true',orderBy:'startTime',maxResults:'250'});
+  const data=await gcalFetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?${params}`);
   if(!data||!data.items)return;
-
-  // Tazele
   gcalEvents={};
   data.items.forEach(ev=>{
     const ds=ev.start.date||ev.start.dateTime?.slice(0,10);
     if(!ds)return;
     if(!gcalEvents[ds])gcalEvents[ds]=[];
-    gcalEvents[ds].push({
-      title:ev.summary||'(başlıksız)',
-      time:ev.start.dateTime?formatTime(ev.start.dateTime):''
-    });
+    gcalEvents[ds].push({title:ev.summary||'(başlıksız)',time:ev.start.dateTime?formatTime(ev.start.dateTime):''});
   });
-
-  renderCalendar();
-  renderTodayTodos();
+  renderCalendar();renderTodayTodos();
 }
-
 async function syncAll(){
-  const btn=document.getElementById('syncBtn');
-  btn.classList.add('spinning');
-  await fetchGCalEvents();
-  btn.classList.remove('spinning');
+  const btn=document.getElementById('syncBtn');btn.classList.add('spinning');
+  await fetchGCalEvents();btn.classList.remove('spinning');
 }
 
 // ── CALENDAR ──────────────────────────────────────────
@@ -327,9 +324,7 @@ function renderCalendar(){
   const y=calViewDate.getFullYear(),m=calViewDate.getMonth();
   document.getElementById('calMonthLabel').textContent=`${months[m]} ${y}`;
   const grid=document.getElementById('calGrid');grid.innerHTML='';
-  ['Pt','Sa','Ça','Pe','Cu','Ct','Pz'].forEach(d=>{
-    const h=document.createElement('div');h.className='cal-day-header';h.textContent=d;grid.appendChild(h);
-  });
+  ['Pt','Sa','Ça','Pe','Cu','Ct','Pz'].forEach(d=>{const h=document.createElement('div');h.className='cal-day-header';h.textContent=d;grid.appendChild(h);});
   const offset=(new Date(y,m,1).getDay()+6)%7;
   const dim=new Date(y,m+1,0).getDate();
   const today=new Date();today.setHours(0,0,0,0);
@@ -346,15 +341,11 @@ function renderCalendar(){
   }
   renderEventList();
 }
-
 function renderEventList(){
   const key=dateKey(selectedDate),events=getEvents(key);
   const el=document.getElementById('eventList');
   const label=key===todayKey()?'bugün':`${selectedDate.getDate()} ${months[selectedDate.getMonth()]}`;
-  if(!events.length){
-    el.innerHTML=`<div class="event-list-title">${label}</div><div class="empty-state">etkinlik yok</div>`;
-    return;
-  }
+  if(!events.length){el.innerHTML=`<div class="event-list-title">${label}</div><div class="empty-state">etkinlik yok</div>`;return;}
   el.innerHTML=`<div class="event-list-title">${label}</div>`;
   events.forEach(ev=>{
     const item=document.createElement('div');item.className='event-item';
@@ -362,19 +353,13 @@ function renderEventList(){
     el.appendChild(item);
   });
 }
-
-function changeMonth(dir){
-  calViewDate.setMonth(calViewDate.getMonth()+dir);
-  renderCalendar();
-  if(isConnected)fetchGCalEvents();
-}
+function changeMonth(dir){calViewDate.setMonth(calViewDate.getMonth()+dir);renderCalendar();if(isConnected)fetchGCalEvents();}
 
 // ── TODOS ─────────────────────────────────────────────
 function renderTodayTodos(){
   const list=document.getElementById('todoList');list.innerHTML='';
   todos.forEach((t,i)=>{
-    const li=document.createElement('li');
-    li.className='todo-item'+(t.done?' done':'');
+    const li=document.createElement('li');li.className='todo-item'+(t.done?' done':'');
     li.innerHTML=`<div class="checkbox"><svg class="checkmark" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div><span class="todo-text">${t.text}</span><button class="delete-btn" title="sil">&#215;</button>`;
     li.querySelector('.delete-btn').addEventListener('click',e=>{e.stopPropagation();todos.splice(i,1);renderTodayTodos();});
     li.addEventListener('click',()=>{todos[i].done=!todos[i].done;renderTodayTodos();});
@@ -389,7 +374,6 @@ function renderTodayTodos(){
   if(!list.children.length)list.innerHTML='<div class="empty-state">bugün görev yok &#127881;</div>';
   updateStats();
 }
-
 function updateStats(){
   const done=todos.filter(t=>t.done).length,total=todos.length;
   document.getElementById('doneCount').textContent=done;
@@ -398,7 +382,6 @@ function updateStats(){
   document.getElementById('progressPct').textContent=pct+'%';
   document.getElementById('progressFill').style.width=pct+'%';
 }
-
 function addTodo(){
   const input=document.getElementById('todoInput'),val=input.value.trim();
   if(!val)return;todos.unshift({text:val,done:false});input.value='';renderTodayTodos();
@@ -406,23 +389,148 @@ function addTodo(){
 document.getElementById('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
 
 // ── SHOPPING ──────────────────────────────────────────
-function renderChips(id,items,cat){
-  const el=document.getElementById(id);el.innerHTML='';
-  items.forEach((item,i)=>{
-    const chip=document.createElement('div');
-    chip.className='shop-chip'+(item.bought?' bought':'');
-    chip.innerHTML=`<span>${item.name}</span>${item.qty?`<span class="qty">${item.qty}</span>`:''}<button class="chip-delete" title="sil">&#215;</button>`;
-    chip.querySelector('.chip-delete').addEventListener('click',e=>{e.stopPropagation();shopItems[cat].splice(i,1);renderShop();});
-    chip.addEventListener('click',()=>{shopItems[cat][i].bought=!shopItems[cat][i].bought;renderShop();});
-    el.appendChild(chip);
+function renderShop(){
+  const container=document.getElementById('shopCategories');
+  container.innerHTML='';
+
+  categories.forEach(cat=>{
+    const section=document.createElement('div');
+    section.className='shop-cat';
+    section.dataset.catId=cat.id;
+
+    // Kategori başlık
+    const header=document.createElement('div');
+    header.className='shop-cat-header';
+
+    const nameEl=document.createElement('input');
+    nameEl.className='shop-cat-name';
+    nameEl.value=cat.name;
+    nameEl.spellcheck=false;
+    nameEl.addEventListener('blur',()=>{cat.name=nameEl.value.trim()||cat.name;nameEl.value=cat.name;updateCatSelect();});
+    nameEl.addEventListener('keydown',e=>{if(e.key==='Enter')nameEl.blur();});
+
+    const delBtn=document.createElement('button');
+    delBtn.className='shop-cat-del';
+    delBtn.title='kategoriyi sil';
+    delBtn.innerHTML='&#215;';
+    delBtn.onclick=()=>{
+      if(cat.items.length>0&&!confirm(`"${cat.name}" kategorisindeki ${cat.items.length} ürün de silinecek. Devam?`))return;
+      categories=categories.filter(c=>c.id!==cat.id);
+      renderShop();
+    };
+
+    header.appendChild(nameEl);
+    header.appendChild(delBtn);
+
+    // Chip grid — drop target
+    const grid=document.createElement('div');
+    grid.className='shop-grid';
+    grid.dataset.catId=cat.id;
+
+    // Drag over grid
+    grid.addEventListener('dragover',e=>{e.preventDefault();grid.classList.add('drag-over');});
+    grid.addEventListener('dragleave',()=>grid.classList.remove('drag-over'));
+    grid.addEventListener('drop',e=>{
+      e.preventDefault();grid.classList.remove('drag-over');
+      if(!dragItem||dragItem.catId===cat.id)return;
+      const fromCat=categories.find(c=>c.id===dragItem.catId);
+      if(!fromCat)return;
+      const [item]=fromCat.items.splice(dragItem.itemIdx,1);
+      cat.items.push(item);
+      dragItem=null;
+      renderShop();
+    });
+
+    cat.items.forEach((item,idx)=>{
+      const chip=document.createElement('div');
+      chip.className='shop-chip'+(item.bought?' bought':'');
+      chip.draggable=true;
+      chip.dataset.idx=idx;
+
+      chip.innerHTML=`
+        <div class="chip-check"><svg class="chip-check-mark" viewBox="0 0 8 8"><polyline points="1,4 3,6.5 7,1.5"/></svg></div>
+        <span class="chip-name">${item.name}</span>
+        ${item.qty?`<span class="qty">${item.qty}</span>`:''}
+        <button class="chip-delete" title="sil">&#215;</button>
+      `;
+
+      // Toggle bought — click on chip (not buttons)
+      chip.addEventListener('click',e=>{
+        if(e.target.closest('.chip-delete')||e.target.closest('.chip-check'))return;
+        item.bought=!item.bought;renderShop();
+      });
+
+      // Toggle via check circle
+      chip.querySelector('.chip-check').addEventListener('click',e=>{
+        e.stopPropagation();item.bought=!item.bought;renderShop();
+      });
+
+      // Delete
+      chip.querySelector('.chip-delete').addEventListener('click',e=>{
+        e.stopPropagation();cat.items.splice(idx,1);renderShop();
+      });
+
+      // Drag
+      chip.addEventListener('dragstart',e=>{
+        dragItem={catId:cat.id,itemIdx:idx};
+        chip.classList.add('dragging');
+        e.dataTransfer.effectAllowed='move';
+      });
+      chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragItem=null;});
+
+      grid.appendChild(chip);
+    });
+
+    section.appendChild(header);
+    section.appendChild(grid);
+
+    // Section drop (for empty categories)
+    section.addEventListener('dragover',e=>{e.preventDefault();section.classList.add('drag-over');});
+    section.addEventListener('dragleave',e=>{if(!section.contains(e.relatedTarget))section.classList.remove('drag-over');});
+    section.addEventListener('drop',e=>{
+      e.preventDefault();section.classList.remove('drag-over');
+      if(!dragItem||dragItem.catId===cat.id)return;
+      const fromCat=categories.find(c=>c.id===dragItem.catId);
+      if(!fromCat)return;
+      const [item]=fromCat.items.splice(dragItem.itemIdx,1);
+      cat.items.push(item);
+      dragItem=null;renderShop();
+    });
+
+    container.appendChild(section);
+  });
+
+  updateCatSelect();
+}
+
+function updateCatSelect(){
+  const sel=document.getElementById('catSelect');
+  sel.innerHTML='';
+  categories.forEach(cat=>{
+    const opt=document.createElement('option');
+    opt.value=cat.id;opt.textContent=cat.name;
+    sel.appendChild(opt);
   });
 }
-function renderShop(){renderChips('shopVeg',shopItems.veg,'veg');renderChips('shopBasic',shopItems.basic,'basic');renderChips('shopOther',shopItems.other,'other');}
-function addShop(){
-  const input=document.getElementById('shopInput'),val=input.value.trim();
-  if(!val)return;shopItems.other.push({name:val,qty:'',bought:false});input.value='';renderShop();
+
+function addShopItem(){
+  const input=document.getElementById('shopInput');
+  const val=input.value.trim();if(!val)return;
+  const catId=document.getElementById('catSelect').value;
+  const cat=categories.find(c=>c.id===catId);
+  if(cat)cat.items.push({name:val,qty:'',bought:false});
+  input.value='';renderShop();
 }
-document.getElementById('shopInput').addEventListener('keydown',e=>{if(e.key==='Enter')addShop();});
+
+function addCategory(){
+  const input=document.getElementById('newCatInput');
+  const val=input.value.trim();if(!val)return;
+  categories.push({id:'cat_'+Date.now(),name:val,items:[]});
+  input.value='';renderShop();
+}
+
+document.getElementById('shopInput').addEventListener('keydown',e=>{if(e.key==='Enter')addShopItem();});
+document.getElementById('newCatInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCategory();});
 
 // ── INIT ──────────────────────────────────────────────
 updateAuthUI();renderCalendar();renderTodayTodos();renderShop();
