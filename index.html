@@ -17,15 +17,6 @@
   .greeting .date{font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
   .header-right{display:flex;align-items:center;gap:10px}
   .header-pill{background:var(--ink);color:var(--bg);border-radius:100px;padding:8px 16px;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;white-space:nowrap}
-  .auth-btn{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--border);border-radius:100px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;color:var(--ink);cursor:pointer;transition:all .2s;white-space:nowrap}
-  .auth-btn:hover{border-color:var(--accent)}
-  .auth-btn.connected{border-color:var(--accent2);color:var(--accent2)}
-  .auth-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
-  .auth-btn.connected .auth-dot{background:var(--accent2)}
-  .sync-btn{background:transparent;border:none;cursor:pointer;color:var(--muted);font-size:1.1rem;padding:4px;transition:color .2s;display:none;align-items:center}
-  .sync-btn.visible{display:flex}
-  .sync-btn:hover{color:var(--accent2)}
-  .sync-btn.spinning{animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;animation:fadeUp .6s .1s ease both}
   .stat-card{background:var(--card);border-radius:16px;padding:20px 22px;border:1px solid var(--border);box-shadow:var(--shadow)}
@@ -44,9 +35,6 @@
   .todo-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s}
   .todo-item:last-child{border-bottom:none}
   .todo-item.done{opacity:.4}.todo-item.done .todo-text{text-decoration:line-through}
-  .todo-item.from-gcal{cursor:default}
-  .gcal-badge{font-size:.6rem;background:#DCE8F0;color:#2A5C7A;border-radius:4px;padding:1px 5px;font-weight:500;flex-shrink:0}
-  .todo-time{font-size:.78rem;color:var(--muted)}
   .checkbox{width:20px;height:20px;border:1.5px solid var(--border);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:white}
   .todo-item.done .checkbox{background:var(--accent2);border-color:var(--accent2)}
   .checkmark{width:10px;height:10px;stroke:white;stroke-width:2.5;fill:none;opacity:0;transition:opacity .2s}
@@ -65,27 +53,9 @@
   .progress-bar{height:4px;background:var(--border);border-radius:100px;overflow:hidden}
   .progress-fill{height:100%;background:var(--accent2);border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1)}
   /* CALENDAR */
-  .cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-  .cal-nav-btn{background:transparent;border:1.5px solid var(--border);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:.9rem;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:border-color .2s}
-  .cal-nav-btn:hover{border-color:var(--accent)}
-  .cal-month-label{font-family:'Instrument Serif',serif;font-size:1rem;font-weight:400;flex:1}
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-  .cal-day-header{text-align:center;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px;font-weight:500}
-  .cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:.8rem;cursor:pointer;transition:background .15s;gap:2px}
   .cal-day:hover{background:var(--bg)}.cal-day.empty{cursor:default;pointer-events:none}
   .cal-day.today{background:var(--accent);color:white;font-weight:600}.cal-day.today:hover{background:var(--accent)}
   .cal-day.selected{background:var(--ink);color:white}.cal-day.selected:hover{background:var(--ink)}
-  .event-dot{width:4px;height:4px;border-radius:50%;background:var(--accent2);display:none}
-  .cal-day.has-events .event-dot{display:block}
-  .cal-day.today .event-dot,.cal-day.selected .event-dot{background:rgba(255,255,255,.7)}
-  .event-list{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-  .event-list-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;margin-bottom:10px}
-  .event-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
-  .event-item:last-child{border-bottom:none}
-  .event-time{font-size:.75rem;color:var(--muted);white-space:nowrap;min-width:44px;padding-top:1px}
-  .event-title{font-size:.88rem;flex:1}
-  .gcal-note{font-size:.72rem;color:var(--muted);margin-top:10px;display:flex;align-items:center;gap:5px}
-  .gcal-note.hidden{display:none}
   /* SHOPPING — kategoriler */
   .shop-categories{display:flex;flex-direction:column;gap:16px}
   .shop-cat{border-radius:12px;border:2px dashed transparent;transition:border-color .2s,background .2s;padding:4px}
@@ -137,11 +107,6 @@
       <p class="date" id="dateDisplay"></p>
     </div>
     <div class="header-right">
-      <button class="sync-btn" id="syncBtn" title="senkronize et" onclick="syncAll()">&#8635;</button>
-      <button class="auth-btn" id="authBtn" onclick="handleAuth()">
-        <span class="auth-dot"></span>
-        <span id="authLabel">Google ile bağlan</span>
-      </button>
       <div class="header-pill">evim ✦</div>
     </div>
   </header>
@@ -177,19 +142,17 @@
   </div>
 
   <!-- TAKVİM -->
-  <div class="card">
-    <div class="card-header">
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="card-header" style="padding:20px 24px 16px">
       <h2 class="card-title">takvim</h2>
-      <span class="card-tag tag-blue" id="calTag">takvim</span>
+      <span class="card-tag tag-blue">google calendar</span>
     </div>
-    <div class="cal-nav">
-      <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8249;</button>
-      <span class="cal-month-label" id="calMonthLabel"></span>
-      <button class="cal-nav-btn" onclick="changeMonth(1)">&#8250;</button>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="event-list" id="eventList"></div>
-    <p class="gcal-note hidden" id="gcalNote">&#10003; Google Calendar ile senkronize</p>
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=alp.chelik%40gmail.com&ctz=Europe%2FIstanbul&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&mode=MONTH&bgcolor=%23FEFCF7&color=%23C4552A"
+      style="border:none;width:100%;height:500px;display:block"
+      frameborder="0"
+      scrolling="no">
+    </iframe>
   </div>
 
   <!-- ALIŞVERİŞ -->
@@ -212,149 +175,10 @@
 </div>
 
 <footer>son güncelleme: az önce ✦</footer>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const CLIENT_ID   = '910025400339-7pketrvnruqosp2ptpn3demje495bbq7.apps.googleusercontent.com';
 const SCOPES      = 'https://www.googleapis.com/auth/calendar.readonly';
 const CALENDAR_ID = 'primary';
-const CONN_KEY    = 'evim_gcal_connected';
-
-let accessToken=null,isConnected=false,tokenClient=null,tokenRefreshTimer=null;
-let calViewDate=new Date(),selectedDate=new Date();selectedDate.setHours(0,0,0,0);
-let gcalEvents={};
-
-let todos=[
-  {text:'odayı topla',done:false},
-  {text:'çamaşır yıka',done:false},
-  {text:'kitap oku (30 dk)',done:true},
-  {text:'e-postaları kontrol et',done:false},
-];
-
-// Kategoriler: [{id, name, items:[{name,qty,bought}]}]
-let categories=[
-  {id:'cat_1',name:'sebze & meyve',items:[{name:'domates',qty:'500g',bought:false},{name:'salatalık',qty:'3 adet',bought:false},{name:'limon',qty:'2 adet',bought:true}]},
-  {id:'cat_2',name:'temel',items:[{name:'süt',qty:'1L',bought:false},{name:'yumurta',qty:'10 adet',bought:false},{name:'ekmek',qty:'1 somun',bought:true}]},
-  {id:'cat_3',name:'diğer',items:[{name:'deterjan',qty:'1 paket',bought:false},{name:'zeytinyağı',qty:'500ml',bought:false}]},
-];
-
-let dragItem=null; // {catId, itemIdx}
-
-const days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-const now=new Date();
-document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
-
-function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-function todayKey(){return dateKey(new Date());}
-function formatTime(iso){const t=new Date(iso);return `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;}
-function getEvents(ds){return(gcalEvents[ds]||[]).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));}
-
-// ── AUTH ──────────────────────────────────────────────
-function initTokenClient(){
-  if(!window.google||tokenClient)return;
-  tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:onToken});
-}
-function onToken(resp){
-  if(resp.error){
-    if(['interaction_required','login_required','consent_required'].includes(resp.error)){
-      accessToken=null;isConnected=false;localStorage.removeItem(CONN_KEY);updateAuthUI();
-    }
-    return;
-  }
-  accessToken=resp.access_token;isConnected=true;
-  localStorage.setItem(CONN_KEY,'1');
-  updateAuthUI();syncAll();
-  clearTimeout(tokenRefreshTimer);
-  tokenRefreshTimer=setTimeout(silentRefresh,45*60*1000);
-}
-function silentRefresh(){if(tokenClient)tokenClient.requestAccessToken({prompt:''});}
-function handleAuth(){
-  if(isConnected){
-    try{google.accounts.oauth2.revoke(accessToken,()=>{});}catch(e){}
-    accessToken=null;isConnected=false;gcalEvents={};
-    localStorage.removeItem(CONN_KEY);clearTimeout(tokenRefreshTimer);
-    updateAuthUI();renderCalendar();renderTodayTodos();return;
-  }
-  initTokenClient();tokenClient.requestAccessToken({prompt:'consent'});
-}
-function tryAutoLogin(){if(localStorage.getItem(CONN_KEY)==='1'){initTokenClient();silentRefresh();}}
-function updateAuthUI(){
-  document.getElementById('authBtn').classList.toggle('connected',isConnected);
-  document.getElementById('authLabel').textContent=isConnected?'bağlı':'Google ile bağlan';
-  document.getElementById('syncBtn').classList.toggle('visible',isConnected);
-  document.getElementById('calTag').textContent=isConnected?'google calendar':'takvim';
-  document.getElementById('gcalNote').classList.toggle('hidden',!isConnected);
-}
-document.querySelector('script[src*="gsi"]').addEventListener('load',tryAutoLogin);
-window.addEventListener('load',()=>{if(window.google)tryAutoLogin();});
-
-// ── GCAL ──────────────────────────────────────────────
-async function gcalFetch(url){
-  if(!accessToken)return null;
-  const res=await fetch(url,{headers:{'Authorization':`Bearer ${accessToken}`}});
-  if(res.status===401){silentRefresh();return null;}
-  if(!res.ok)return null;
-  return res.json();
-}
-async function fetchGCalEvents(){
-  if(!isConnected)return;
-  const start=new Date(calViewDate.getFullYear(),calViewDate.getMonth(),1);
-  const end=new Date(calViewDate.getFullYear(),calViewDate.getMonth()+1,1);
-  const todayD=new Date();
-  const tMin=new Date(Math.min(+start,+todayD));tMin.setDate(1);
-  const params=new URLSearchParams({timeMin:tMin.toISOString(),timeMax:end.toISOString(),singleEvents:'true',orderBy:'startTime',maxResults:'250'});
-  const data=await gcalFetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?${params}`);
-  if(!data||!data.items)return;
-  gcalEvents={};
-  data.items.forEach(ev=>{
-    const ds=ev.start.date||ev.start.dateTime?.slice(0,10);
-    if(!ds)return;
-    if(!gcalEvents[ds])gcalEvents[ds]=[];
-    gcalEvents[ds].push({title:ev.summary||'(başlıksız)',time:ev.start.dateTime?formatTime(ev.start.dateTime):''});
-  });
-  renderCalendar();renderTodayTodos();
-}
-async function syncAll(){
-  const btn=document.getElementById('syncBtn');btn.classList.add('spinning');
-  await fetchGCalEvents();btn.classList.remove('spinning');
-}
-
-// ── CALENDAR ──────────────────────────────────────────
-function renderCalendar(){
-  const y=calViewDate.getFullYear(),m=calViewDate.getMonth();
-  document.getElementById('calMonthLabel').textContent=`${months[m]} ${y}`;
-  const grid=document.getElementById('calGrid');grid.innerHTML='';
-  ['Pt','Sa','Ça','Pe','Cu','Ct','Pz'].forEach(d=>{const h=document.createElement('div');h.className='cal-day-header';h.textContent=d;grid.appendChild(h);});
-  const offset=(new Date(y,m,1).getDay()+6)%7;
-  const dim=new Date(y,m+1,0).getDate();
-  const today=new Date();today.setHours(0,0,0,0);
-  for(let i=0;i<offset;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
-  for(let day=1;day<=dim;day++){
-    const cd=new Date(y,m,day),ck=dateKey(cd),cell=document.createElement('div');
-    cell.className='cal-day';
-    if(+cd===+today)cell.classList.add('today');
-    if(+cd===+selectedDate)cell.classList.add('selected');
-    if(getEvents(ck).length)cell.classList.add('has-events');
-    cell.innerHTML=`<span>${day}</span><span class="event-dot"></span>`;
-    cell.onclick=()=>{selectedDate=cd;renderCalendar();renderEventList();};
-    grid.appendChild(cell);
-  }
-  renderEventList();
-}
-function renderEventList(){
-  const key=dateKey(selectedDate),events=getEvents(key);
-  const el=document.getElementById('eventList');
-  const label=key===todayKey()?'bugün':`${selectedDate.getDate()} ${months[selectedDate.getMonth()]}`;
-  if(!events.length){el.innerHTML=`<div class="event-list-title">${label}</div><div class="empty-state">etkinlik yok</div>`;return;}
-  el.innerHTML=`<div class="event-list-title">${label}</div>`;
-  events.forEach(ev=>{
-    const item=document.createElement('div');item.className='event-item';
-    item.innerHTML=`<span class="event-time">${ev.time||'tüm gün'}</span><span class="event-title">${ev.title}</span>`;
-    el.appendChild(item);
-  });
-}
-function changeMonth(dir){calViewDate.setMonth(calViewDate.getMonth()+dir);renderCalendar();if(isConnected)fetchGCalEvents();}
-
 // ── TODOS ─────────────────────────────────────────────
 function renderTodayTodos(){
   const list=document.getElementById('todoList');list.innerHTML='';
@@ -363,12 +187,6 @@ function renderTodayTodos(){
     li.innerHTML=`<div class="checkbox"><svg class="checkmark" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div><span class="todo-text">${t.text}</span><button class="delete-btn" title="sil">&#215;</button>`;
     li.querySelector('.delete-btn').addEventListener('click',e=>{e.stopPropagation();todos.splice(i,1);renderTodayTodos();});
     li.addEventListener('click',()=>{todos[i].done=!todos[i].done;renderTodayTodos();});
-    list.appendChild(li);
-  });
-  getEvents(todayKey()).forEach(ev=>{
-    const li=document.createElement('li');li.className='todo-item from-gcal';
-    const tl=ev.time?` (${ev.time})`:'';
-    li.innerHTML=`<div class="checkbox" style="opacity:.3;pointer-events:none"><svg class="checkmark" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div><span class="todo-text">${ev.title}<span class="todo-time">${tl}</span></span><span class="gcal-badge">gcal</span>`;
     list.appendChild(li);
   });
   if(!list.children.length)list.innerHTML='<div class="empty-state">bugün görev yok &#127881;</div>';
