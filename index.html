@@ -675,44 +675,57 @@ const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağu
 document.getElementById('dateDisplay').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
 
 // ── GOOGLE AUTH ────────────────────────────────────────
+const CONN_KEY = 'evim_gcal_connected';
+let tokenRefreshTimer = null;
 let tokenClient;
 
-window.onload = () => {
-  if (window.google) initGoogleAuth();
-};
+document.querySelector('script[src*="gsi"]').addEventListener('load', tryAutoLogin);
+window.addEventListener('load', () => { if (window.google) tryAutoLogin(); });
 
-// fallback if script loads after window.onload
-document.querySelector('script[src*="gsi"]').addEventListener('load', () => {
-  initGoogleAuth();
-});
-
-function initGoogleAuth() {
+function initTokenClient() {
   if (!window.google || tokenClient) return;
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
-    callback: (resp) => {
-      if (resp.error) { console.error(resp); return; }
-      accessToken = resp.access_token;
-      isConnected = true;
-      updateAuthUI();
-      syncAll();
-    }
+    callback: onToken,
   });
+}
+
+function onToken(resp) {
+  if (resp.error) {
+    if (['interaction_required','login_required','consent_required'].includes(resp.error)) {
+      accessToken = null; isConnected = false;
+      localStorage.removeItem(CONN_KEY); updateAuthUI();
+    }
+    return;
+  }
+  accessToken = resp.access_token;
+  isConnected = true;
+  localStorage.setItem(CONN_KEY, '1');
+  updateAuthUI(); syncAll();
+  clearTimeout(tokenRefreshTimer);
+  tokenRefreshTimer = setTimeout(silentRefresh, 45 * 60 * 1000);
+}
+
+function silentRefresh() {
+  if (tokenClient) tokenClient.requestAccessToken({ prompt: '' });
 }
 
 function handleAuth() {
   if (isConnected) {
-    // Disconnect
-    google.accounts.oauth2.revoke(accessToken, () => {});
-    accessToken = null;
-    isConnected = false;
-    updateAuthUI();
-    renderCalendar();
-    return;
+    try { google.accounts.oauth2.revoke(accessToken, () => {}); } catch(e) {}
+    accessToken = null; isConnected = false;
+    localStorage.removeItem(CONN_KEY); clearTimeout(tokenRefreshTimer);
+    updateAuthUI(); renderCalendar(); renderTodayTodos(); return;
   }
-  if (!tokenClient) initGoogleAuth();
+  initTokenClient();
   tokenClient.requestAccessToken({ prompt: 'consent' });
+}
+
+function tryAutoLogin() {
+  if (localStorage.getItem(CONN_KEY) === '1') {
+    initTokenClient(); silentRefresh();
+  }
 }
 
 function updateAuthUI() {
