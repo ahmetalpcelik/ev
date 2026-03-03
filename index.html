@@ -182,15 +182,8 @@ const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağust
 const now=new Date();
 document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
-const D_CATS=[
-  {id:'cat_1',name:'sebze & meyve',items:[]},
-  {id:'cat_2',name:'temel',items:[]},
-  {id:'cat_3',name:'diğer',items:[]}
-];
-// Eski örnek verileri temizle (bir kez çalışır)
-if(!localStorage.getItem('evim_v2')){localStorage.removeItem('evim_todos');localStorage.removeItem('evim_cats');localStorage.setItem('evim_v2','1');}
-let todos      = JSON.parse(localStorage.getItem('evim_todos'))      || [];
-let categories = JSON.parse(localStorage.getItem('evim_cats'))       || D_CATS;
+let todos      = JSON.parse(localStorage.getItem('evim_todos'))      ?? [];
+let categories = JSON.parse(localStorage.getItem('evim_cats'))       ?? [{id:'cat_1',name:'sebze & meyve',items:[]},{id:'cat_2',name:'temel',items:[]},{id:'cat_3',name:'diğer',items:[]}];
 function saveTodos(){localStorage.setItem('evim_todos',JSON.stringify(todos));}
 function saveCats(){localStorage.setItem('evim_cats',JSON.stringify(categories));}
 
@@ -368,7 +361,7 @@ document.getElementById('shopInput').addEventListener('keydown',e=>{if(e.key==='
 document.getElementById('newCatInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCategory();});
 
 // ── INIT ──────────────────────────────────────────────
-updateAuthUI();renderCalendar();renderTodayTodos();renderShop();
+renderTodayTodos();renderShop();
 </script>
 </body>
 </html>
