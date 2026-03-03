@@ -176,9 +176,38 @@
 
 <footer>son güncelleme: az önce ✦</footer>
 <script>
-const CLIENT_ID   = '910025400339-7pketrvnruqosp2ptpn3demje495bbq7.apps.googleusercontent.com';
-const SCOPES      = 'https://www.googleapis.com/auth/calendar.readonly';
-const CALENDAR_ID = 'primary';
+// ── STATE ─────────────────────────────────────────────
+const days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const now=new Date();
+document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+
+let todos=[
+  {text:'odayı topla',done:false},
+  {text:'çamaşır yıka',done:false},
+  {text:'kitap oku (30 dk)',done:true},
+  {text:'e-postaları kontrol et',done:false},
+];
+
+let categories=[
+  {id:'cat_1',name:'sebze & meyve',items:[
+    {name:'domates',qty:'500g',bought:false},
+    {name:'salatalık',qty:'3 adet',bought:false},
+    {name:'limon',qty:'2 adet',bought:true}
+  ]},
+  {id:'cat_2',name:'temel',items:[
+    {name:'süt',qty:'1L',bought:false},
+    {name:'yumurta',qty:'10 adet',bought:false},
+    {name:'ekmek',qty:'1 somun',bought:true}
+  ]},
+  {id:'cat_3',name:'diğer',items:[
+    {name:'deterjan',qty:'1 paket',bought:false},
+    {name:'zeytinyağı',qty:'500ml',bought:false}
+  ]}
+];
+
+let dragItem = null;
+
 // ── TODOS ─────────────────────────────────────────────
 function renderTodayTodos(){
   const list=document.getElementById('todoList');list.innerHTML='';
