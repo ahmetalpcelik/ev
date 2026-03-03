@@ -195,7 +195,6 @@ const DEFAULT_CATS=[
 let todos      = [];
 let categories = JSON.parse(JSON.stringify(DEFAULT_CATS));
 let dragItem   = null;
-let saveTimer  = null;
 
 // ── JSONBIN SYNC ───────────────────────────────────────
 async function loadData() {
@@ -203,42 +202,38 @@ async function loadData() {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
       headers: { 'X-Access-Key': API_KEY }
     });
-    if (!res.ok) throw new Error('fetch failed');
-    const json = await res.json();
-    const data = json.record;
+    if (!res.ok) throw new Error();
+    const data = (await res.json()).record;
     todos      = data.todos      ?? [];
     categories = data.categories ?? JSON.parse(JSON.stringify(DEFAULT_CATS));
   } catch(e) {
-    // Fallback to localStorage if offline
     todos      = JSON.parse(localStorage.getItem('evim_todos') || '[]');
-    categories = JSON.parse(localStorage.getItem('evim_cats')  || 'null') ?? JSON.parse(JSON.stringify(DEFAULT_CATS));
+    categories = JSON.parse(localStorage.getItem('evim_cats') || 'null') ?? JSON.parse(JSON.stringify(DEFAULT_CATS));
   }
   renderTodayTodos();
   renderShop();
 }
 
-function save() {
-  // Debounce: 800ms sonra kaydet (çok sık istek atmasın)
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    const data = { todos, categories };
-    // localStorage backup
-    localStorage.setItem('evim_todos', JSON.stringify(todos));
-    localStorage.setItem('evim_cats',  JSON.stringify(categories));
-    // JSONBin sync
-    try {
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Access-Key': API_KEY },
-        body: JSON.stringify(data)
-      });
-    } catch(e) { /* offline — localStorage backup yeterli */ }
-  }, 800);
+async function save() {
+  const data = { todos, categories };
+  localStorage.setItem('evim_todos', JSON.stringify(todos));
+  localStorage.setItem('evim_cats',  JSON.stringify(categories));
+  try {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Access-Key': API_KEY },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
 }
 
-// saveTodos ve saveCats artık ikisi de save() çağırır
 function saveTodos() { save(); }
 function saveCats()  { save(); }
+
+// Sekmeye geri dönünce taze veri çek
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') loadData();
+});
 
 // ── TODOS ─────────────────────────────────────────────
 function renderTodayTodos(){
