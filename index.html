@@ -182,16 +182,14 @@ const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağust
 const now=new Date();
 document.getElementById('dateDisplay').textContent=`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
-const D_TODOS=[
-  {text:'odayı topla',done:false},{text:'çamaşır yıka',done:false},
-  {text:'kitap oku (30 dk)',done:true},{text:'e-postaları kontrol et',done:false}
-];
 const D_CATS=[
-  {id:'cat_1',name:'sebze & meyve',items:[{name:'domates',qty:'500g',bought:false},{name:'salatalık',qty:'3 adet',bought:false},{name:'limon',qty:'2 adet',bought:true}]},
-  {id:'cat_2',name:'temel',items:[{name:'süt',qty:'1L',bought:false},{name:'yumurta',qty:'10 adet',bought:false},{name:'ekmek',qty:'1 somun',bought:true}]},
-  {id:'cat_3',name:'diğer',items:[{name:'deterjan',qty:'1 paket',bought:false},{name:'zeytinyağı',qty:'500ml',bought:false}]}
+  {id:'cat_1',name:'sebze & meyve',items:[]},
+  {id:'cat_2',name:'temel',items:[]},
+  {id:'cat_3',name:'diğer',items:[]}
 ];
-let todos      = JSON.parse(localStorage.getItem('evim_todos'))      || D_TODOS;
+// Eski örnek verileri temizle (bir kez çalışır)
+if(!localStorage.getItem('evim_v2')){localStorage.removeItem('evim_todos');localStorage.removeItem('evim_cats');localStorage.setItem('evim_v2','1');}
+let todos      = JSON.parse(localStorage.getItem('evim_todos'))      || [];
 let categories = JSON.parse(localStorage.getItem('evim_cats'))       || D_CATS;
 function saveTodos(){localStorage.setItem('evim_todos',JSON.stringify(todos));}
 function saveCats(){localStorage.setItem('evim_cats',JSON.stringify(categories));}
