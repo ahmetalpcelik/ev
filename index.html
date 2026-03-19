@@ -200,10 +200,7 @@ body {
 .opt-btn.dis { pointer-events:none; opacity:.5; }
 .opt-btn.ok.dis,.opt-btn.no.dis { opacity:1; }
 
-.fb { min-height:48px; padding:12px 16px; border-radius:10px; margin-bottom:10px; font-size:13px; line-height:1.5; visibility:hidden; }
-.fb.show { visibility:visible; animation:fadeUp .25s; }
-.fb.fb-ok { background:var(--correct-bg); border-left:3px solid var(--correct); }
-.fb.fb-no { background:var(--wrong-bg); border-left:3px solid var(--wrong); }
+.fb { display:none; }
 
 .nxt-btn {
   display:block; width:100%; padding:14px; border-radius:12px; border:none;
@@ -1643,8 +1640,6 @@ function showQ(){
     b.innerHTML='<span class="ol">'+L[i]+'</span><span>'+o+'</span>';
     b.onclick=function(){answer(b,o,q)}; g.appendChild(b);
   });
-  document.getElementById('fbBox').className='fb';
-  document.getElementById('fbBox').innerHTML='&nbsp;';
   document.getElementById('nxtBtn').classList.remove('live');
   document.getElementById('nxtBtn').textContent='Sonraki Soru \u2192';
   if(speedOn) startTimer();
@@ -1654,16 +1649,11 @@ function answer(btn,sel,q){
   if(speedOn) stopTimer();
   var all=document.querySelectorAll('.opt-btn');
   for(var i=0;i<all.length;i++) all[i].classList.add('dis');
-  var fb=document.getElementById('fbBox');
   if(sel===q.correct){
     btn.classList.add('ok'); score++;
-    fb.className='fb show fb-ok';
-    fb.innerHTML='\u2705 Do\u011fru! <strong>'+q.en+'</strong> \u2192 '+q.tr;
   } else {
     btn.classList.add('no');
     for(var i=0;i<all.length;i++) if(all[i].querySelector('span:last-child').textContent===q.correct) all[i].classList.add('ok');
-    fb.className='fb show fb-no';
-    fb.innerHTML='\u274C Yanl\u0131\u015f. Do\u011fru: <strong>'+q.correct+'</strong><br><span style="color:var(--text-dim)">'+q.en+' \u2192 '+q.tr+'</span>';
     wrongArr.push({en:q.en,tr:q.tr});
   }
   document.getElementById('qScore').textContent=score;
@@ -1695,9 +1685,6 @@ function timeUp(){
   var all=document.querySelectorAll('.opt-btn'); for(var i=0;i<all.length;i++) all[i].classList.add('dis');
   var q=questions[curQ];
   for(var i=0;i<all.length;i++) if(all[i].querySelector('span:last-child').textContent===q.correct) all[i].classList.add('ok');
-  var fb=document.getElementById('fbBox');
-  fb.className='fb show fb-no';
-  fb.innerHTML='\u23F0 S\u00fcre doldu! Do\u011fru: <strong>'+q.correct+'</strong><br><span style="color:var(--text-dim)">'+q.en+' \u2192 '+q.tr+'</span>';
   wrongArr.push({en:q.en,tr:q.tr}); answerTimes.push(timerSec);
   var nb=document.getElementById('nxtBtn');
   nb.textContent=curQ===questions.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
