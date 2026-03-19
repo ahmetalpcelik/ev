@@ -199,6 +199,9 @@ body {
 .opt-btn.no .ol { background:var(--wrong); color:#fff; }
 .opt-btn.dis { pointer-events:none; opacity:.5; }
 .opt-btn.ok.dis,.opt-btn.no.dis { opacity:1; }
+.opt-mean { font-size:11px; margin-left:auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:45%; }
+.ok-mean { color:var(--correct); }
+.no-mean { color:var(--wrong); }
 
 .fb { display:none; }
 
@@ -247,6 +250,41 @@ body {
 }
 .rb-secondary:hover { border-color:var(--accent); color:var(--text); }
 
+/* ── WORDLE ── */
+.w-board { margin-bottom:12px; }
+.w-row { display:flex; gap:4px; justify-content:center; margin-bottom:4px; }
+.w-cell {
+  width:36px; height:36px; border:2px solid var(--border); border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700; text-transform:uppercase;
+  font-family:'Plus Jakarta Sans',sans-serif; transition:all .3s;
+}
+.w-cell.space { border:1px dashed var(--text-muted); background:none; width:16px; }
+.w-cell.g { background:#00b894; border-color:#00b894; color:#fff; }
+.w-cell.y { background:#f9ca24; border-color:#f9ca24; color:#1a1d27; }
+.w-cell.x { background:var(--surface2); border-color:var(--surface2); color:var(--text-muted); }
+.w-cell.reveal { animation:wPop .3s ease; }
+@keyframes wPop { 0%{transform:scale(0.8)} 50%{transform:scale(1.1)} 100%{transform:scale(1)} }
+
+.w-input-row { display:flex; gap:8px; margin-bottom:10px; }
+.w-input {
+  flex:1; background:var(--surface); border:1.5px solid var(--border); border-radius:10px;
+  padding:12px 16px; color:var(--text); font-family:inherit; font-size:15px;
+  outline:none; transition:border-color .2s; text-transform:lowercase;
+}
+.w-input:focus { border-color:var(--accent); }
+.w-input:disabled { opacity:.4; cursor:not-allowed; }
+.w-submit {
+  width:48px; background:var(--accent); border:none; border-radius:10px;
+  color:#fff; font-size:20px; cursor:pointer; transition:all .2s;
+}
+.w-submit:hover { background:#7c6cf0; }
+.w-submit:disabled { opacity:.4; cursor:not-allowed; }
+.w-tries { text-align:center; font-size:12px; color:var(--text-dim); margin-bottom:10px; }
+.w-answer { text-align:center; font-size:14px; margin-bottom:10px; padding:10px; border-radius:8px; }
+.w-answer.w-win { color:var(--correct); background:var(--correct-bg); }
+.w-answer.w-lose { color:var(--wrong); background:var(--wrong-bg); }
+
 /* ── MOBILE ── */
 @media(max-width:600px){
   .home-logo { font-size:34px; }
@@ -268,6 +306,12 @@ body {
   .res-title { font-size:22px; }
   .res-stats { gap:16px; margin-bottom:20px; }
   .rs-num { font-size:20px; }
+  .w-cell { width:28px; height:28px; font-size:13px; }
+  .w-cell.space { width:12px; }
+  .w-input { padding:10px 12px; font-size:14px; }
+  .w-submit { width:42px; }
+  .w-answer { font-size:13px; padding:8px; }
+  .mode-row { gap:6px; }
 }
 </style>
 </head>
@@ -296,6 +340,7 @@ body {
         <button class="mode-btn active" data-m="en-to-tr" onclick="pickMode(this)"><div class="mb-icon">&#127468;&#127463;</div><div class="mb-text">İng→Tr</div></button>
         <button class="mode-btn" data-m="tr-to-en" onclick="pickMode(this)"><div class="mb-icon">&#127481;&#127479;</div><div class="mb-text">Tr→İng</div></button>
         <button class="mode-btn" data-m="mixed" onclick="pickMode(this)"><div class="mb-icon">&#128256;</div><div class="mb-text">Karışık</div></button>
+        <button class="mode-btn" data-m="wordle" onclick="pickMode(this)"><div class="mb-icon">&#129513;</div><div class="mb-text">Wordle</div></button>
       </div>
 
       <div class="s-label">Soru Sayısı</div>
@@ -348,6 +393,30 @@ body {
       <div class="opts" id="optsGrid"></div>
       <div class="fb" id="fbBox"></div>
       <button class="nxt-btn" id="nxtBtn" onclick="nextQ()">Sonraki Soru &#8594;</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3b: WORDLE -->
+  <div class="screen" id="scrWordle">
+    <div class="quiz-inner">
+      <div class="quiz-badge" id="wBadge"></div>
+      <div class="progress-wrap"><div class="progress-fill" id="wProgBar"></div></div>
+      <div class="quiz-top">
+        <div class="quiz-counter">Soru <span id="wNum">1</span> / <span id="wTot">20</span></div>
+        <div class="quiz-score"><span class="dot"></span><span id="wScore">0</span> doğru</div>
+      </div>
+      <div class="q-card">
+        <div class="q-label">Wordle</div>
+        <div class="q-word" id="wClue"></div>
+        <div class="q-hint">İngilizce karşılığını tahmin edin</div>
+      </div>
+      <div class="w-board" id="wBoard"></div>
+      <div class="w-input-row">
+        <input type="text" class="w-input" id="wInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Tahminini yaz...">
+        <button class="w-submit" id="wSubmit" onclick="wordleGuess()">&#10003;</button>
+      </div>
+      <div class="w-tries" id="wTries"></div>
+      <button class="nxt-btn" id="wNxt" onclick="wordleNext()">Sonraki Soru &#8594;</button>
     </div>
   </div>
 
@@ -1618,6 +1687,7 @@ function genQuestions(){
 }
 
 function startQuiz(){
+  if(mode==='wordle') return startWordle();
   questions=genQuestions(); curQ=0; score=0; wrongArr=[]; answerTimes=[]; clearInterval(timerInt);
   document.getElementById('qBadge').textContent=WORD_LISTS[listId].title+(speedOn?' \u26A1':'');
   document.getElementById('qTot').textContent=questions.length;
@@ -1649,11 +1719,22 @@ function answer(btn,sel,q){
   if(speedOn) stopTimer();
   var all=document.querySelectorAll('.opt-btn');
   for(var i=0;i<all.length;i++) all[i].classList.add('dis');
+  var W=WORD_LISTS[listId].words;
+  var af=q.etr?'tr':'en', qf=q.etr?'en':'tr';
+  function getMeaning(t){for(var j=0;j<W.length;j++)if(W[j][af]===t)return W[j][qf];return '';}
   if(sel===q.correct){
     btn.classList.add('ok'); score++;
+    var m=getMeaning(sel); if(m) btn.innerHTML+='<span class="opt-mean ok-mean">\u2192 '+m+'</span>';
   } else {
     btn.classList.add('no');
-    for(var i=0;i<all.length;i++) if(all[i].querySelector('span:last-child').textContent===q.correct) all[i].classList.add('ok');
+    var wm=getMeaning(sel); if(wm) btn.innerHTML+='<span class="opt-mean no-mean">\u2192 '+wm+'</span>';
+    for(var i=0;i<all.length;i++){
+      var txt=all[i].querySelector('span:nth-child(2)').textContent;
+      if(txt===q.correct){
+        all[i].classList.add('ok');
+        var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">\u2192 '+cm+'</span>';
+      }
+    }
     wrongArr.push({en:q.en,tr:q.tr});
   }
   document.getElementById('qScore').textContent=score;
@@ -1684,11 +1765,177 @@ function stopTimer(){ clearInterval(timerInt); answerTimes.push(timerSec-timerLe
 function timeUp(){
   var all=document.querySelectorAll('.opt-btn'); for(var i=0;i<all.length;i++) all[i].classList.add('dis');
   var q=questions[curQ];
-  for(var i=0;i<all.length;i++) if(all[i].querySelector('span:last-child').textContent===q.correct) all[i].classList.add('ok');
+  var W=WORD_LISTS[listId].words;
+  var af=q.etr?'tr':'en', qf=q.etr?'en':'tr';
+  function getMeaning(t){for(var j=0;j<W.length;j++)if(W[j][af]===t)return W[j][qf];return '';}
+  for(var i=0;i<all.length;i++){
+    var txt=all[i].querySelector('span:nth-child(2)').textContent;
+    if(txt===q.correct){
+      all[i].classList.add('ok');
+      var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">\u2192 '+cm+'</span>';
+    }
+  }
   wrongArr.push({en:q.en,tr:q.tr}); answerTimes.push(timerSec);
   var nb=document.getElementById('nxtBtn');
   nb.textContent=curQ===questions.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
   nb.classList.add('live');
+}
+
+// ── WORDLE ENGINE ──
+var wWords=[], wCur=0, wScore=0, wWrongArr=[];
+var wAnswer='', wTemplate=[], wMaxTries=4, wTry=0, wDone=false;
+
+function startWordle(){
+  var W=WORD_LISTS[listId].words;
+  wWords=shuffle(W);
+  var cnt=qCount===0?wWords.length:Math.min(qCount,wWords.length);
+  wWords=wWords.slice(0,cnt);
+  wCur=0; wScore=0; wWrongArr=[];
+  document.getElementById('wBadge').textContent=WORD_LISTS[listId].title+' \uD83E\uDDE9';
+  document.getElementById('wTot').textContent=wWords.length;
+  go('scrWordle'); showWordle();
+}
+
+function showWordle(){
+  var w=wWords[wCur];
+  wAnswer=w.en.toLowerCase();
+  wTemplate=[]; // each char: letter or ' ' for space
+  for(var i=0;i<wAnswer.length;i++) wTemplate.push(wAnswer[i]===' '?'space':'letter');
+  wTry=0; wDone=false;
+
+  document.getElementById('wNum').textContent=wCur+1;
+  document.getElementById('wScore').textContent=wScore;
+  document.getElementById('wProgBar').style.width=(wCur/wWords.length*100)+'%';
+  document.getElementById('wClue').textContent=w.tr;
+  document.getElementById('wTries').textContent='Kalan hak: '+wMaxTries;
+
+  // build empty board
+  var board=document.getElementById('wBoard'); board.innerHTML='';
+  for(var r=0;r<wMaxTries;r++){
+    var row=document.createElement('div'); row.className='w-row'; row.id='wr'+r;
+    for(var c=0;c<wAnswer.length;c++){
+      var cell=document.createElement('div'); cell.className='w-cell';
+      if(wTemplate[c]==='space'){ cell.classList.add('space'); cell.textContent='\u00B7'; }
+      row.appendChild(cell);
+    }
+    board.appendChild(row);
+  }
+
+  // remove old answer display if any
+  var oldAns=document.querySelector('.w-answer');
+  if(oldAns) oldAns.remove();
+
+  // reset input
+  var inp=document.getElementById('wInput'); inp.disabled=false; inp.value=''; inp.focus();
+  document.getElementById('wSubmit').disabled=false;
+  document.getElementById('wNxt').classList.remove('live');
+  document.getElementById('wNxt').textContent='Sonraki Soru \u2192';
+}
+
+function wordleGuess(){
+  if(wDone) return;
+  var inp=document.getElementById('wInput');
+  // build guess: user types without spaces, we insert spaces at template positions
+  var raw=inp.value.toLowerCase().replace(/[^a-z]/g,'');
+  if(raw.length===0) return;
+
+  // count how many letters (non-space) the answer has
+  var ansLetters=wAnswer.replace(/ /g,'');
+  if(raw.length!==ansLetters.length){
+    inp.style.borderColor='var(--wrong)';
+    setTimeout(function(){inp.style.borderColor=''},500);
+    return;
+  }
+
+  // map raw guess into full guess with spaces
+  var guess='', ri=0;
+  for(var i=0;i<wAnswer.length;i++){
+    if(wTemplate[i]==='space') guess+=' ';
+    else guess+=raw[ri++];
+  }
+
+  // evaluate
+  var row=document.getElementById('wr'+wTry);
+  var cells=row.querySelectorAll('.w-cell');
+  var ansArr=wAnswer.split(''), guessArr=guess.split('');
+  var result=[]; // 'g','y','x','space'
+  var ansUsed=[], guessUsed=[];
+  for(var i=0;i<ansArr.length;i++){ ansUsed.push(false); guessUsed.push(false); }
+
+  // pass 1: greens
+  for(var i=0;i<ansArr.length;i++){
+    if(wTemplate[i]==='space'){ result.push('space'); continue; }
+    if(guessArr[i]===ansArr[i]){ result.push('g'); ansUsed[i]=true; guessUsed[i]=true; }
+    else result.push('');
+  }
+  // pass 2: yellows
+  for(var i=0;i<guessArr.length;i++){
+    if(result[i]!=='') continue;
+    var found=false;
+    for(var j=0;j<ansArr.length;j++){
+      if(!ansUsed[j]&&ansArr[j]===guessArr[i]&&wTemplate[j]!=='space'){
+        result[i]='y'; ansUsed[j]=true; found=true; break;
+      }
+    }
+    if(!found) result[i]='x';
+  }
+
+  // render with stagger
+  for(var i=0;i<cells.length;i++){
+    (function(idx){
+      setTimeout(function(){
+        if(wTemplate[idx]==='space') return;
+        cells[idx].textContent=guessArr[idx].toUpperCase();
+        cells[idx].classList.add(result[idx],'reveal');
+      }, idx*80);
+    })(i);
+  }
+
+  wTry++;
+  var isWin=(guess===wAnswer);
+
+  setTimeout(function(){
+    if(isWin){
+      wDone=true; wScore++;
+      showWordleResult(true);
+    } else if(wTry>=wMaxTries){
+      wDone=true;
+      wWrongArr.push({en:wWords[wCur].en, tr:wWords[wCur].tr});
+      showWordleResult(false);
+    } else {
+      document.getElementById('wTries').textContent='Kalan hak: '+(wMaxTries-wTry);
+      inp.value=''; inp.focus();
+    }
+  }, wAnswer.length*80+200);
+
+  inp.value='';
+}
+
+function showWordleResult(win){
+  var inp=document.getElementById('wInput'); inp.disabled=true;
+  document.getElementById('wSubmit').disabled=true;
+
+  // show answer text
+  var div=document.createElement('div');
+  div.className='w-answer '+(win?'w-win':'w-lose');
+  div.innerHTML=win?'\u2705 Do\u011fru!':'\u274C Cevap: <strong>'+wWords[wCur].en+'</strong>';
+  document.getElementById('wBoard').after(div);
+
+  document.getElementById('wScore').textContent=wScore;
+  document.getElementById('wTries').textContent='';
+  var nb=document.getElementById('wNxt');
+  nb.textContent=wCur===wWords.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.classList.add('live');
+}
+
+function wordleNext(){
+  wCur++;
+  if(wCur>=wWords.length){
+    // transfer to result screen
+    score=wScore; wrongArr=wWrongArr; questions=wWords; answerTimes=[];
+    speedOn=false;
+    showResult();
+  } else showWordle();
 }
 
 // ── RESULT ──
@@ -1718,10 +1965,19 @@ function showResult(){
 
 // ── KEYBOARD ──
 document.addEventListener('keydown',function(e){
-  if(!document.getElementById('scrQuiz').classList.contains('active'))return;
-  var k=['1','2','3','4','a','b','c','d'],x=k.indexOf(e.key.toLowerCase());
-  if(x!==-1){var b=document.querySelectorAll('.opt-btn:not(.dis)');if(b[x%4])b[x%4].click()}
-  if(e.key==='Enter'){var n=document.getElementById('nxtBtn');if(n.classList.contains('live'))n.click()}
+  // Quiz mode keys
+  if(document.getElementById('scrQuiz').classList.contains('active')){
+    var k=['1','2','3','4','a','b','c','d'],x=k.indexOf(e.key.toLowerCase());
+    if(x!==-1){var b=document.querySelectorAll('.opt-btn:not(.dis)');if(b[x%4])b[x%4].click()}
+    if(e.key==='Enter'){var n=document.getElementById('nxtBtn');if(n.classList.contains('live'))n.click()}
+  }
+  // Wordle mode keys
+  if(document.getElementById('scrWordle').classList.contains('active')){
+    if(e.key==='Enter'){
+      if(document.getElementById('wNxt').classList.contains('live')) wordleNext();
+      else if(!wDone) wordleGuess();
+    }
+  }
 });
 
 renderHome();
