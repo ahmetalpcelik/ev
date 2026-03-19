@@ -34,81 +34,133 @@ body {
 }
 
 .bg-grid {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image:
     linear-gradient(rgba(108,92,231,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(108,92,231,0.03) 1px, transparent 1px);
   background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 
 .bg-orb {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 0;
+  position: fixed; width: 600px; height: 600px; border-radius: 50%;
+  filter: blur(120px); opacity: 0.15; pointer-events: none; z-index: 0;
 }
 .bg-orb-1 { background: #6c5ce7; top: -200px; right: -200px; }
 .bg-orb-2 { background: #00b894; bottom: -200px; left: -200px; opacity: 0.08; }
 
 .container {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 40px 24px;
-  position: relative;
-  z-index: 1;
+  max-width: 780px; margin: 0 auto; padding: 40px 24px;
+  position: relative; z-index: 1;
 }
 
-/* ─── START SCREEN ─── */
-.start-screen {
-  text-align: center;
-  padding: 80px 0;
-  animation: fadeUp 0.6s ease;
-}
+.screen { display: none; }
+.screen.active { display: block; animation: fadeUp 0.5s ease; }
 
-.start-screen .logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 56px;
-  letter-spacing: -1px;
+/* ─── HOME SCREEN ─── */
+.home-screen { text-align: center; padding: 60px 0; }
+
+.home-screen .logo {
+  font-family: 'DM Serif Display', serif; font-size: 56px; letter-spacing: -1px;
   background: linear-gradient(135deg, #6c5ce7, #a29bfe, #6c5ce7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
 }
 
-.start-screen .subtitle {
-  font-size: 15px;
-  color: var(--text-dim);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 48px;
+.home-screen .subtitle {
+  font-size: 15px; color: var(--text-dim); letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 56px;
+}
+
+.home-screen .section-label {
+  font-size: 12px; color: var(--text-muted); letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+
+.list-grid {
+  display: grid; grid-template-columns: 1fr; gap: 16px;
+  max-width: 520px; margin: 0 auto;
+}
+
+.list-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px 30px; cursor: pointer;
+  text-align: left; transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 20px;
+  position: relative; overflow: hidden;
+}
+
+.list-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(108,92,231,0.06));
+  opacity: 0; transition: opacity 0.3s;
+}
+.list-card:hover::before { opacity: 1; }
+
+.list-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 40px var(--accent-glow);
+  transform: translateY(-3px);
+}
+
+.list-card .list-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0; position: relative; z-index: 1;
+}
+
+.list-card .list-info { position: relative; z-index: 1; flex: 1; min-width: 0; }
+
+.list-card .list-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.list-card .list-info p { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
+
+.list-card .list-count {
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: rgba(108,92,231,0.12); padding: 4px 12px;
+  border-radius: 100px; position: relative; z-index: 1; white-space: nowrap;
+}
+
+.list-card .arrow {
+  font-size: 18px; color: var(--text-muted); transition: all 0.3s;
+  position: relative; z-index: 1;
+}
+.list-card:hover .arrow { color: var(--accent); transform: translateX(4px); }
+
+.list-card[data-color="purple"] .list-icon { background: rgba(108,92,231,0.15); }
+.list-card[data-color="green"] .list-icon { background: rgba(0,184,148,0.15); }
+.list-card[data-color="orange"] .list-icon { background: rgba(255,159,67,0.15); }
+.list-card[data-color="pink"] .list-icon { background: rgba(253,121,168,0.15); }
+.list-card[data-color="blue"] .list-icon { background: rgba(9,132,227,0.15); }
+
+/* ─── MODE SCREEN ─── */
+.mode-screen { text-align: center; padding: 40px 0; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: none; border: 1px solid var(--border); color: var(--text-dim);
+  padding: 10px 20px; border-radius: 100px; font-family: inherit;
+  font-size: 13px; cursor: pointer; transition: all 0.2s; margin-bottom: 32px;
+}
+.back-btn:hover { border-color: var(--accent); color: var(--text); }
+
+.mode-screen .list-title {
+  font-family: 'DM Serif Display', serif; font-size: 34px; margin-bottom: 6px;
+}
+
+.mode-screen .list-desc {
+  font-size: 14px; color: var(--text-dim); margin-bottom: 40px;
 }
 
 .mode-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 480px;
-  margin: 0 auto 40px;
+  display: flex; flex-direction: column; gap: 16px;
+  max-width: 480px; margin: 0 auto 40px;
 }
 
 .mode-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px 28px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px 28px; cursor: pointer;
+  text-align: left; transition: all 0.25s ease;
+  display: flex; align-items: center; gap: 20px;
 }
 
 .mode-card:hover {
@@ -118,385 +170,364 @@ body {
 }
 
 .mode-card .icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  flex-shrink: 0;
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
 }
 
 .mode-card:nth-child(1) .icon { background: rgba(108,92,231,0.15); }
 .mode-card:nth-child(2) .icon { background: rgba(0,184,148,0.15); }
 .mode-card:nth-child(3) .icon { background: rgba(255,211,42,0.15); }
 
-.mode-card h3 {
-  font-size: 17px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
+.mode-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.mode-card p { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
 
-.mode-card p {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.4;
-}
-
-/* ─── SETTINGS ─── */
 .settings-row {
-  display: flex;
-  gap: 12px;
-  max-width: 480px;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: flex; gap: 12px; max-width: 480px; margin: 0 auto;
+  flex-wrap: wrap; justify-content: center;
 }
 
 .pill-btn {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-size: 14px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim); padding: 10px 20px; border-radius: 100px;
+  font-size: 14px; font-family: inherit; cursor: pointer; transition: all 0.2s;
+}
+.pill-btn:hover, .pill-btn.active {
+  background: var(--accent); border-color: var(--accent); color: #fff;
 }
 
-.pill-btn:hover, .pill-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+/* ─── CUSTOM SLIDER ─── */
+.slider-wrap {
+  max-width: 480px; margin: 16px auto 0; display: none;
+  animation: fadeUp 0.3s ease;
 }
+
+.slider-wrap.show { display: block; }
+
+.slider-inner {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px 28px;
+}
+
+.slider-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+
+.slider-label { font-size: 13px; color: var(--text-dim); }
+
+.slider-value {
+  font-size: 22px; font-weight: 700; color: var(--accent);
+  font-family: 'DM Serif Display', serif;
+  min-width: 60px; text-align: right;
+}
+
+.slider-track {
+  position: relative; width: 100%; height: 40px;
+  display: flex; align-items: center;
+}
+
+.slider-track input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px; border-radius: 100px;
+  background: var(--surface2); outline: none;
+  cursor: pointer;
+}
+
+.slider-track input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: transform 0.15s;
+}
+
+.slider-track input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider-track input[type="range"]::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: none;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.slider-minmax {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text-muted); margin-top: 4px;
+}
+
+/* ─── SPEED ROUND TOGGLE ─── */
+.speed-toggle-wrap {
+  max-width: 480px; margin: 20px auto 0;
+}
+
+.speed-toggle {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: all 0.25s; user-select: none;
+}
+
+.speed-toggle:hover { border-color: rgba(255,255,255,0.12); }
+.speed-toggle.active { border-color: var(--gold); box-shadow: 0 0 20px rgba(255,211,42,0.12); }
+
+.speed-toggle-left {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.speed-toggle-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,211,42,0.12); display: flex;
+  align-items: center; justify-content: center; font-size: 20px;
+  transition: all 0.25s;
+}
+
+.speed-toggle.active .speed-toggle-icon { background: rgba(255,211,42,0.2); }
+
+.speed-toggle-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.speed-toggle-text p { font-size: 12px; color: var(--text-dim); }
+
+.toggle-switch {
+  width: 48px; height: 26px; border-radius: 100px;
+  background: var(--surface2); position: relative;
+  transition: background 0.25s; flex-shrink: 0;
+}
+
+.toggle-switch::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--text-dim); transition: all 0.25s;
+}
+
+.speed-toggle.active .toggle-switch { background: var(--gold); }
+.speed-toggle.active .toggle-switch::after {
+  left: 25px; background: var(--bg);
+}
+
+.speed-time-options {
+  display: none; max-width: 480px; margin: 10px auto 0;
+  animation: fadeUp 0.25s ease;
+}
+
+.speed-time-options.show { display: flex; gap: 10px; justify-content: center; }
+
+.time-pill {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim); padding: 8px 18px; border-radius: 100px;
+  font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.2s;
+}
+
+.time-pill:hover, .time-pill.active {
+  background: var(--gold); border-color: var(--gold); color: var(--bg); font-weight: 600;
+}
+
+/* ─── TIMER RING IN QUIZ ─── */
+.timer-container {
+  display: none; position: absolute; top: 20px; right: 20px;
+  width: 48px; height: 48px;
+}
+
+.timer-container.show { display: block; }
+
+.timer-container svg {
+  width: 48px; height: 48px; transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none; stroke: var(--surface2); stroke-width: 4;
+}
+
+.timer-ring {
+  fill: none; stroke: var(--gold); stroke-width: 4;
+  stroke-linecap: round; transition: stroke-dashoffset 1s linear;
+}
+
+.timer-ring.danger { stroke: var(--wrong); }
+
+.timer-text {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: var(--gold);
+}
+
+.timer-text.danger { color: var(--wrong); }
 
 /* ─── QUIZ SCREEN ─── */
-.quiz-screen { display: none; animation: fadeUp 0.5s ease; }
+.quiz-list-badge {
+  text-align: center; margin-bottom: 20px;
+  font-size: 12px; color: var(--text-muted);
+  letter-spacing: 2px; text-transform: uppercase;
+}
 
 .progress-bar-wrap {
-  background: var(--surface);
-  border-radius: 100px;
-  height: 6px;
-  margin-bottom: 32px;
-  overflow: hidden;
+  background: var(--surface); border-radius: 100px;
+  height: 6px; margin-bottom: 32px; overflow: hidden;
 }
 
 .progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-  border-radius: 100px;
-  transition: width 0.4s ease;
-  width: 0%;
+  height: 100%; background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+  border-radius: 100px; transition: width 0.4s ease; width: 0%;
 }
 
 .quiz-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 28px;
 }
 
-.quiz-counter {
-  font-size: 14px;
-  color: var(--text-dim);
-}
-
+.quiz-counter { font-size: 14px; color: var(--text-dim); }
 .quiz-counter span { color: var(--accent); font-weight: 700; }
 
 .quiz-score-live {
-  font-size: 14px;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 14px; color: var(--text-dim);
+  display: flex; align-items: center; gap: 6px;
 }
 
 .quiz-score-live .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--correct);
-  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--correct); display: inline-block;
 }
 
 .question-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 40px 36px;
-  margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 40px 36px; margin-bottom: 24px;
+  position: relative; overflow: hidden;
 }
 
 .question-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg, #6c5ce7, #a29bfe, #00b894);
 }
 
 .question-type-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--accent);
-  margin-bottom: 16px;
-  font-weight: 600;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 3px;
+  color: var(--accent); margin-bottom: 16px; font-weight: 600;
 }
 
 .question-word {
-  font-family: 'DM Serif Display', serif;
-  font-size: 38px;
-  margin-bottom: 8px;
-  line-height: 1.2;
+  font-family: 'DM Serif Display', serif; font-size: 38px;
+  margin-bottom: 8px; line-height: 1.2;
 }
 
 .question-context {
-  font-size: 14px;
-  color: var(--text-dim);
-  line-height: 1.6;
-  font-style: italic;
+  font-size: 14px; color: var(--text-dim); line-height: 1.6; font-style: italic;
 }
 
 .options-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;
 }
 
 .option-btn {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 18px 24px;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 15px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 18px 24px; color: var(--text);
+  font-family: inherit; font-size: 15px; cursor: pointer;
+  text-align: left; transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 14px;
 }
 
 .option-btn .opt-letter {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--surface2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-dim);
-  flex-shrink: 0;
-  transition: all 0.2s;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--surface2); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: 700;
+  color: var(--text-dim); flex-shrink: 0; transition: all 0.2s;
 }
 
 .option-btn:hover:not(.disabled) {
-  border-color: var(--accent);
-  background: rgba(108,92,231,0.06);
+  border-color: var(--accent); background: rgba(108,92,231,0.06);
 }
-
 .option-btn:hover:not(.disabled) .opt-letter {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent); color: #fff;
 }
 
-.option-btn.correct {
-  border-color: var(--correct);
-  background: var(--correct-bg);
-}
-
-.option-btn.correct .opt-letter {
-  background: var(--correct);
-  color: #fff;
-}
-
-.option-btn.wrong {
-  border-color: var(--wrong);
-  background: var(--wrong-bg);
-}
-
-.option-btn.wrong .opt-letter {
-  background: var(--wrong);
-  color: #fff;
-}
-
+.option-btn.correct { border-color: var(--correct); background: var(--correct-bg); }
+.option-btn.correct .opt-letter { background: var(--correct); color: #fff; }
+.option-btn.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+.option-btn.wrong .opt-letter { background: var(--wrong); color: #fff; }
 .option-btn.disabled { pointer-events: none; opacity: 0.55; }
 .option-btn.correct.disabled, .option-btn.wrong.disabled { opacity: 1; }
 
 .feedback-box {
-  display: none;
-  padding: 16px 20px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
-  line-height: 1.5;
+  display: none; padding: 16px 20px; border-radius: 12px;
+  margin-bottom: 16px; font-size: 14px; line-height: 1.5;
   animation: fadeUp 0.3s ease;
 }
-
 .feedback-box.show { display: block; }
 .feedback-box.correct-fb { background: var(--correct-bg); border-left: 3px solid var(--correct); }
 .feedback-box.wrong-fb { background: var(--wrong-bg); border-left: 3px solid var(--wrong); }
 
 .next-btn {
-  display: none;
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #6c5ce7, #7c6cf0);
-  border: none;
-  color: #fff;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
+  display: none; width: 100%; padding: 16px; border-radius: 14px;
+  background: linear-gradient(135deg, #6c5ce7, #7c6cf0); border: none;
+  color: #fff; font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.25s;
 }
-
 .next-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px var(--accent-glow); }
 .next-btn.show { display: block; animation: fadeUp 0.3s ease; }
 
 /* ─── RESULT SCREEN ─── */
-.result-screen {
-  display: none;
-  text-align: center;
-  padding: 60px 0;
-  animation: fadeUp 0.6s ease;
-}
+.result-screen { text-align: center; padding: 60px 0; }
 
 .result-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  margin: 0 auto 32px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 180px; height: 180px; border-radius: 50%;
+  margin: 0 auto 32px; position: relative;
+  display: flex; align-items: center; justify-content: center;
 }
-
-.result-circle svg {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-}
-
+.result-circle svg { position: absolute; inset: 0; transform: rotate(-90deg); }
 .result-circle .score-text {
-  font-family: 'DM Serif Display', serif;
-  font-size: 48px;
-  z-index: 1;
+  font-family: 'DM Serif Display', serif; font-size: 48px; z-index: 1;
 }
 
-.result-circle .score-sub {
-  position: absolute;
-  bottom: 32px;
-  font-size: 13px;
-  color: var(--text-dim);
-  z-index: 1;
-}
-
-.result-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 32px;
-  margin-bottom: 8px;
-}
+.result-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 8px; }
 
 .result-desc {
-  color: var(--text-dim);
-  font-size: 15px;
-  margin-bottom: 40px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+  color: var(--text-dim); font-size: 15px; margin-bottom: 40px;
+  max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.6;
 }
 
 .result-stats {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-bottom: 48px;
+  display: flex; justify-content: center; gap: 32px; margin-bottom: 48px;
 }
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-num {
-  font-size: 28px;
-  font-weight: 700;
-}
-
+.stat-item { text-align: center; }
+.stat-num { font-size: 28px; font-weight: 700; }
 .stat-num.green { color: var(--correct); }
 .stat-num.red { color: var(--wrong); }
-
 .stat-label {
-  font-size: 12px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 4px;
+  font-size: 12px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;
 }
 
 .wrong-words-section {
-  text-align: left;
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 28px;
-  margin-bottom: 32px;
-  border: 1px solid var(--border);
+  text-align: left; background: var(--surface); border-radius: 16px;
+  padding: 28px; margin-bottom: 32px; border: 1px solid var(--border);
 }
-
-.wrong-words-section h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: var(--wrong);
-}
+.wrong-words-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--wrong); }
 
 .wrong-word-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px;
 }
-
 .wrong-word-item:last-child { border-bottom: none; }
 .wrong-word-item .en { font-weight: 600; }
 .wrong-word-item .tr { color: var(--text-dim); }
 
+.result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
 .restart-btn {
-  padding: 16px 48px;
-  border-radius: 100px;
-  background: linear-gradient(135deg, #6c5ce7, #7c6cf0);
-  border: none;
-  color: #fff;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
+  padding: 16px 40px; border-radius: 100px;
+  background: linear-gradient(135deg, #6c5ce7, #7c6cf0); border: none;
+  color: #fff; font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.25s;
 }
+.restart-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
 
-.restart-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--accent-glow);
+.home-btn {
+  padding: 16px 40px; border-radius: 100px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim); font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.25s;
 }
+.home-btn:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
 
-/* ─── ANIMATIONS ─── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -505,8 +536,10 @@ body {
 @media (max-width: 600px) {
   .question-word { font-size: 28px; }
   .question-card { padding: 28px 22px; }
-  .start-screen .logo { font-size: 40px; }
+  .home-screen .logo { font-size: 40px; }
+  .mode-screen .list-title { font-size: 26px; }
   .result-stats { gap: 20px; }
+  .list-card { padding: 20px 18px; gap: 14px; }
 }
 </style>
 </head>
@@ -517,51 +550,91 @@ body {
 <div class="bg-orb bg-orb-2"></div>
 
 <div class="container">
-  <!-- START -->
-  <div class="start-screen" id="startScreen">
+
+  <!-- HOME: LIST SELECTION -->
+  <div class="screen home-screen active" id="homeScreen">
     <div class="logo">YÖKDİL</div>
     <div class="subtitle">Kelime Testi</div>
+    <div class="section-label">Bir liste seç</div>
+    <div class="list-grid" id="listGrid"></div>
+  </div>
 
+  <!-- MODE SELECTION -->
+  <div class="screen mode-screen" id="modeScreen">
+    <button class="back-btn" onclick="showScreen('homeScreen')">&#8592; Geri</button>
+    <div class="list-title" id="modeListTitle"></div>
+    <div class="list-desc" id="modeListDesc"></div>
     <div class="mode-cards">
       <div class="mode-card" onclick="startQuiz('en-to-tr')">
-        <div class="icon">🇬🇧</div>
-        <div>
-          <h3>İngilizce → Türkçe</h3>
-          <p>İngilizce kelimeyi görün, Türkçe anlamını seçin</p>
-        </div>
+        <div class="icon">&#127468;&#127463;</div>
+        <div><h3>İngilizce → Türkçe</h3><p>İngilizce kelimeyi görün, Türkçe anlamını seçin</p></div>
       </div>
       <div class="mode-card" onclick="startQuiz('tr-to-en')">
-        <div class="icon">🇹🇷</div>
-        <div>
-          <h3>Türkçe → İngilizce</h3>
-          <p>Türkçe anlamı görün, İngilizce kelimeyi seçin</p>
-        </div>
+        <div class="icon">&#127481;&#127479;</div>
+        <div><h3>Türkçe → İngilizce</h3><p>Türkçe anlamı görün, İngilizce kelimeyi seçin</p></div>
       </div>
       <div class="mode-card" onclick="startQuiz('mixed')">
-        <div class="icon">🔀</div>
-        <div>
-          <h3>Karışık Mod</h3>
-          <p>Her iki yönde de karışık sorularla test olun</p>
-        </div>
+        <div class="icon">&#128256;</div>
+        <div><h3>Karışık Mod</h3><p>Her iki yönde de karışık sorularla test olun</p></div>
       </div>
     </div>
-
     <div class="settings-row" id="countBtns">
       <button class="pill-btn" onclick="setCount(10, this)">10 Soru</button>
       <button class="pill-btn active" onclick="setCount(20, this)">20 Soru</button>
       <button class="pill-btn" onclick="setCount(40, this)">40 Soru</button>
       <button class="pill-btn" onclick="setCount(0, this)">Tümü</button>
+      <button class="pill-btn" onclick="toggleCustomSlider(this)">Custom</button>
+    </div>
+    <div class="slider-wrap" id="sliderWrap">
+      <div class="slider-inner">
+        <div class="slider-header">
+          <span class="slider-label">Soru Sayısı</span>
+          <span class="slider-value" id="sliderValue">25</span>
+        </div>
+        <div class="slider-track">
+          <input type="range" id="customSlider" min="5" max="100" step="5" value="25" oninput="onSliderChange(this.value)">
+        </div>
+        <div class="slider-minmax">
+          <span>5</span>
+          <span id="sliderMaxLabel">max</span>
+        </div>
+      </div>
+    </div>
+    <div class="speed-toggle-wrap">
+      <div class="speed-toggle" id="speedToggle" onclick="toggleSpeed()">
+        <div class="speed-toggle-left">
+          <div class="speed-toggle-icon">&#9889;</div>
+          <div class="speed-toggle-text">
+            <h4>Speed Round</h4>
+            <p>Her soru i&#231;in geri say&#305;m ba&#351;lat</p>
+          </div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="speed-time-options" id="speedTimeOptions">
+        <button class="time-pill" onclick="setTimer(5, this)">5s</button>
+        <button class="time-pill" onclick="setTimer(8, this)">8s</button>
+        <button class="time-pill active" onclick="setTimer(10, this)">10s</button>
+        <button class="time-pill" onclick="setTimer(15, this)">15s</button>
+        <button class="time-pill" onclick="setTimer(20, this)">20s</button>
+      </div>
     </div>
   </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-screen" id="quizScreen">
+  <div class="screen quiz-screen" id="quizScreen">
+    <div class="quiz-list-badge" id="quizListBadge"></div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
     <div class="quiz-header">
       <div class="quiz-counter">Soru <span id="qNum">1</span> / <span id="qTotal">20</span></div>
       <div class="quiz-score-live"><span class="dot"></span> <span id="liveScore">0</span> doğru</div>
     </div>
     <div class="question-card">
+      <div class="timer-container" id="timerContainer">
+        <svg viewBox="0 0 48 48">
+          <circle class="timer-ring-bg" cx="24" cy="24" r="20"/>
+          <circle class="timer-ring" id="timerRing" cx="24" cy="24" r="20" stroke-dasharray="125.66" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-text" id="timerText">10</div>
+      </div>
       <div class="question-type-label" id="qTypeLabel"></div>
       <div class="question-word" id="qWord"></div>
       <div class="question-context" id="qContext"></div>
@@ -572,9 +645,12 @@ body {
   </div>
 
   <!-- RESULT -->
-  <div class="result-screen" id="resultScreen">
-    <div class="result-circle" id="resultCircle">
-      <svg viewBox="0 0 180 180"><circle cx="90" cy="90" r="82" fill="none" stroke="var(--surface2)" stroke-width="8"/><circle id="scoreArc" cx="90" cy="90" r="82" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="515" stroke-dashoffset="515"/></svg>
+  <div class="screen result-screen" id="resultScreen">
+    <div class="result-circle">
+      <svg viewBox="0 0 180 180">
+        <circle cx="90" cy="90" r="82" fill="none" stroke="var(--surface2)" stroke-width="8"/>
+        <circle id="scoreArc" cx="90" cy="90" r="82" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="515" stroke-dashoffset="515"/>
+      </svg>
       <div class="score-text" id="scoreText">0%</div>
     </div>
     <div class="result-title" id="resultTitle"></div>
@@ -583,141 +659,911 @@ body {
       <div class="stat-item"><div class="stat-num green" id="statCorrect">0</div><div class="stat-label">Doğru</div></div>
       <div class="stat-item"><div class="stat-num red" id="statWrong">0</div><div class="stat-label">Yanlış</div></div>
       <div class="stat-item"><div class="stat-num" id="statTotal" style="color:var(--accent)">0</div><div class="stat-label">Toplam</div></div>
+      <div class="stat-item" id="statTimerWrap" style="display:none"><div class="stat-num" id="statAvgTime" style="color:var(--gold)">0s</div><div class="stat-label">Ort. Süre</div></div>
     </div>
     <div class="wrong-words-section" id="wrongWordsSection" style="display:none">
-      <h3>📌 Tekrar Etmen Gereken Kelimeler</h3>
+      <h3>&#128204; Tekrar Etmen Gereken Kelimeler</h3>
       <div id="wrongWordsList"></div>
     </div>
-    <button class="restart-btn" onclick="goHome()">Tekrar Başla</button>
+    <div class="result-btns">
+      <button class="restart-btn" onclick="startQuiz(mode)">Tekrar Çöz</button>
+      <button class="home-btn" onclick="showScreen('homeScreen')">Ana Sayfa</button>
+    </div>
   </div>
+
 </div>
 
 <script>
-const ALL_WORDS = [
-  {en:"precaution",tr:"önlem, tedbir"},
-  {en:"advance",tr:"ilerleme, gelişme"},
-  {en:"traits",tr:"özellikler, nitelikler"},
-  {en:"intentions",tr:"niyetler, amaçlar"},
-  {en:"distinct",tr:"farklı, belirgin, ayrı"},
-  {en:"immensely",tr:"son derece, muazzam"},
-  {en:"insufficiently",tr:"yetersiz bir şekilde"},
-  {en:"adversely",tr:"olumsuz bir şekilde"},
-  {en:"elaborately",tr:"ayrıntılı bir şekilde"},
-  {en:"distinguished",tr:"ayırt edilmiş, seçkin"},
-  {en:"centers on",tr:"odaklanmak"},
-  {en:"falls behind",tr:"geride kalmak"},
-  {en:"leaves out",tr:"dışarıda bırakmak"},
-  {en:"brings down",tr:"düşürmek, azaltmak"},
-  {en:"puts off",tr:"ertelemek"},
-  {en:"tedious",tr:"sıkıcı, yorucu"},
-  {en:"redundant",tr:"gereksiz, fazlalık"},
-  {en:"flexible",tr:"esnek"},
-  {en:"abundant",tr:"bol, çok miktarda"},
-  {en:"decisive",tr:"belirleyici, kesin"},
-  {en:"devoted",tr:"adamak, adanmış"},
-  {en:"essential",tr:"temel, gerekli, zorunlu"},
-  {en:"widely known",tr:"yaygın olarak bilinen"},
-  {en:"utilised",tr:"kullanılmış, yararlanılmış"},
-  {en:"artefacts",tr:"eserler, el yapımı nesneler"},
-  {en:"sediment",tr:"tortu, çökelti"},
-  {en:"regulate",tr:"düzenlemek, kontrol etmek"},
-  {en:"decaying",tr:"çürüyen, bozulan"},
-  {en:"coexist",tr:"bir arada var olmak"},
-  {en:"undergo",tr:"geçirmek, deneyimlemek"},
-  {en:"drastically altered",tr:"köklü biçimde değiştirmek"},
-  {en:"barren",tr:"çorak, verimsiz, kısır"},
-  {en:"harness",tr:"yararlanmak, kullanmak"},
-  {en:"sealed",tr:"mühürlü, kapalı, sızdırmaz"},
-  {en:"catastrophic",tr:"felaket niteliğinde, yıkıcı"},
-  {en:"intensity",tr:"yoğunluk, şiddet"},
-  {en:"slope",tr:"eğim, yamaç"},
-  {en:"prone",tr:"eğilimli, yatkın"},
-  {en:"arid",tr:"kurak, çorak"},
-  {en:"susceptible",tr:"hassas, duyarlı, etkilenebilir"},
-  {en:"collectively",tr:"toplu olarak, topluca"},
-  {en:"misperception",tr:"yanlış algı, yanlış anlama"},
-  {en:"vertebrates",tr:"omurgalılar"},
-  {en:"refracted",tr:"kırılmış (ışık)"},
-  {en:"disperse",tr:"dağıtmak, yaymak"},
-  {en:"estimated",tr:"tahmin edilen"},
-  {en:"precipitation",tr:"yağış"},
-  {en:"manufacture",tr:"üretim, imalat"},
-  {en:"discharge",tr:"boşaltmak, salmak, tahliye"},
-  {en:"molten rock",tr:"erimiş kaya (magma)"},
-  {en:"scaffold",tr:"iskele, destek yapı"},
-  {en:"proliferate",tr:"çoğalmak, hızla artmak"},
-  {en:"unconventional",tr:"alışılmadık, geleneksel olmayan"},
-  {en:"unlikely",tr:"olası olmayan, beklenmedik"},
-  {en:"facility",tr:"tesis"},
-  {en:"ambitious",tr:"iddialı, hırslı"},
-  {en:"merely",tr:"sadece, yalnızca"},
-  {en:"potent",tr:"güçlü, etkili"},
-  {en:"prospect",tr:"olasılık, ihtimal, beklenti"},
-  {en:"break down",tr:"parçalamak, yıkmak"},
-  {en:"excessively",tr:"aşırı derecede"},
-  {en:"various",tr:"çeşitli, farklı"},
-  {en:"refusal",tr:"ret, reddetme"},
-  {en:"outbreak",tr:"patlak verme, salgın"},
-  {en:"heavily",tr:"yoğun biçimde, büyük ölçüde"},
-  {en:"found out",tr:"keşfetmek, ortaya çıkarmak"},
-  {en:"investigate",tr:"araştırmak, incelemek"},
-  {en:"throughout",tr:"boyunca, her yerinde"},
-  {en:"declined",tr:"düşmüş, azalmış"},
-  {en:"underlying",tr:"altta yatan, temel"},
-  {en:"likely",tr:"muhtemelen, olası"},
-  {en:"taken in by",tr:"kandırılmak, aldatılmak"},
-  {en:"appropriate",tr:"uygun, yerinde"},
-  {en:"rural",tr:"kırsal"},
-  {en:"assume",tr:"varsaymak, kabullenmek"},
-  {en:"wiped out",tr:"yok etmek, silip süpürmek"},
-  {en:"infamously",tr:"kötü şöhretle, rezil biçimde"},
-  {en:"detectable",tr:"tespit edilebilir"},
-  {en:"capable of",tr:"yapabilmek, muktedir olmak"},
-  {en:"dominance",tr:"hakimiyet, üstünlük"},
-  {en:"unprecedented",tr:"emsalsiz, benzeri görülmemiş"},
-  {en:"addressed",tr:"ele alınmış, çözüme kavuşturulmuş"},
-  {en:"tackled",tr:"üstesinden gelinmek"},
-  {en:"indicate",tr:"göstermek, işaret etmek"},
-  {en:"numerous",tr:"çok sayıda, pek çok"},
-  {en:"admittedly",tr:"kabul edildiği üzere"},
-  {en:"unassuming",tr:"gösterişsiz, mütevazı"},
-  {en:"expanse",tr:"geniş alan, uzanım"},
-  {en:"erupts",tr:"püskürmek, patlamak"},
-  {en:"solitary",tr:"tek, yalnız; ıssız"},
-  {en:"emerge",tr:"ortaya çıkmak, görünmek"},
-  {en:"pale",tr:"solgun, açık renkli"},
-  {en:"harden",tr:"sertleşmek, katılaşmak"},
-  {en:"proportionally",tr:"orantılı olarak"},
-  {en:"destructive",tr:"yıkıcı, tahrip edici"},
-  {en:"shrank",tr:"küçüldü, daraldı"},
-  {en:"disrupting",tr:"bozmak, sekteye uğratmak"},
-  {en:"conceivable",tr:"akla yatkın, düşünülebilir"},
-  {en:"discard",tr:"atmak, elden çıkarmak"},
-  {en:"rigorously",tr:"titizlikle, katı biçimde"},
-  {en:"efficacy",tr:"etkinlik, verimlilik"},
-  {en:"governance",tr:"yönetim, idare"},
-  {en:"insight",tr:"kavrayış, içgörü"},
-  {en:"preserve",tr:"korumak, muhafaza etmek"},
-  {en:"pesticides",tr:"böcek ilaçları, pestisitler"},
-  {en:"acceleration",tr:"ivme, hızlanma"},
-  {en:"beneficial",tr:"faydalı, yararlı"},
-  {en:"devised",tr:"icat etmek, tasarlamak"},
-  {en:"fascinated by",tr:"büyülenmiş, hayran kalmış"},
-  {en:"abandon",tr:"bırakmak, terk etmek"},
-  {en:"determination",tr:"kararlılık, azim"},
-  {en:"heritability",tr:"kalıtılabilirlik"},
-  {en:"flawed",tr:"kusurlu, hatalı"},
-  {en:"prevalence",tr:"yaygınlık, sıklık"},
-  {en:"deciduous",tr:"yaprak döken"},
-  {en:"germinate",tr:"filizlenmek, çimlenmek"},
-  {en:"severely restricted",tr:"ciddi biçimde kısıtlanmış"},
-  {en:"outperform",tr:"daha iyi performans göstermek"},
-  {en:"scaled up",tr:"ölçeği genişletilmiş"},
-  {en:"concealed",tr:"gizlenmiş, saklı"},
-  {en:"tolerated",tr:"tolere edilmek, kabul görmek"},
-  {en:"ultimately",tr:"sonunda, nihayetinde"}
-];
+// ══════════════════════════════════════════
+//  WORD LISTS — yeni liste eklemek için
+//  buraya yeni bir obje eklemeniz yeterli
+// ══════════════════════════════════════════
 
+const WORD_LISTS = {
+  "alpin-bilmedikleri": {
+    title: "Alp'in Bilmedikleri",
+    desc: "2018, 2019 & 2020 YÖKDİL sınavlarından kelimeler",
+    icon: "\uD83E\uDDE0",
+    color: "purple",
+    words: [
+      {en:"precaution",tr:"önlem, tedbir"},
+      {en:"advance",tr:"ilerleme, gelişme"},
+      {en:"traits",tr:"özellikler, nitelikler"},
+      {en:"intentions",tr:"niyetler, amaçlar"},
+      {en:"distinct",tr:"farklı, belirgin, ayrı"},
+      {en:"immensely",tr:"son derece, muazzam"},
+      {en:"insufficiently",tr:"yetersiz bir şekilde"},
+      {en:"adversely",tr:"olumsuz bir şekilde"},
+      {en:"elaborately",tr:"ayrıntılı bir şekilde"},
+      {en:"distinguished",tr:"ayırt edilmiş, seçkin"},
+      {en:"centers on",tr:"odaklanmak"},
+      {en:"falls behind",tr:"geride kalmak"},
+      {en:"leaves out",tr:"dışarıda bırakmak"},
+      {en:"brings down",tr:"düşürmek, azaltmak"},
+      {en:"puts off",tr:"ertelemek"},
+      {en:"tedious",tr:"sıkıcı, yorucu"},
+      {en:"redundant",tr:"gereksiz, fazlalık"},
+      {en:"flexible",tr:"esnek"},
+      {en:"abundant",tr:"bol, çok miktarda"},
+      {en:"decisive",tr:"belirleyici, kesin"},
+      {en:"devoted",tr:"adamak, adanmış"},
+      {en:"essential",tr:"temel, gerekli, zorunlu"},
+      {en:"widely known",tr:"yaygın olarak bilinen"},
+      {en:"utilised",tr:"kullanılmış, yararlanılmış"},
+      {en:"artefacts",tr:"eserler, el yapımı nesneler"},
+      {en:"sediment",tr:"tortu, çökelti"},
+      {en:"regulate",tr:"düzenlemek, kontrol etmek"},
+      {en:"decaying",tr:"çürüyen, bozulan"},
+      {en:"coexist",tr:"bir arada var olmak"},
+      {en:"undergo",tr:"geçirmek, deneyimlemek"},
+      {en:"drastically altered",tr:"köklü biçimde değiştirmek"},
+      {en:"barren",tr:"çorak, verimsiz, kısır"},
+      {en:"harness",tr:"yararlanmak, kullanmak"},
+      {en:"sealed",tr:"mühürlü, kapalı, sızdırmaz"},
+      {en:"catastrophic",tr:"felaket niteliğinde, yıkıcı"},
+      {en:"intensity",tr:"yoğunluk, şiddet"},
+      {en:"slope",tr:"eğim, yamaç"},
+      {en:"prone",tr:"eğilimli, yatkın"},
+      {en:"arid",tr:"kurak, çorak"},
+      {en:"susceptible",tr:"hassas, duyarlı, etkilenebilir"},
+      {en:"collectively",tr:"toplu olarak, topluca"},
+      {en:"misperception",tr:"yanlış algı, yanlış anlama"},
+      {en:"vertebrates",tr:"omurgalılar"},
+      {en:"refracted",tr:"kırılmış (ışık)"},
+      {en:"disperse",tr:"dağıtmak, yaymak"},
+      {en:"estimated",tr:"tahmin edilen"},
+      {en:"precipitation",tr:"yağış"},
+      {en:"manufacture",tr:"üretim, imalat"},
+      {en:"discharge",tr:"boşaltmak, salmak, tahliye"},
+      {en:"molten rock",tr:"erimiş kaya (magma)"},
+      {en:"scaffold",tr:"iskele, destek yapı"},
+      {en:"proliferate",tr:"çoğalmak, hızla artmak"},
+      {en:"unconventional",tr:"alışılmadık, geleneksel olmayan"},
+      {en:"unlikely",tr:"olası olmayan, beklenmedik"},
+      {en:"facility",tr:"tesis"},
+      {en:"ambitious",tr:"iddialı, hırslı"},
+      {en:"merely",tr:"sadece, yalnızca"},
+      {en:"potent",tr:"güçlü, etkili"},
+      {en:"prospect",tr:"olasılık, ihtimal, beklenti"},
+      {en:"break down",tr:"parçalamak, yıkmak"},
+      {en:"excessively",tr:"aşırı derecede"},
+      {en:"various",tr:"çeşitli, farklı"},
+      {en:"refusal",tr:"ret, reddetme"},
+      {en:"outbreak",tr:"patlak verme, salgın"},
+      {en:"heavily",tr:"yoğun biçimde, büyük ölçüde"},
+      {en:"found out",tr:"keşfetmek, ortaya çıkarmak"},
+      {en:"investigate",tr:"araştırmak, incelemek"},
+      {en:"throughout",tr:"boyunca, her yerinde"},
+      {en:"declined",tr:"düşmüş, azalmış"},
+      {en:"underlying",tr:"altta yatan, temel"},
+      {en:"likely",tr:"muhtemelen, olası"},
+      {en:"taken in by",tr:"kandırılmak, aldatılmak"},
+      {en:"appropriate",tr:"uygun, yerinde"},
+      {en:"rural",tr:"kırsal"},
+      {en:"assume",tr:"varsaymak, kabullenmek"},
+      {en:"wiped out",tr:"yok etmek, silip süpürmek"},
+      {en:"infamously",tr:"kötü şöhretle, rezil biçimde"},
+      {en:"detectable",tr:"tespit edilebilir"},
+      {en:"capable of",tr:"yapabilmek, muktedir olmak"},
+      {en:"dominance",tr:"hakimiyet, üstünlük"},
+      {en:"unprecedented",tr:"emsalsiz, benzeri görülmemiş"},
+      {en:"addressed",tr:"ele alınmış, çözüme kavuşturulmuş"},
+      {en:"tackled",tr:"üstesinden gelinmek"},
+      {en:"indicate",tr:"göstermek, işaret etmek"},
+      {en:"numerous",tr:"çok sayıda, pek çok"},
+      {en:"admittedly",tr:"kabul edildiği üzere"},
+      {en:"unassuming",tr:"gösterişsiz, mütevazı"},
+      {en:"expanse",tr:"geniş alan, uzanım"},
+      {en:"erupts",tr:"püskürmek, patlamak"},
+      {en:"solitary",tr:"tek, yalnız; ıssız"},
+      {en:"emerge",tr:"ortaya çıkmak, görünmek"},
+      {en:"pale",tr:"solgun, açık renkli"},
+      {en:"harden",tr:"sertleşmek, katılaşmak"},
+      {en:"proportionally",tr:"orantılı olarak"},
+      {en:"destructive",tr:"yıkıcı, tahrip edici"},
+      {en:"shrank",tr:"küçüldü, daraldı"},
+      {en:"disrupting",tr:"bozmak, sekteye uğratmak"},
+      {en:"conceivable",tr:"akla yatkın, düşünülebilir"},
+      {en:"discard",tr:"atmak, elden çıkarmak"},
+      {en:"rigorously",tr:"titizlikle, katı biçimde"},
+      {en:"efficacy",tr:"etkinlik, verimlilik"},
+      {en:"governance",tr:"yönetim, idare"},
+      {en:"insight",tr:"kavrayış, içgörü"},
+      {en:"preserve",tr:"korumak, muhafaza etmek"},
+      {en:"pesticides",tr:"böcek ilaçları, pestisitler"},
+      {en:"acceleration",tr:"ivme, hızlanma"},
+      {en:"beneficial",tr:"faydalı, yararlı"},
+      {en:"devised",tr:"icat etmek, tasarlamak"},
+      {en:"fascinated by",tr:"büyülenmiş, hayran kalmış"},
+      {en:"abandon",tr:"bırakmak, terk etmek"},
+      {en:"determination",tr:"kararlılık, azim"},
+      {en:"heritability",tr:"kalıtılabilirlik"},
+      {en:"flawed",tr:"kusurlu, hatalı"},
+      {en:"prevalence",tr:"yaygınlık, sıklık"},
+      {en:"deciduous",tr:"yaprak döken"},
+      {en:"germinate",tr:"filizlenmek, çimlenmek"},
+      {en:"severely restricted",tr:"ciddi biçimde kısıtlanmış"},
+      {en:"outperform",tr:"daha iyi performans göstermek"},
+      {en:"scaled up",tr:"ölçeği genişletilmiş"},
+      {en:"concealed",tr:"gizlenmiş, saklı"},
+      {en:"tolerated",tr:"tolere edilmek, kabul görmek"},
+      {en:"ultimately",tr:"sonunda, nihayetinde"},
+      {en:"consequences",tr:"sonuçlar"},
+      {en:"assumptions",tr:"varsayımlar"},
+      {en:"distinctions",tr:"ayrımlar"},
+      {en:"achievements",tr:"başarılar"},
+      {en:"considerable",tr:"önemli, kayda değer"},
+      {en:"transmitted",tr:"iletildi, bulaştırıldı"},
+      {en:"watch over",tr:"gözetmek"},
+      {en:"properly",tr:"düzgün şekilde"},
+      {en:"attempts",tr:"girişimler, denemeler"},
+      {en:"relatively",tr:"görece, nispeten"},
+      {en:"convenient",tr:"uygun, pratik"},
+      {en:"whereas",tr:"oysa ki"},
+      {en:"developed",tr:"gelişmiş, geliştirilmiş"},
+      {en:"isolated",tr:"izole, yalnız"},
+      {en:"eruptions",tr:"patlamalar, püskürmeler"},
+      {en:"perceived",tr:"algılanan"},
+      {en:"wondered",tr:"merak etti"},
+      {en:"conducted",tr:"yürütüldü, gerçekleştirildi"},
+      {en:"decayed",tr:"çürüdü, ayrıştı"},
+      {en:"beneath",tr:"altında"},
+      {en:"convergence",tr:"yakınsama, birleşme"},
+      {en:"hazardous",tr:"tehlikeli"},
+      {en:"comprises",tr:"kapsar, içerir"},
+      {en:"coined",tr:"türetildi, icat edildi (terim)"},
+      {en:"broadest",tr:"en geniş"},
+      {en:"confused with",tr:"ile karıştırılan"},
+      {en:"attributed",tr:"atfedilen, bağlanan"},
+      {en:"integrated",tr:"entegre edilmiş, bütünleştirilmiş"},
+      {en:"conceptualised",tr:"kavramsallaştırıldı"},
+      {en:"sophisticated",tr:"gelişmiş, karmaşık, sofistike"},
+      {en:"put forward",tr:"ileri sürmek, öne sürmek"},
+      {en:"affect",tr:"etkilemek"},
+      {en:"social bonding",tr:"sosyal bağlanma"},
+      {en:"degradation",tr:"bozulma, tahribat"},
+      {en:"captive",tr:"esir, tutsak, kafeste"},
+      {en:"offspring",tr:"yavru, döl, nesil"},
+      {en:"frequent",tr:"sık, sık sık olan"},
+      {en:"results in",tr:"ile sonuçlanır, yol açar"},
+      {en:"inflated",tr:"şişirilmiş"},
+      {en:"irritation",tr:"tahriş, rahatsızlık"},
+      {en:"possessions",tr:"mülkler, sahip olunanlar"},
+      {en:"hazards",tr:"tehlikeler, riskler"},
+      {en:"cope with",tr:"başa çıkmak"},
+      {en:"intriguing",tr:"ilgi çekici, merak uyandırıcı"},
+      {en:"unpleasant",tr:"nahoş, tatsız, rahatsız edici"},
+      {en:"unlike",tr:"farklı olarak"},
+      {en:"immense",tr:"devasa, çok büyük"},
+      {en:"undesired",tr:"istenmeyen"},
+      {en:"constituent",tr:"bileşen, unsur"},
+      {en:"pristine",tr:"el değmemiş, bozulmamış, tertemiz"},
+      {en:"constitute",tr:"oluşturmak, teşkil etmek"},
+      {en:"agreed-on",tr:"üzerinde anlaşılmış"},
+      {en:"infer",tr:"çıkarım yapmak, sonuç çıkarmak"},
+      {en:"finite",tr:"sınırlı, sonlu"},
+      {en:"invaluable",tr:"paha biçilmez, çok değerli"},
+      {en:"northerly",tr:"kuzeye ait, kuzey yönlü"},
+      {en:"densely",tr:"yoğun biçimde, sık sık"},
+      {en:"erupted",tr:"patlamak, fışkırmak"},
+      {en:"subdivision",tr:"alt bölüm"},
+      {en:"arising from",tr:"kaynaklanmak, -den doğmak"},
+      {en:"enthusiasm",tr:"coşku, heves, şevk"},
+      {en:"relevant",tr:"ilgili, alakalı, uygun"},
+      {en:"refers to",tr:"atıfta bulunmak, değinmek"},
+      {en:"deemed",tr:"kabul edilmek, sayılmak"},
+      {en:"on purpose",tr:"kasıtlı olarak, bilerek"},
+      {en:"concerned",tr:"ilgilenen, kaygılı, endişeli"},
+      {en:"interrelated",tr:"birbiriyle bağlantılı"},
+      {en:"outcomes",tr:"sonuçlar, çıktılar"},
+      {en:"distributed",tr:"dağıtılmış, yayılmış"},
+      {en:"remarkably",tr:"dikkat çekici biçimde"},
+      {en:"inhibits",tr:"engellemek, kısıtlamak"},
+      {en:"constantly exposed to",tr:"sürekli maruz kalmak"},
+      {en:"monitor",tr:"izlemek, takip etmek"},
+      {en:"kick-start",tr:"başlatmak, harekete geçirmek"},
+      {en:"constant",tr:"sabit, sürekli, değişmez"},
+      {en:"sustains",tr:"sürdürmek, devam ettirmek"},
+      {en:"instructs",tr:"talimat vermek, yönlendirmek"},
+      {en:"within reach",tr:"erişilebilir, ulaşılabilir"},
+      {en:"primitive",tr:"ilkel, başlangıç evresine ait"},
+      {en:"impaired",tr:"zayıflamış, bozulmuş, engelli"},
+      {en:"broadened",tr:"genişlemek, kapsamını artırmak"},
+      {en:"primary",tr:"birincil, temel, asıl"},
+      {en:"makeup",tr:"yapı, bileşim"},
+      {en:"spectra",tr:"tayflar, spektrumlar"},
+      {en:"dense",tr:"yoğun, sık, kalabalık"},
+      {en:"dislodge",tr:"yerinden etmek, söküp çıkarmak"},
+      {en:"precedence",tr:"öncelik, üstünlük"},
+      {en:"puncture",tr:"delmek, patlatmak; delik"},
+      {en:"collision",tr:"çarpışma, çatışma"},
+      {en:"misconceptions",tr:"yanlış anlamalar, kavram yanılgıları"},
+      {en:"conflicting",tr:"çelişen, birbiriyle çatışan"},
+      {en:"captivated",tr:"büyülemek, hayran bırakmak"}
+    ]
+  }
+
+  ,"yokdil-600": {
+    title: "YÖKDİL En Çok Çıkan 600",
+    desc: "YÖKDİL sınavlarında en sık karşılaşılan 600 kelime",
+    icon: "\uD83D\uDCDA",
+    color: "green",
+    words: [
+      {en:"abandon",tr:"terk etmek, bırakmak"},
+      {en:"abolish",tr:"kaldırmak, feshetmek"},
+      {en:"abundant",tr:"bol, çok miktarda"},
+      {en:"accelerate",tr:"hızlandırmak"},
+      {en:"accessible",tr:"erişilebilir, ulaşılabilir"},
+      {en:"accomplish",tr:"başarmak, gerçekleştirmek"},
+      {en:"accumulate",tr:"biriktirmek, yığmak"},
+      {en:"accurate",tr:"doğru, kesin"},
+      {en:"achieve",tr:"başarmak, elde etmek"},
+      {en:"acknowledge",tr:"kabul etmek, onaylamak"},
+      {en:"acquire",tr:"edinmek, elde etmek"},
+      {en:"adapt",tr:"uyarlamak, alışmak"},
+      {en:"adequate",tr:"yeterli, uygun"},
+      {en:"adjacent",tr:"bitişik, komşu"},
+      {en:"adjust",tr:"ayarlamak, uyarlamak"},
+      {en:"administration",tr:"yönetim, idare"},
+      {en:"adopt",tr:"benimsemek, kabul etmek"},
+      {en:"advance",tr:"ilerleme, gelişme"},
+      {en:"adversely",tr:"olumsuz bir şekilde"},
+      {en:"advocate",tr:"savunmak, desteklemek"},
+      {en:"affect",tr:"etkilemek"},
+      {en:"aggregate",tr:"toplam, bütün"},
+      {en:"aggressively",tr:"saldırgan biçimde"},
+      {en:"agriculture",tr:"tarım"},
+      {en:"aid",tr:"yardım, destek"},
+      {en:"albeit",tr:"her ne kadar, olsa da"},
+      {en:"allocate",tr:"tahsis etmek, ayırmak"},
+      {en:"alter",tr:"değiştirmek"},
+      {en:"alternative",tr:"alternatif, seçenek"},
+      {en:"ambitious",tr:"iddialı, hırslı"},
+      {en:"amount",tr:"miktar"},
+      {en:"ample",tr:"bol, geniş"},
+      {en:"analogous",tr:"benzer, analog"},
+      {en:"analyze",tr:"analiz etmek, çözümlemek"},
+      {en:"ancient",tr:"antik, eski"},
+      {en:"annual",tr:"yıllık"},
+      {en:"anticipate",tr:"önceden tahmin etmek"},
+      {en:"apparent",tr:"açık, belli"},
+      {en:"applicable",tr:"uygulanabilir"},
+      {en:"apply",tr:"uygulamak, başvurmak"},
+      {en:"approach",tr:"yaklaşım, yaklaşmak"},
+      {en:"appropriate",tr:"uygun, yerinde"},
+      {en:"approximately",tr:"yaklaşık olarak"},
+      {en:"arbitrary",tr:"keyfi, rastgele"},
+      {en:"arise",tr:"ortaya çıkmak, doğmak"},
+      {en:"array",tr:"dizi, sıra"},
+      {en:"aspect",tr:"yön, boyut"},
+      {en:"assert",tr:"iddia etmek, ileri sürmek"},
+      {en:"assess",tr:"değerlendirmek"},
+      {en:"assign",tr:"atamak, görevlendirmek"},
+      {en:"assist",tr:"yardım etmek"},
+      {en:"associate",tr:"ilişkilendirmek, ortak"},
+      {en:"assume",tr:"varsaymak, kabullenmek"},
+      {en:"attain",tr:"ulaşmak, elde etmek"},
+      {en:"attempt",tr:"girişim, denemek"},
+      {en:"attribute",tr:"özellik, atfetmek"},
+      {en:"autonomous",tr:"özerk, bağımsız"},
+      {en:"availability",tr:"kullanılabilirlik, bulunabilirlik"},
+      {en:"aware",tr:"farkında, bilinçli"},
+      {en:"barrier",tr:"engel, bariyer"},
+      {en:"beneath",tr:"altında"},
+      {en:"beneficial",tr:"faydalı, yararlı"},
+      {en:"bias",tr:"önyargı, eğilim"},
+      {en:"bond",tr:"bağ, bono"},
+      {en:"boundary",tr:"sınır"},
+      {en:"breakthrough",tr:"çığır açan gelişme"},
+      {en:"broad",tr:"geniş, kapsamlı"},
+      {en:"bulk",tr:"hacim, yığın, büyük bölüm"},
+      {en:"burden",tr:"yük, külfet"},
+      {en:"capability",tr:"yetenek, kapasite"},
+      {en:"capacity",tr:"kapasite, kapasite"},
+      {en:"catalyst",tr:"katalizör"},
+      {en:"catastrophic",tr:"felaket niteliğinde"},
+      {en:"cease",tr:"durmak, sona ermek"},
+      {en:"challenge",tr:"zorluk, meydan okuma"},
+      {en:"chronic",tr:"kronik, süreğen"},
+      {en:"circumstance",tr:"durum, koşul"},
+      {en:"cite",tr:"alıntı yapmak, belirtmek"},
+      {en:"claim",tr:"iddia etmek, talep"},
+      {en:"clarify",tr:"açıklamak, netleştirmek"},
+      {en:"classify",tr:"sınıflandırmak"},
+      {en:"coexist",tr:"bir arada var olmak"},
+      {en:"coincide",tr:"aynı zamana denk gelmek"},
+      {en:"collaborate",tr:"iş birliği yapmak"},
+      {en:"collapse",tr:"çökmek, çöküş"},
+      {en:"combat",tr:"savaşmak, mücadele"},
+      {en:"commence",tr:"başlamak"},
+      {en:"commodity",tr:"emtia, ticari mal"},
+      {en:"communicate",tr:"iletişim kurmak"},
+      {en:"companion",tr:"arkadaş, yol arkadaşı"},
+      {en:"comparable",tr:"karşılaştırılabilir, benzer"},
+      {en:"compel",tr:"zorlamak, mecbur etmek"},
+      {en:"compensate",tr:"telafi etmek, tazmin etmek"},
+      {en:"competent",tr:"yetkin, ehil"},
+      {en:"complement",tr:"tamamlamak, tamamlayıcı"},
+      {en:"complex",tr:"karmaşık, kompleks"},
+      {en:"component",tr:"bileşen, parça"},
+      {en:"comprehensive",tr:"kapsamlı, geniş"},
+      {en:"compromise",tr:"uzlaşma, taviz vermek"},
+      {en:"compulsory",tr:"zorunlu, mecburi"},
+      {en:"conceive",tr:"tasarlamak, kavramak"},
+      {en:"concentrate",tr:"yoğunlaşmak, konsantre olmak"},
+      {en:"concern",tr:"kaygı, ilgilendirmek"},
+      {en:"conclude",tr:"sonuçlandırmak, sonuca varmak"},
+      {en:"concrete",tr:"somut, beton"},
+      {en:"conduct",tr:"yürütmek, davranış"},
+      {en:"confine",tr:"sınırlamak, hapsetmek"},
+      {en:"confirm",tr:"doğrulamak, onaylamak"},
+      {en:"conflict",tr:"çatışma, anlaşmazlık"},
+      {en:"conform",tr:"uymak, uyum sağlamak"},
+      {en:"confront",tr:"yüzleşmek, karşı karşıya gelmek"},
+      {en:"consequence",tr:"sonuç"},
+      {en:"considerable",tr:"önemli, hatırı sayılır"},
+      {en:"consist",tr:"oluşmak, meydana gelmek"},
+      {en:"consistent",tr:"tutarlı, istikrarlı"},
+      {en:"constant",tr:"sabit, sürekli"},
+      {en:"constitute",tr:"oluşturmak, meydana getirmek"},
+      {en:"constrain",tr:"kısıtlamak, sınırlamak"},
+      {en:"construct",tr:"inşa etmek, oluşturmak"},
+      {en:"consult",tr:"danışmak"},
+      {en:"consume",tr:"tüketmek"},
+      {en:"contemporary",tr:"çağdaş, güncel"},
+      {en:"content",tr:"içerik, memnun"},
+      {en:"context",tr:"bağlam"},
+      {en:"contingent",tr:"koşula bağlı, olası"},
+      {en:"contract",tr:"sözleşme, daralmak"},
+      {en:"contradict",tr:"çelişmek"},
+      {en:"contrary",tr:"aksine, zıt"},
+      {en:"contribute",tr:"katkıda bulunmak"},
+      {en:"controversy",tr:"tartışma, anlaşmazlık"},
+      {en:"conventional",tr:"geleneksel, alışılmış"},
+      {en:"convert",tr:"dönüştürmek, çevirmek"},
+      {en:"convey",tr:"iletmek, taşımak"},
+      {en:"cooperate",tr:"iş birliği yapmak"},
+      {en:"core",tr:"çekirdek, öz"},
+      {en:"correspond",tr:"karşılık gelmek, yazışmak"},
+      {en:"criterion",tr:"kriter, ölçüt"},
+      {en:"crucial",tr:"kritik, çok önemli"},
+      {en:"cultivate",tr:"yetiştirmek, ekip biçmek"},
+      {en:"cumulative",tr:"birikimli, kümülatif"},
+      {en:"currency",tr:"para birimi, geçerlilik"},
+      {en:"damp",tr:"nemli, rutubetli"},
+      {en:"debate",tr:"tartışma, münazara"},
+      {en:"decade",tr:"on yıl"},
+      {en:"decay",tr:"çürümek, bozulmak"},
+      {en:"decisive",tr:"belirleyici, kesin"},
+      {en:"decline",tr:"düşmek, azalmak, reddetmek"},
+      {en:"deduce",tr:"sonuç çıkarmak"},
+      {en:"deficiency",tr:"eksiklik, yetersizlik"},
+      {en:"define",tr:"tanımlamak"},
+      {en:"deliberately",tr:"kasıtlı olarak, bilinçli"},
+      {en:"delicate",tr:"hassas, narin"},
+      {en:"demonstrate",tr:"göstermek, kanıtlamak"},
+      {en:"dense",tr:"yoğun, sık"},
+      {en:"depict",tr:"betimlemek, tasvir etmek"},
+      {en:"deplete",tr:"tüketmek, azaltmak"},
+      {en:"derive",tr:"türetmek, elde etmek"},
+      {en:"designate",tr:"atamak, belirlemek"},
+      {en:"despite",tr:"rağmen"},
+      {en:"detect",tr:"tespit etmek, algılamak"},
+      {en:"deteriorate",tr:"kötüleşmek, bozulmak"},
+      {en:"determine",tr:"belirlemek, saptamak"},
+      {en:"detrimental",tr:"zararlı, olumsuz"},
+      {en:"devise",tr:"tasarlamak, icat etmek"},
+      {en:"devote",tr:"adamak, vakfetmek"},
+      {en:"diagnose",tr:"teşhis koymak"},
+      {en:"differentiate",tr:"ayırt etmek, farklılaştırmak"},
+      {en:"diffuse",tr:"yaymak, dağıtmak"},
+      {en:"digest",tr:"sindirmek, özümsemek"},
+      {en:"diminish",tr:"azalmak, küçülmek"},
+      {en:"discard",tr:"atmak, elden çıkarmak"},
+      {en:"discharge",tr:"boşaltmak, salmak"},
+      {en:"discipline",tr:"disiplin, alan"},
+      {en:"disclose",tr:"açıklamak, ifşa etmek"},
+      {en:"discourse",tr:"söylem, konuşma"},
+      {en:"discrete",tr:"ayrık, kesikli"},
+      {en:"discrimination",tr:"ayrımcılık, ayırt etme"},
+      {en:"dismiss",tr:"reddetmek, görevden almak"},
+      {en:"disorder",tr:"düzensizlik, bozukluk"},
+      {en:"disperse",tr:"dağıtmak, yaymak"},
+      {en:"displace",tr:"yerinden etmek"},
+      {en:"dispose",tr:"elden çıkarmak, atmak"},
+      {en:"dispute",tr:"anlaşmazlık, tartışma"},
+      {en:"disrupt",tr:"bozmak, sekteye uğratmak"},
+      {en:"dissolve",tr:"çözmek, eritmek"},
+      {en:"distinct",tr:"farklı, belirgin, ayrı"},
+      {en:"distinguish",tr:"ayırt etmek"},
+      {en:"distribute",tr:"dağıtmak"},
+      {en:"diverse",tr:"çeşitli, farklı"},
+      {en:"doctrine",tr:"doktrin, öğreti"},
+      {en:"domain",tr:"alan, etki alanı"},
+      {en:"domestic",tr:"yerli, iç, evcil"},
+      {en:"dominate",tr:"hâkim olmak, egemen olmak"},
+      {en:"donate",tr:"bağışlamak"},
+      {en:"dormant",tr:"uyuyan, hareketsiz"},
+      {en:"draft",tr:"taslak, askere almak"},
+      {en:"dramatic",tr:"dramatik, çarpıcı"},
+      {en:"drastic",tr:"köklü, sert"},
+      {en:"drought",tr:"kuraklık"},
+      {en:"durable",tr:"dayanıklı, kalıcı"},
+      {en:"dwell",tr:"yaşamak, ikamet etmek"},
+      {en:"dynamic",tr:"dinamik, hareketli"},
+      {en:"ecosystem",tr:"ekosistem"},
+      {en:"efficient",tr:"verimli, etkili"},
+      {en:"elaborate",tr:"ayrıntılı, detaylandırmak"},
+      {en:"eliminate",tr:"ortadan kaldırmak, elemek"},
+      {en:"embrace",tr:"kucaklamak, benimsemek"},
+      {en:"emerge",tr:"ortaya çıkmak"},
+      {en:"emission",tr:"emisyon, salım"},
+      {en:"emphasize",tr:"vurgulamak"},
+      {en:"enable",tr:"olanak sağlamak, etkinleştirmek"},
+      {en:"encounter",tr:"karşılaşmak"},
+      {en:"endanger",tr:"tehlikeye atmak"},
+      {en:"endure",tr:"dayanmak, katlanmak"},
+      {en:"enforce",tr:"uygulamak, zorlamak"},
+      {en:"engage",tr:"meşgul etmek, ilgilendirmek"},
+      {en:"enhance",tr:"artırmak, geliştirmek"},
+      {en:"enormous",tr:"devasa, muazzam"},
+      {en:"ensure",tr:"sağlamak, garanti etmek"},
+      {en:"enterprise",tr:"girişim, işletme"},
+      {en:"entire",tr:"tüm, bütün"},
+      {en:"entity",tr:"varlık, birim"},
+      {en:"environment",tr:"çevre, ortam"},
+      {en:"epidemic",tr:"salgın"},
+      {en:"equivalent",tr:"eşdeğer, denk"},
+      {en:"erode",tr:"aşınmak, aşındırmak"},
+      {en:"erratic",tr:"düzensiz, kararsız"},
+      {en:"essential",tr:"temel, zorunlu"},
+      {en:"establish",tr:"kurmak, tesis etmek"},
+      {en:"estimate",tr:"tahmin etmek"},
+      {en:"evaluate",tr:"değerlendirmek"},
+      {en:"eventually",tr:"sonunda, nihayetinde"},
+      {en:"evidence",tr:"kanıt, delil"},
+      {en:"evolve",tr:"evrilmek, gelişmek"},
+      {en:"exaggerate",tr:"abartmak"},
+      {en:"examine",tr:"incelemek, muayene etmek"},
+      {en:"exceed",tr:"aşmak, geçmek"},
+      {en:"excessive",tr:"aşırı"},
+      {en:"exclude",tr:"hariç tutmak, dışlamak"},
+      {en:"execute",tr:"uygulamak, yürütmek"},
+      {en:"exert",tr:"uygulamak, göstermek"},
+      {en:"exhibit",tr:"sergilemek, göstermek"},
+      {en:"expand",tr:"genişlemek, genişletmek"},
+      {en:"exploit",tr:"istismar etmek, kullanmak"},
+      {en:"expose",tr:"maruz bırakmak, ortaya çıkarmak"},
+      {en:"extend",tr:"uzatmak, genişletmek"},
+      {en:"extensive",tr:"kapsamlı, geniş"},
+      {en:"external",tr:"dış, harici"},
+      {en:"extinct",tr:"soyu tükenmiş"},
+      {en:"extract",tr:"çıkarmak, özüt"},
+      {en:"extreme",tr:"aşırı, uç"},
+      {en:"facilitate",tr:"kolaylaştırmak"},
+      {en:"factor",tr:"faktör, etken"},
+      {en:"feasible",tr:"uygulanabilir, olası"},
+      {en:"feature",tr:"özellik, nitelik"},
+      {en:"fertile",tr:"verimli, bereketli"},
+      {en:"fierce",tr:"şiddetli, azılı"},
+      {en:"figure",tr:"rakam, figür, şekil"},
+      {en:"filter",tr:"süzmek, filtre"},
+      {en:"finite",tr:"sonlu, sınırlı"},
+      {en:"flaw",tr:"kusur, hata"},
+      {en:"flexible",tr:"esnek"},
+      {en:"flourish",tr:"gelişmek, serpilmek"},
+      {en:"fluctuate",tr:"dalgalanmak, değişmek"},
+      {en:"focus",tr:"odaklanmak, odak"},
+      {en:"forecast",tr:"tahmin etmek, öngörü"},
+      {en:"forge",tr:"sahte yapmak, dövmek"},
+      {en:"fossil",tr:"fosil"},
+      {en:"fragment",tr:"parça, kırıntı"},
+      {en:"framework",tr:"çerçeve, iskelet"},
+      {en:"frequency",tr:"sıklık, frekans"},
+      {en:"friction",tr:"sürtünme"},
+      {en:"function",tr:"işlev, fonksiyon"},
+      {en:"fundamental",tr:"temel, köklü"},
+      {en:"furthermore",tr:"ayrıca, üstelik"},
+      {en:"generate",tr:"üretmek, oluşturmak"},
+      {en:"genuine",tr:"gerçek, özgün"},
+      {en:"glacier",tr:"buzul"},
+      {en:"global",tr:"küresel"},
+      {en:"govern",tr:"yönetmek"},
+      {en:"gradual",tr:"kademeli, aşamalı"},
+      {en:"grant",tr:"hibe, vermek"},
+      {en:"gravity",tr:"yerçekimi, ciddiyet"},
+      {en:"guarantee",tr:"garanti etmek"},
+      {en:"habitat",tr:"yaşam alanı, habitat"},
+      {en:"halt",tr:"durdurmak, durmak"},
+      {en:"hamper",tr:"engellemek, aksatmak"},
+      {en:"harbor",tr:"liman, barındırmak"},
+      {en:"harsh",tr:"sert, zorlu"},
+      {en:"harvest",tr:"hasat, ürün toplamak"},
+      {en:"hazard",tr:"tehlike, risk"},
+      {en:"hence",tr:"bu nedenle, dolayısıyla"},
+      {en:"heritage",tr:"miras, kültürel miras"},
+      {en:"hierarchy",tr:"hiyerarşi, sıralama"},
+      {en:"hinder",tr:"engellemek, zorlaştırmak"},
+      {en:"hostile",tr:"düşmanca, olumsuz"},
+      {en:"humid",tr:"nemli"},
+      {en:"hypothesis",tr:"hipotez, varsayım"},
+      {en:"identical",tr:"özdeş, aynı"},
+      {en:"identify",tr:"tanımlamak, belirlemek"},
+      {en:"ignorance",tr:"bilgisizlik, cahillik"},
+      {en:"illustrate",tr:"göstermek, örneklemek"},
+      {en:"immense",tr:"muazzam, çok büyük"},
+      {en:"immune",tr:"bağışık, muaf"},
+      {en:"impact",tr:"etki, darbe"},
+      {en:"impair",tr:"bozmak, zayıflatmak"},
+      {en:"implement",tr:"uygulamak, araç"},
+      {en:"implication",tr:"sonuç, ima"},
+      {en:"implicit",tr:"örtük, ima edilen"},
+      {en:"impose",tr:"dayatmak, empoze etmek"},
+      {en:"impulse",tr:"dürtü, itki"},
+      {en:"inadequate",tr:"yetersiz"},
+      {en:"incidence",tr:"oluşum sıklığı, olay"},
+      {en:"inclined",tr:"eğilimli, meyilli"},
+      {en:"incorporate",tr:"dahil etmek, birleştirmek"},
+      {en:"indicate",tr:"göstermek, işaret etmek"},
+      {en:"indigenous",tr:"yerli, yerel"},
+      {en:"induce",tr:"neden olmak, yol açmak"},
+      {en:"inevitable",tr:"kaçınılmaz"},
+      {en:"infer",tr:"çıkarım yapmak, sonuç çıkarmak"},
+      {en:"infinite",tr:"sonsuz, sınırsız"},
+      {en:"inflate",tr:"şişirmek, enflasyona yol açmak"},
+      {en:"influence",tr:"etki, etkilemek"},
+      {en:"infrastructure",tr:"altyapı"},
+      {en:"ingenious",tr:"yaratıcı, becerikli"},
+      {en:"inhabit",tr:"yaşamak, ikamet etmek"},
+      {en:"inherent",tr:"doğasında olan, yapısal"},
+      {en:"inherit",tr:"miras almak, kalıtmak"},
+      {en:"inhibit",tr:"engellemek, bastırmak"},
+      {en:"initial",tr:"ilk, başlangıç"},
+      {en:"initiate",tr:"başlatmak"},
+      {en:"innate",tr:"doğuştan gelen"},
+      {en:"innovation",tr:"yenilik, inovasyon"},
+      {en:"insight",tr:"kavrayış, içgörü"},
+      {en:"inspect",tr:"denetlemek, incelemek"},
+      {en:"instance",tr:"örnek, durum"},
+      {en:"insufficient",tr:"yetersiz"},
+      {en:"integrate",tr:"bütünleştirmek, entegre etmek"},
+      {en:"intense",tr:"yoğun, şiddetli"},
+      {en:"interact",tr:"etkileşmek"},
+      {en:"interfere",tr:"müdahale etmek, karışmak"},
+      {en:"interpret",tr:"yorumlamak"},
+      {en:"interval",tr:"aralık, süre"},
+      {en:"intervene",tr:"müdahale etmek, araya girmek"},
+      {en:"intimate",tr:"samimi, yakın"},
+      {en:"intricate",tr:"karmaşık, girift"},
+      {en:"intrinsic",tr:"doğal, özünde olan"},
+      {en:"invade",tr:"istila etmek"},
+      {en:"investigate",tr:"araştırmak, soruşturmak"},
+      {en:"involve",tr:"kapsamak, içermek"},
+      {en:"irrigate",tr:"sulamak"},
+      {en:"isolate",tr:"izole etmek, yalıtmak"},
+      {en:"issue",tr:"sorun, konu, yayımlamak"},
+      {en:"justify",tr:"haklı çıkarmak, gerekçelendirmek"},
+      {en:"keen",tr:"istekli, hevesli"},
+      {en:"label",tr:"etiket, etiketlemek"},
+      {en:"lack",tr:"eksiklik, yoksunluk"},
+      {en:"landscape",tr:"manzara, peyzaj"},
+      {en:"latter",tr:"ikincisi, sonraki"},
+      {en:"launch",tr:"başlatmak, fırlatmak"},
+      {en:"layer",tr:"katman, tabaka"},
+      {en:"lean",tr:"eğilmek, yalın"},
+      {en:"legitimate",tr:"meşru, yasal"},
+      {en:"liable",tr:"sorumlu, yükümlü"},
+      {en:"likewise",tr:"aynı şekilde, benzer biçimde"},
+      {en:"limitation",tr:"sınırlama, kısıtlama"},
+      {en:"link",tr:"bağlantı, bağlamak"},
+      {en:"livestock",tr:"çiftlik hayvanları"},
+      {en:"locate",tr:"bulmak, yerini saptamak"},
+      {en:"lucrative",tr:"kârlı, kazançlı"},
+      {en:"magnitude",tr:"büyüklük, önem"},
+      {en:"maintain",tr:"sürdürmek, korumak"},
+      {en:"majority",tr:"çoğunluk"},
+      {en:"manifest",tr:"göstermek, ortaya koymak"},
+      {en:"manipulate",tr:"manipüle etmek, yönlendirmek"},
+      {en:"margin",tr:"kenar, marj"},
+      {en:"mature",tr:"olgun, olgunlaşmak"},
+      {en:"mechanism",tr:"mekanizma"},
+      {en:"mediate",tr:"arabuluculuk yapmak"},
+      {en:"medium",tr:"ortam, araç, orta"},
+      {en:"mental",tr:"zihinsel"},
+      {en:"merely",tr:"sadece, yalnızca"},
+      {en:"method",tr:"yöntem, metot"},
+      {en:"migrate",tr:"göç etmek"},
+      {en:"minimize",tr:"en aza indirmek"},
+      {en:"minor",tr:"küçük, önemsiz"},
+      {en:"modify",tr:"değiştirmek, uyarlamak"},
+      {en:"monitor",tr:"izlemek, gözlemlemek"},
+      {en:"monopoly",tr:"tekel"},
+      {en:"moreover",tr:"üstelik, ayrıca"},
+      {en:"morphology",tr:"morfoloji, biçimbilim"},
+      {en:"motivate",tr:"motive etmek, güdülemek"},
+      {en:"mutual",tr:"karşılıklı, ortak"},
+      {en:"namely",tr:"yani, şöyle ki"},
+      {en:"navigate",tr:"yön bulmak, seyrüsefer"},
+      {en:"necessity",tr:"gereklilik, zorunluluk"},
+      {en:"neglect",tr:"ihmal etmek"},
+      {en:"negotiate",tr:"müzakere etmek"},
+      {en:"nevertheless",tr:"buna rağmen, yine de"},
+      {en:"notable",tr:"dikkat çekici, önemli"},
+      {en:"notion",tr:"kavram, fikir"},
+      {en:"novel",tr:"yeni, özgün, roman"},
+      {en:"numerous",tr:"çok sayıda, pek çok"},
+      {en:"nutrient",tr:"besin maddesi"},
+      {en:"objective",tr:"amaç, nesnel"},
+      {en:"obligate",tr:"zorunlu kılmak, mecbur etmek"},
+      {en:"observe",tr:"gözlemlemek, fark etmek"},
+      {en:"obsolete",tr:"modası geçmiş, kullanılmayan"},
+      {en:"obstacle",tr:"engel, mâni"},
+      {en:"obtain",tr:"elde etmek"},
+      {en:"obvious",tr:"açık, belli"},
+      {en:"occupy",tr:"işgal etmek, meşgul etmek"},
+      {en:"occur",tr:"meydana gelmek, oluşmak"},
+      {en:"offspring",tr:"yavru, nesil"},
+      {en:"omit",tr:"atlamak, dışarıda bırakmak"},
+      {en:"ongoing",tr:"devam eden, süregelen"},
+      {en:"opponent",tr:"rakip, muhalif"},
+      {en:"optimal",tr:"en uygun, optimal"},
+      {en:"orbit",tr:"yörünge"},
+      {en:"organic",tr:"organik"},
+      {en:"orient",tr:"yönlendirmek"},
+      {en:"origin",tr:"köken, kaynak"},
+      {en:"outcome",tr:"sonuç"},
+      {en:"outlive",tr:"daha uzun yaşamak"},
+      {en:"output",tr:"çıktı, üretim"},
+      {en:"overall",tr:"genel, bütünsel"},
+      {en:"overcome",tr:"üstesinden gelmek"},
+      {en:"overlap",tr:"örtüşmek, çakışmak"},
+      {en:"parallel",tr:"paralel, benzer"},
+      {en:"parameter",tr:"parametre, değişken"},
+      {en:"particle",tr:"parçacık"},
+      {en:"particular",tr:"belirli, özel"},
+      {en:"patron",tr:"koruyucu, müşteri"},
+      {en:"pattern",tr:"örüntü, desen, kalıp"},
+      {en:"peak",tr:"zirve, doruk"},
+      {en:"peculiar",tr:"tuhaf, kendine özgü"},
+      {en:"penetrate",tr:"nüfuz etmek, girmek"},
+      {en:"perceive",tr:"algılamak, fark etmek"},
+      {en:"period",tr:"dönem, süre"},
+      {en:"permanent",tr:"kalıcı, daimi"},
+      {en:"permit",tr:"izin vermek, müsaade"},
+      {en:"persist",tr:"ısrar etmek, sürmek"},
+      {en:"perspective",tr:"bakış açısı, perspektif"},
+      {en:"pertinent",tr:"ilgili, konuyla alakalı"},
+      {en:"pervade",tr:"yayılmak, kaplamak"},
+      {en:"phase",tr:"faz, evre, aşama"},
+      {en:"phenomenon",tr:"olay, fenomen"},
+      {en:"pioneer",tr:"öncü"},
+      {en:"plausible",tr:"makul, inandırıcı"},
+      {en:"pledge",tr:"söz vermek, rehin"},
+      {en:"plot",tr:"arsa, komplo, çizmek"},
+      {en:"plunge",tr:"dalmak, düşmek"},
+      {en:"pollutant",tr:"kirletici madde"},
+      {en:"portion",tr:"porsiyon, pay, kısım"},
+      {en:"pose",tr:"ortaya koymak, poz vermek"},
+      {en:"potential",tr:"potansiyel, olası"},
+      {en:"poverty",tr:"yoksulluk"},
+      {en:"precede",tr:"önce gelmek"},
+      {en:"precise",tr:"kesin, hassas"},
+      {en:"predict",tr:"tahmin etmek, öngörmek"},
+      {en:"predominantly",tr:"ağırlıklı olarak, çoğunlukla"},
+      {en:"preliminary",tr:"ön, başlangıç niteliğinde"},
+      {en:"premise",tr:"öncül, varsayım"},
+      {en:"preserve",tr:"korumak, muhafaza etmek"},
+      {en:"prevalent",tr:"yaygın"},
+      {en:"previous",tr:"önceki"},
+      {en:"primarily",tr:"öncelikle, esas olarak"},
+      {en:"primitive",tr:"ilkel"},
+      {en:"principal",tr:"asıl, baş"},
+      {en:"principle",tr:"ilke, prensip"},
+      {en:"prior",tr:"önceki, önce"},
+      {en:"priority",tr:"öncelik"},
+      {en:"probe",tr:"araştırma, sonda"},
+      {en:"proceed",tr:"devam etmek, ilerlemek"},
+      {en:"profound",tr:"derin, köklü"},
+      {en:"prohibit",tr:"yasaklamak"},
+      {en:"project",tr:"proje, yansıtmak"},
+      {en:"proliferate",tr:"çoğalmak, hızla artmak"},
+      {en:"prominent",tr:"öne çıkan, tanınmış"},
+      {en:"promote",tr:"teşvik etmek, terfi ettirmek"},
+      {en:"prompt",tr:"teşvik etmek, hızlı"},
+      {en:"prone",tr:"eğilimli, yatkın"},
+      {en:"proportion",tr:"oran, orantı"},
+      {en:"propose",tr:"önermek, teklif etmek"},
+      {en:"prospect",tr:"olasılık, beklenti"},
+      {en:"prosperous",tr:"müreffeh, zengin"},
+      {en:"protein",tr:"protein"},
+      {en:"provoke",tr:"kışkırtmak, tahrik etmek"},
+      {en:"pursue",tr:"izlemek, peşinden gitmek"},
+      {en:"radical",tr:"köklü, radikal"},
+      {en:"random",tr:"rastgele"},
+      {en:"range",tr:"aralık, dizi, menzil"},
+      {en:"rapid",tr:"hızlı"},
+      {en:"ratio",tr:"oran"},
+      {en:"rational",tr:"rasyonel, akılcı"},
+      {en:"realm",tr:"alan, diyar"},
+      {en:"recession",tr:"durgunluk, gerileme"},
+      {en:"recognize",tr:"tanımak, fark etmek"},
+      {en:"recommend",tr:"tavsiye etmek"},
+      {en:"recover",tr:"iyileşmek, kurtarmak"},
+      {en:"reduce",tr:"azaltmak, indirmek"},
+      {en:"redundant",tr:"gereksiz, fazlalık"},
+      {en:"refine",tr:"arıtmak, geliştirmek"},
+      {en:"reform",tr:"reform, iyileştirme"},
+      {en:"regulate",tr:"düzenlemek"},
+      {en:"reinforce",tr:"güçlendirmek, pekiştirmek"},
+      {en:"reject",tr:"reddetmek"},
+      {en:"release",tr:"serbest bırakmak, yayınlamak"},
+      {en:"relevant",tr:"ilgili, alakalı"},
+      {en:"reliable",tr:"güvenilir"},
+      {en:"reluctant",tr:"isteksiz, gönülsüz"},
+      {en:"rely",tr:"güvenmek, bel bağlamak"},
+      {en:"remedy",tr:"çare, tedavi"},
+      {en:"remote",tr:"uzak, ücra"},
+      {en:"render",tr:"kılmak, sunmak"},
+      {en:"replenish",tr:"yenilemek, yeniden doldurmak"},
+      {en:"reproduce",tr:"üremek, çoğaltmak"},
+      {en:"require",tr:"gerektirmek"},
+      {en:"resemble",tr:"benzemek"},
+      {en:"reserve",tr:"ayırmak, yedek"},
+      {en:"reside",tr:"ikamet etmek, yaşamak"},
+      {en:"resist",tr:"direnmek, karşı koymak"},
+      {en:"resolve",tr:"çözmek, karar vermek"},
+      {en:"resource",tr:"kaynak"},
+      {en:"respond",tr:"yanıt vermek, tepki göstermek"},
+      {en:"restore",tr:"yenilemek, eski haline getirmek"},
+      {en:"restrict",tr:"kısıtlamak, sınırlamak"},
+      {en:"retain",tr:"tutmak, korumak"},
+      {en:"retrieve",tr:"geri almak, kurtarmak"},
+      {en:"reveal",tr:"ortaya çıkarmak, ifşa etmek"},
+      {en:"revenue",tr:"gelir"},
+      {en:"reverse",tr:"tersine çevirmek, ters"},
+      {en:"revise",tr:"gözden geçirmek, revize etmek"},
+      {en:"revolution",tr:"devrim, dönüşüm"},
+      {en:"rigid",tr:"katı, sert"},
+      {en:"robust",tr:"sağlam, güçlü"},
+      {en:"rotate",tr:"döndürmek, dönmek"},
+      {en:"rural",tr:"kırsal"},
+      {en:"saturate",tr:"doyurmak"},
+      {en:"scarce",tr:"kıt, nadir"},
+      {en:"scatter",tr:"dağıtmak, saçmak"},
+      {en:"scenario",tr:"senaryo, olası durum"},
+      {en:"scheme",tr:"plan, düzen"},
+      {en:"scope",tr:"kapsam, alan"},
+      {en:"sector",tr:"sektör, alan"},
+      {en:"sediment",tr:"tortu, çökelti"},
+      {en:"seek",tr:"aramak, istemek"},
+      {en:"segment",tr:"bölüm, parça"},
+      {en:"sequence",tr:"sıra, dizi"},
+      {en:"severe",tr:"şiddetli, ciddi"},
+      {en:"shed",tr:"dökmek, ışık tutmak"},
+      {en:"shift",tr:"değişim, kaymak"},
+      {en:"shrink",tr:"küçülmek, daralmak"},
+      {en:"signal",tr:"sinyal, işaret"},
+      {en:"significant",tr:"önemli, kayda değer"},
+      {en:"simulate",tr:"simüle etmek, taklit etmek"},
+      {en:"simultaneously",tr:"aynı anda, eş zamanlı"},
+      {en:"sole",tr:"tek, biricik"},
+      {en:"solitary",tr:"yalnız, tek"},
+      {en:"sophisticated",tr:"gelişmiş, karmaşık"},
+      {en:"source",tr:"kaynak"},
+      {en:"span",tr:"süre, kapsamak"},
+      {en:"species",tr:"tür"},
+      {en:"specify",tr:"belirtmek, belirlemek"},
+      {en:"specimen",tr:"örnek, numune"},
+      {en:"speculate",tr:"spekülasyon yapmak, tahmin etmek"},
+      {en:"sphere",tr:"küre, alan"},
+      {en:"stable",tr:"istikrarlı, kararlı"},
+      {en:"stationary",tr:"sabit, hareketsiz"},
+      {en:"status",tr:"durum, statü"},
+      {en:"stem",tr:"gövde, köken almak"},
+      {en:"stimulate",tr:"uyarmak, teşvik etmek"},
+      {en:"strain",tr:"gerginlik, tür, zorlamak"},
+      {en:"strategy",tr:"strateji"},
+      {en:"structure",tr:"yapı"},
+      {en:"submit",tr:"sunmak, teslim etmek"},
+      {en:"subsequent",tr:"sonraki, takip eden"},
+      {en:"substance",tr:"madde"},
+      {en:"substantial",tr:"önemli, hatırı sayılır"},
+      {en:"substitute",tr:"yerine koymak, vekil"},
+      {en:"subtle",tr:"ince, belirsiz"},
+      {en:"sufficient",tr:"yeterli"},
+      {en:"supplement",tr:"takviye, ek"},
+      {en:"suppress",tr:"bastırmak"},
+      {en:"surplus",tr:"fazla, artık"},
+      {en:"survey",tr:"anket, araştırma"},
+      {en:"survive",tr:"hayatta kalmak"},
+      {en:"susceptible",tr:"hassas, duyarlı"},
+      {en:"suspend",tr:"askıya almak, ertelemek"},
+      {en:"sustain",tr:"sürdürmek, desteklemek"},
+      {en:"symbol",tr:"sembol, simge"},
+      {en:"symptom",tr:"belirti, semptom"},
+      {en:"synthesize",tr:"sentezlemek"},
+      {en:"tangible",tr:"somut, elle tutulur"},
+      {en:"technique",tr:"teknik, yöntem"},
+      {en:"temporary",tr:"geçici"},
+      {en:"tendency",tr:"eğilim, yönelim"},
+      {en:"terminate",tr:"sonlandırmak, sona erdirmek"},
+      {en:"terrain",tr:"arazi, yer şekli"},
+      {en:"territory",tr:"bölge, toprak"},
+      {en:"texture",tr:"doku, yapı"},
+      {en:"theory",tr:"teori, kuram"},
+      {en:"therapy",tr:"terapi, tedavi"},
+      {en:"thereby",tr:"bu sayede, böylece"},
+      {en:"thrive",tr:"gelişmek, büyümek"},
+      {en:"tolerate",tr:"tolere etmek, katlanmak"},
+      {en:"toxic",tr:"zehirli, toksik"},
+      {en:"trace",tr:"iz, izlemek"},
+      {en:"trait",tr:"özellik, nitelik"},
+      {en:"transfer",tr:"aktarmak, transfer"},
+      {en:"transform",tr:"dönüştürmek"},
+      {en:"transmit",tr:"iletmek, aktarmak"},
+      {en:"transparent",tr:"şeffaf, saydam"},
+      {en:"trend",tr:"eğilim, trend"},
+      {en:"trigger",tr:"tetiklemek, tetik"},
+      {en:"tropical",tr:"tropikal"},
+      {en:"turbulent",tr:"çalkantılı, türbülanslı"},
+      {en:"undergo",tr:"geçirmek, maruz kalmak"},
+      {en:"underlie",tr:"temelinde yatmak"},
+      {en:"undermine",tr:"baltalamak, zayıflatmak"},
+      {en:"undertake",tr:"üstlenmek, girişmek"},
+      {en:"undoubtedly",tr:"kuşkusuz, şüphesiz"},
+      {en:"uniform",tr:"tek tip, düzgün"},
+      {en:"unique",tr:"benzersiz, eşsiz"},
+      {en:"unprecedented",tr:"emsalsiz, benzeri görülmemiş"},
+      {en:"utilize",tr:"kullanmak, yararlanmak"},
+      {en:"valid",tr:"geçerli"},
+      {en:"variable",tr:"değişken"},
+      {en:"vegetation",tr:"bitki örtüsü"},
+      {en:"verify",tr:"doğrulamak"},
+      {en:"versatile",tr:"çok yönlü"},
+      {en:"viable",tr:"uygulanabilir, yaşayabilir"},
+      {en:"violate",tr:"ihlal etmek"},
+      {en:"virtual",tr:"sanal"},
+      {en:"visible",tr:"görünür"},
+      {en:"vital",tr:"hayati, çok önemli"},
+      {en:"volatile",tr:"değişken, uçucu"},
+      {en:"volume",tr:"hacim, ses, cilt"},
+      {en:"voluntary",tr:"gönüllü"},
+      {en:"vulnerable",tr:"savunmasız, hassas"},
+      {en:"welfare",tr:"refah"},
+      {en:"whereas",tr:"oysa, ise"},
+      {en:"widespread",tr:"yaygın"},
+      {en:"withdraw",tr:"geri çekilmek, çekmek"},
+      {en:"withstand",tr:"dayanmak, direnmek"},
+      {en:"yield",tr:"vermek, verim, ürün"}
+    ]
+  }
+};
+
+// ══════════════════════════════════════
+//  APP STATE
+// ══════════════════════════════════════
+
+let activeListId = null;
 let questionCount = 20;
 let mode = 'en-to-tr';
 let questions = [];
@@ -725,44 +1571,251 @@ let currentQ = 0;
 let score = 0;
 let wrongList = [];
 
+// Speed Round state
+let speedMode = false;
+let timerDuration = 10;
+let timerInterval = null;
+let timerRemaining = 0;
+let answerTimes = [];
+
+// ══════════════════════════════════════
+//  SCREEN MANAGEMENT
+// ══════════════════════════════════════
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById(id);
+  el.classList.add('active');
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = 'fadeUp 0.5s ease';
+}
+
+// ══════════════════════════════════════
+//  RENDER HOME
+// ══════════════════════════════════════
+
+function renderHome() {
+  var grid = document.getElementById('listGrid');
+  grid.innerHTML = '';
+  var entries = Object.entries(WORD_LISTS);
+  for (var i = 0; i < entries.length; i++) {
+    var id = entries[i][0];
+    var list = entries[i][1];
+    var card = document.createElement('div');
+    card.className = 'list-card';
+    card.setAttribute('data-color', list.color || 'purple');
+    card.setAttribute('data-id', id);
+    card.innerHTML =
+      '<div class="list-icon">' + list.icon + '</div>' +
+      '<div class="list-info"><h3>' + list.title + '</h3><p>' + list.desc + '</p></div>' +
+      '<span class="list-count">' + list.words.length + ' kelime</span>' +
+      '<span class="arrow">\u2192</span>';
+    card.onclick = (function(listId) { return function() { selectList(listId); }; })(id);
+    grid.appendChild(card);
+  }
+}
+
+// ══════════════════════════════════════
+//  SELECT LIST
+// ══════════════════════════════════════
+
+function selectList(id) {
+  activeListId = id;
+  var list = WORD_LISTS[id];
+  document.getElementById('modeListTitle').textContent = list.title;
+  document.getElementById('modeListDesc').textContent = list.desc + ' \u2014 ' + list.words.length + ' kelime';
+  questionCount = 20;
+  var btns = document.querySelectorAll('#countBtns .pill-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', i === 1);
+  }
+  // hide slider and update its max
+  document.getElementById('sliderWrap').classList.remove('show');
+  var maxWords = list.words.length;
+  var sliderMax = Math.floor(maxWords / 5) * 5;
+  var slider = document.getElementById('customSlider');
+  slider.max = sliderMax;
+  slider.value = Math.min(25, sliderMax);
+  document.getElementById('sliderValue').textContent = slider.value;
+  document.getElementById('sliderMaxLabel').textContent = sliderMax;
+  // reset speed toggle
+  speedMode = false;
+  document.getElementById('speedToggle').classList.remove('active');
+  document.getElementById('speedTimeOptions').classList.remove('show');
+  timerDuration = 10;
+  var timePills = document.querySelectorAll('.time-pill');
+  for (var i = 0; i < timePills.length; i++) {
+    timePills[i].classList.toggle('active', i === 2); // 10s default
+  }
+  showScreen('modeScreen');
+}
+
+// ══════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════
+
 function setCount(n, btn) {
   questionCount = n;
-  document.querySelectorAll('#countBtns .pill-btn').forEach(b => b.classList.remove('active'));
+  var all = document.querySelectorAll('#countBtns .pill-btn');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
+  btn.classList.add('active');
+  // hide slider when picking a preset
+  document.getElementById('sliderWrap').classList.remove('show');
+}
+
+function toggleCustomSlider(btn) {
+  var wrap = document.getElementById('sliderWrap');
+  var isOpen = wrap.classList.contains('show');
+
+  if (isOpen) {
+    // closing slider, revert to default 20
+    wrap.classList.remove('show');
+    btn.classList.remove('active');
+    questionCount = 20;
+    var all = document.querySelectorAll('#countBtns .pill-btn');
+    for (var i = 0; i < all.length; i++) {
+      all[i].classList.toggle('active', i === 1); // 20 Soru
+    }
+  } else {
+    // opening slider
+    var all = document.querySelectorAll('#countBtns .pill-btn');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
+    btn.classList.add('active');
+    wrap.classList.add('show');
+    var slider = document.getElementById('customSlider');
+    questionCount = parseInt(slider.value);
+  }
+}
+
+function onSliderChange(val) {
+  val = parseInt(val);
+  document.getElementById('sliderValue').textContent = val;
+  questionCount = val;
+}
+
+// ══════════════════════════════════════
+//  SPEED ROUND
+// ══════════════════════════════════════
+
+function toggleSpeed() {
+  speedMode = !speedMode;
+  var toggle = document.getElementById('speedToggle');
+  var opts = document.getElementById('speedTimeOptions');
+  toggle.classList.toggle('active', speedMode);
+  opts.classList.toggle('show', speedMode);
+}
+
+function setTimer(sec, btn) {
+  timerDuration = sec;
+  var all = document.querySelectorAll('.time-pill');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
   btn.classList.add('active');
 }
 
+function startTimer() {
+  clearInterval(timerInterval);
+  timerRemaining = timerDuration;
+  var circumference = 2 * Math.PI * 20; // r=20
+  var ring = document.getElementById('timerRing');
+  var text = document.getElementById('timerText');
+  var container = document.getElementById('timerContainer');
+
+  container.classList.add('show');
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+  ring.classList.remove('danger');
+  text.classList.remove('danger');
+  text.textContent = timerRemaining;
+
+  var startTime = Date.now();
+
+  timerInterval = setInterval(function() {
+    var elapsed = (Date.now() - startTime) / 1000;
+    timerRemaining = Math.max(0, timerDuration - elapsed);
+    var displaySec = Math.ceil(timerRemaining);
+
+    text.textContent = displaySec;
+    var progress = elapsed / timerDuration;
+    ring.style.transition = 'stroke-dashoffset 0.3s linear';
+    ring.style.strokeDashoffset = (progress * circumference).toFixed(2);
+
+    if (displaySec <= 3) {
+      ring.classList.add('danger');
+      text.classList.add('danger');
+    }
+
+    if (timerRemaining <= 0) {
+      clearInterval(timerInterval);
+      timerTimeout();
+    }
+  }, 100);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  var elapsed = timerDuration - timerRemaining;
+  answerTimes.push(elapsed);
+}
+
+function timerTimeout() {
+  // Auto-wrong when time runs out
+  var allBtns = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.add('disabled');
+
+  var q = questions[currentQ];
+  // highlight correct answer
+  for (var i = 0; i < allBtns.length; i++) {
+    if (allBtns[i].querySelector('span:last-child').textContent === q.correct) {
+      allBtns[i].classList.add('correct');
+    }
+  }
+
+  var fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box show wrong-fb';
+  fb.innerHTML = '\u23F0 S\u00fcre doldu! Do\u011fru cevap: <strong>' + q.correct + '</strong><br><span style="color:var(--text-dim)">' + q.correctEn + ' \u2192 ' + q.correctTr + '</span>';
+  wrongList.push({en: q.correctEn, tr: q.correctTr});
+
+  answerTimes.push(timerDuration);
+
+  var nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = currentQ === questions.length - 1 ? 'Sonu\u00e7lar\u0131 G\u00f6r' : 'Sonraki Soru \u2192';
+  nextBtn.classList.add('show');
+}
+
 function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
   }
   return a;
 }
 
 function generateQuestions() {
-  let pool = shuffle(ALL_WORDS);
-  const count = questionCount === 0 ? pool.length : Math.min(questionCount, pool.length);
+  var allWords = WORD_LISTS[activeListId].words;
+  var pool = shuffle(allWords);
+  var count = questionCount === 0 ? pool.length : Math.min(questionCount, pool.length);
   pool = pool.slice(0, count);
 
-  return pool.map(word => {
-    const isEnToTr = mode === 'mixed' ? Math.random() > 0.5 : mode === 'en-to-tr';
-    const questionField = isEnToTr ? 'en' : 'tr';
-    const answerField = isEnToTr ? 'tr' : 'en';
+  return pool.map(function(word) {
+    var isEnToTr = mode === 'mixed' ? Math.random() > 0.5 : mode === 'en-to-tr';
+    var questionField = isEnToTr ? 'en' : 'tr';
+    var answerField = isEnToTr ? 'tr' : 'en';
 
-    const correctAnswer = word[answerField];
-    let distractors = shuffle(ALL_WORDS.filter(w => w[answerField] !== correctAnswer));
-    distractors = distractors.slice(0, 3).map(w => w[answerField]);
+    var correctAnswer = word[answerField];
+    var distractors = shuffle(allWords.filter(function(w) { return w[answerField] !== correctAnswer; }));
+    distractors = distractors.slice(0, 3).map(function(w) { return w[answerField]; });
 
-    const options = shuffle([correctAnswer, ...distractors]);
+    var options = shuffle([correctAnswer].concat(distractors));
 
     return {
       word: word[questionField],
       correct: correctAnswer,
       correctEn: word.en,
       correctTr: word.tr,
-      options,
-      isEnToTr
+      options: options,
+      isEnToTr: isEnToTr
     };
   });
 }
@@ -773,71 +1826,85 @@ function startQuiz(m) {
   currentQ = 0;
   score = 0;
   wrongList = [];
+  answerTimes = [];
+  clearInterval(timerInterval);
 
-  document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('quizScreen').style.display = 'block';
-  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('quizListBadge').textContent = WORD_LISTS[activeListId].title + (speedMode ? ' \u26A1' : '');
   document.getElementById('qTotal').textContent = questions.length;
-
+  document.getElementById('timerContainer').classList.toggle('show', speedMode);
+  showScreen('quizScreen');
   showQuestion();
 }
 
 function showQuestion() {
-  const q = questions[currentQ];
+  var q = questions[currentQ];
   document.getElementById('qNum').textContent = currentQ + 1;
   document.getElementById('liveScore').textContent = score;
   document.getElementById('progressBar').style.width = ((currentQ) / questions.length * 100) + '%';
 
-  document.getElementById('qTypeLabel').textContent = q.isEnToTr ? 'İngilizce → Türkçe' : 'Türkçe → İngilizce';
+  document.getElementById('qTypeLabel').textContent = q.isEnToTr ? '\u0130ngilizce \u2192 T\u00fcrk\u00e7e' : 'T\u00fcrk\u00e7e \u2192 \u0130ngilizce';
   document.getElementById('qWord').textContent = q.word;
-  document.getElementById('qContext').textContent = q.isEnToTr ? 'Türkçe anlamını seçin' : 'İngilizce karşılığını seçin';
+  document.getElementById('qContext').textContent = q.isEnToTr ? 'T\u00fcrk\u00e7e anlam\u0131n\u0131 se\u00e7in' : '\u0130ngilizce kar\u015f\u0131l\u0131\u011f\u0131n\u0131 se\u00e7in';
 
-  const grid = document.getElementById('optionsGrid');
+  var grid = document.getElementById('optionsGrid');
   grid.innerHTML = '';
-  const letters = ['A','B','C','D'];
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement('button');
+  var letters = ['A','B','C','D'];
+  q.options.forEach(function(opt, i) {
+    var btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
-    btn.onclick = () => handleAnswer(btn, opt, q);
+    btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span><span>' + opt + '</span>';
+    btn.onclick = function() { handleAnswer(btn, opt, q); };
     grid.appendChild(btn);
   });
 
   document.getElementById('feedbackBox').className = 'feedback-box';
   document.getElementById('feedbackBox').textContent = '';
   document.getElementById('nextBtn').classList.remove('show');
+
+  // Start timer if speed mode
+  if (speedMode) {
+    startTimer();
+  }
 }
 
 function handleAnswer(btn, selected, q) {
-  const allBtns = document.querySelectorAll('.option-btn');
-  allBtns.forEach(b => b.classList.add('disabled'));
+  // Stop timer first
+  if (speedMode) {
+    stopTimer();
+  }
 
-  const fb = document.getElementById('feedbackBox');
+  var allBtns = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.add('disabled');
+
+  var fb = document.getElementById('feedbackBox');
 
   if (selected === q.correct) {
     btn.classList.add('correct');
     score++;
     fb.className = 'feedback-box show correct-fb';
-    fb.innerHTML = `✅ Doğru! <strong>${q.correctEn}</strong> → ${q.correctTr}`;
+    fb.innerHTML = '\u2705 Do\u011fru! <strong>' + q.correctEn + '</strong> \u2192 ' + q.correctTr;
   } else {
     btn.classList.add('wrong');
-    allBtns.forEach(b => {
-      if (b.querySelector('span:last-child').textContent === q.correct) b.classList.add('correct');
-    });
+    for (var i = 0; i < allBtns.length; i++) {
+      if (allBtns[i].querySelector('span:last-child').textContent === q.correct) {
+        allBtns[i].classList.add('correct');
+      }
+    }
     fb.className = 'feedback-box show wrong-fb';
-    fb.innerHTML = `❌ Yanlış. Doğru cevap: <strong>${q.correct}</strong><br><span style="color:var(--text-dim)">${q.correctEn} → ${q.correctTr}</span>`;
+    fb.innerHTML = '\u274C Yanl\u0131\u015f. Do\u011fru cevap: <strong>' + q.correct + '</strong><br><span style="color:var(--text-dim)">' + q.correctEn + ' \u2192 ' + q.correctTr + '</span>';
     wrongList.push({en: q.correctEn, tr: q.correctTr});
   }
 
   document.getElementById('liveScore').textContent = score;
-  const nextBtn = document.getElementById('nextBtn');
-  nextBtn.textContent = currentQ === questions.length - 1 ? 'Sonuçları Gör' : 'Sonraki Soru →';
+  var nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = currentQ === questions.length - 1 ? 'Sonu\u00e7lar\u0131 G\u00f6r' : 'Sonraki Soru \u2192';
   nextBtn.classList.add('show');
 }
 
 function nextQuestion() {
   currentQ++;
   if (currentQ >= questions.length) {
+    clearInterval(timerInterval);
     showResults();
   } else {
     showQuestion();
@@ -845,84 +1912,87 @@ function nextQuestion() {
 }
 
 function showResults() {
-  document.getElementById('quizScreen').style.display = 'none';
-  document.getElementById('resultScreen').style.display = 'block';
-
-  const pct = Math.round((score / questions.length) * 100);
+  var pct = Math.round((score / questions.length) * 100);
   document.getElementById('scoreText').textContent = pct + '%';
   document.getElementById('statCorrect').textContent = score;
   document.getElementById('statWrong').textContent = questions.length - score;
   document.getElementById('statTotal').textContent = questions.length;
 
-  // Animate arc
-  const arc = document.getElementById('scoreArc');
-  const circumference = 2 * Math.PI * 82;
-  const offset = circumference - (pct / 100) * circumference;
-  setTimeout(() => {
+  // Show avg time if speed mode
+  var timerWrap = document.getElementById('statTimerWrap');
+  if (speedMode && answerTimes.length > 0) {
+    var avg = answerTimes.reduce(function(a, b) { return a + b; }, 0) / answerTimes.length;
+    document.getElementById('statAvgTime').textContent = avg.toFixed(1) + 's';
+    timerWrap.style.display = '';
+  } else {
+    timerWrap.style.display = 'none';
+  }
+
+  var arc = document.getElementById('scoreArc');
+  var circumference = 2 * Math.PI * 82;
+  var offset = circumference - (pct / 100) * circumference;
+  arc.style.transition = 'none';
+  arc.style.strokeDashoffset = circumference;
+  setTimeout(function() {
     arc.style.transition = 'stroke-dashoffset 1.2s ease';
     arc.style.strokeDashoffset = offset;
   }, 100);
 
   if (pct >= 90) {
     arc.style.stroke = 'var(--correct)';
-    document.getElementById('resultTitle').textContent = 'Mükemmel! 🎉';
-    document.getElementById('resultDesc').textContent = 'Kelime bilgin çok güçlü. YÖKDİL sınavına hazırsın!';
+    document.getElementById('resultTitle').textContent = 'M\u00fckemmel! \uD83C\uDF89';
+    document.getElementById('resultDesc').textContent = 'Kelime bilgin \u00e7ok g\u00fc\u00e7l\u00fc. Y\u00d6KD\u0130L s\u0131nav\u0131na haz\u0131rs\u0131n!';
   } else if (pct >= 70) {
     arc.style.stroke = 'var(--accent)';
-    document.getElementById('resultTitle').textContent = 'İyi Gidiyorsun! 💪';
-    document.getElementById('resultDesc').textContent = 'Çoğu kelimeyi biliyorsun. Yanlışlarını tekrar edersen daha da ilerlersin.';
+    document.getElementById('resultTitle').textContent = '\u0130yi Gidiyorsun! \uD83D\uDCAA';
+    document.getElementById('resultDesc').textContent = '\u00c7o\u011fu kelimeyi biliyorsun. Yanl\u0131\u015flar\u0131n\u0131 tekrar edersen daha da ilerlersin.';
   } else if (pct >= 50) {
     arc.style.stroke = 'var(--gold)';
-    document.getElementById('resultTitle').textContent = 'Fena Değil 📚';
-    document.getElementById('resultDesc').textContent = 'Temel kelime bilgin var ama pratik yapman gerekiyor. Aşağıdaki kelimelere odaklan.';
+    document.getElementById('resultTitle').textContent = 'Fena De\u011fil \uD83D\uDCDA';
+    document.getElementById('resultDesc').textContent = 'Temel kelime bilgin var ama pratik yapman gerekiyor.';
   } else {
     arc.style.stroke = 'var(--wrong)';
-    document.getElementById('resultTitle').textContent = 'Daha Çok Çalış 🔁';
-    document.getElementById('resultDesc').textContent = 'Kelime hazineni geliştirmen gerekiyor. Yanlışlarını not al ve tekrar et.';
+    document.getElementById('resultTitle').textContent = 'Daha \u00c7ok \u00c7al\u0131\u015f \uD83D\uDD01';
+    document.getElementById('resultDesc').textContent = 'Kelime hazineni geli\u015ftirmen gerekiyor. Yanl\u0131\u015flar\u0131n\u0131 not al ve tekrar et.';
   }
 
-  const wrongSection = document.getElementById('wrongWordsSection');
-  const wrongHTML = document.getElementById('wrongWordsList');
+  var wrongSection = document.getElementById('wrongWordsSection');
+  var wrongHTML = document.getElementById('wrongWordsList');
   if (wrongList.length > 0) {
     wrongSection.style.display = 'block';
-    wrongHTML.innerHTML = wrongList.map(w =>
-      `<div class="wrong-word-item"><span class="en">${w.en}</span><span class="tr">${w.tr}</span></div>`
-    ).join('');
+    wrongHTML.innerHTML = wrongList.map(function(w) {
+      return '<div class="wrong-word-item"><span class="en">' + w.en + '</span><span class="tr">' + w.tr + '</span></div>';
+    }).join('');
   } else {
     wrongSection.style.display = 'none';
   }
+
+  showScreen('resultScreen');
 }
 
-function goHome() {
-  document.getElementById('startScreen').style.display = 'block';
-  document.getElementById('quizScreen').style.display = 'none';
-  document.getElementById('resultScreen').style.display = 'none';
+// ══════════════════════════════════════
+//  KEYBOARD SHORTCUTS
+// ══════════════════════════════════════
 
-  // Reset arc
-  const arc = document.getElementById('scoreArc');
-  arc.style.transition = 'none';
-  arc.style.strokeDashoffset = 515;
-
-  document.getElementById('startScreen').style.animation = 'none';
-  void document.getElementById('startScreen').offsetHeight;
-  document.getElementById('startScreen').style.animation = 'fadeUp 0.5s ease';
-}
-
-// Keyboard shortcuts
-document.addEventListener('keydown', e => {
-  if (document.getElementById('quizScreen').style.display === 'none') return;
-  const keys = ['1','2','3','4','a','b','c','d'];
-  const idx = keys.indexOf(e.key.toLowerCase());
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('quizScreen').classList.contains('active')) return;
+  var keys = ['1','2','3','4','a','b','c','d'];
+  var idx = keys.indexOf(e.key.toLowerCase());
   if (idx !== -1) {
-    const optIdx = idx % 4;
-    const btns = document.querySelectorAll('.option-btn:not(.disabled)');
+    var optIdx = idx % 4;
+    var btns = document.querySelectorAll('.option-btn:not(.disabled)');
     if (btns[optIdx]) btns[optIdx].click();
   }
   if (e.key === 'Enter') {
-    const nb = document.getElementById('nextBtn');
+    var nb = document.getElementById('nextBtn');
     if (nb.classList.contains('show')) nb.click();
   }
 });
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+renderHome();
 </script>
 
 </body>
