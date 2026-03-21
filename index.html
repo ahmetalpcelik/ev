@@ -44,15 +44,17 @@ body {
 @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── SCREEN 1: HOME ── */
-.home-logo { font-family:'DM Serif Display',serif; font-size:48px; background:linear-gradient(135deg,#6c5ce7,#a29bfe,#6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:4px; }
-.home-sub { font-size:13px; color:var(--text-dim); letter-spacing:3px; text-transform:uppercase; margin-bottom:32px; }
+.home-logo { font-family:'DM Serif Display',serif; font-size:42px; background:linear-gradient(135deg,#6c5ce7,#a29bfe,#6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:2px; }
+.home-sub { font-size:12px; color:var(--text-dim); letter-spacing:3px; text-transform:uppercase; margin-bottom:20px; }
 
-.list-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; max-width:460px; }
+.list-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:460px; }
 .list-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:20px 16px; cursor:pointer; text-align:center;
-  transition:all .25s; display:flex; flex-direction:column; align-items:center; gap:10px;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:16px 12px; cursor:pointer; text-align:center;
+  transition:all .25s; display:flex; flex-direction:column; align-items:center; gap:8px;
 }
+.list-grid-5 { }
+.list-grid-5 .list-card:last-child { grid-column: 1 / -1; max-width:50%; justify-self:center; }
 .list-card:hover { border-color:var(--accent); box-shadow:0 0 30px var(--accent-glow); transform:translateY(-2px); }
 .list-card .lc-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
 .list-card .lc-name { font-size:14px; font-weight:700; line-height:1.3; }
@@ -62,6 +64,7 @@ body {
 .list-card[data-color="green"] .lc-icon { background:rgba(0,184,148,0.15); }
 .list-card[data-color="orange"] .lc-icon { background:rgba(255,159,67,0.15); }
 .list-card[data-color="pink"] .lc-icon { background:rgba(253,121,168,0.15); }
+.list-card[data-color="blue"] .lc-icon { background:rgba(9,132,227,0.15); }
 
 /* ── SCREEN 2: SETTINGS ── */
 .settings-inner { width:100%; max-width:460px; }
@@ -285,6 +288,53 @@ body {
 .w-answer.w-win { color:var(--correct); background:var(--correct-bg); }
 .w-answer.w-lose { color:var(--wrong); background:var(--wrong-bg); }
 
+/* ── CROSSWORD ── */
+.cross-wrap { width:100%; max-width:600px; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; }
+.cross-clue-bar {
+  width:100%; background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:10px 14px; display:flex; align-items:center; gap:10px; min-height:44px; flex-shrink:0;
+}
+.cross-clue-num {
+  background:var(--accent); color:#fff; font-size:11px; font-weight:700;
+  padding:3px 8px; border-radius:6px; white-space:nowrap;
+}
+.cross-clue-num:empty { display:none; }
+.cross-clue-text { font-size:14px; color:var(--text); }
+
+.cross-grid-box { flex:1; display:flex; align-items:center; justify-content:center; width:100%; min-height:0; overflow:hidden; }
+.cross-grid { display:inline-grid; gap:2px; }
+.cx-cell {
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; text-transform:uppercase; border-radius:3px;
+  position:relative; transition:all .15s;
+}
+.cx-cell.empty { background:transparent; }
+.cx-cell.letter {
+  background:var(--surface); border:2px solid var(--border); cursor:pointer;
+  color:var(--text);
+}
+.cx-cell.letter:hover { border-color:rgba(255,255,255,0.15); }
+.cx-cell.letter.sel { border-color:var(--accent); background:rgba(108,92,231,0.12); }
+.cx-cell.letter.solved { background:var(--correct-bg); border-color:var(--correct); color:var(--correct); }
+.cx-cell.letter.wrong-flash { border-color:var(--wrong); background:var(--wrong-bg); }
+.cx-num {
+  position:absolute; top:1px; left:2px; font-weight:600;
+  color:var(--text-dim); line-height:1;
+}
+
+.cross-input-row { display:flex; gap:8px; width:100%; flex-shrink:0; }
+.cross-input {
+  flex:1; background:var(--surface); border:1.5px solid var(--border); border-radius:10px;
+  padding:12px 16px; color:var(--text); font-family:inherit; font-size:15px;
+  outline:none; transition:border-color .2s; text-transform:lowercase;
+}
+.cross-input:focus { border-color:var(--accent); }
+.cross-input:disabled { opacity:.4; }
+.cross-status {
+  font-size:13px; color:var(--text-dim); text-align:center; min-height:20px; flex-shrink:0;
+}
+.cross-status .cs-ok { color:var(--correct); }
+
 /* ── MOBILE ── */
 @media(max-width:600px){
   .home-logo { font-size:34px; }
@@ -311,7 +361,12 @@ body {
   .w-input { padding:10px 12px; font-size:14px; }
   .w-submit { width:42px; }
   .w-answer { font-size:13px; padding:8px; }
-  .mode-row { gap:6px; }
+  .mode-row { gap:4px; }
+  .mode-btn { padding:10px 3px; }
+  .mb-text { font-size:10px; }
+  .cross-clue-bar { padding:8px 12px; min-height:40px; }
+  .cross-clue-text { font-size:12px; }
+  .cross-input { padding:10px 12px; font-size:14px; }
 }
 </style>
 </head>
@@ -341,6 +396,7 @@ body {
         <button class="mode-btn" data-m="tr-to-en" onclick="pickMode(this)"><div class="mb-icon">&#127481;&#127479;</div><div class="mb-text">Tr→İng</div></button>
         <button class="mode-btn" data-m="mixed" onclick="pickMode(this)"><div class="mb-icon">&#128256;</div><div class="mb-text">Karışık</div></button>
         <button class="mode-btn" data-m="wordle" onclick="pickMode(this)"><div class="mb-icon">&#129513;</div><div class="mb-text">Wordle</div></button>
+        <button class="mode-btn" data-m="crossword" onclick="pickMode(this)"><div class="mb-icon">&#9998;</div><div class="mb-text">Bulmaca</div></button>
       </div>
 
       <div class="s-label">Soru Sayısı</div>
@@ -417,6 +473,24 @@ body {
       </div>
       <div class="w-tries" id="wTries"></div>
       <button class="nxt-btn" id="wNxt" onclick="wordleNext()">Sonraki Soru &#8594;</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3c: CROSSWORD -->
+  <div class="screen" id="scrCross">
+    <div class="cross-wrap">
+      <div class="cross-clue-bar" id="crossClueBar">
+        <span class="cross-clue-num" id="crossClueNum"></span>
+        <span class="cross-clue-text" id="crossClueText">Bir kelimeye tıklayın</span>
+      </div>
+      <div class="cross-grid-box" id="crossGridBox">
+        <div class="cross-grid" id="crossGrid"></div>
+      </div>
+      <div class="cross-input-row">
+        <input type="text" class="cross-input" id="crossInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Cevabı yaz..." disabled>
+        <button class="w-submit" id="crossSubmit" onclick="crossCheck()" disabled>&#10003;</button>
+      </div>
+      <div class="cross-status" id="crossStatus"></div>
     </div>
   </div>
 
@@ -663,6 +737,128 @@ const WORD_LISTS = {
       {en:"misconceptions",tr:"yanlış anlamalar, kavram yanılgıları"},
       {en:"conflicting",tr:"çelişen, birbiriyle çatışan"},
       {en:"captivated",tr:"büyülemek, hayran bırakmak"}
+    ]
+  }
+
+  ,"alpin-v2": {
+    title: "Alp'in Bilmedikleri v2",
+    desc: "2020 Y\u00d6KD\u0130L/2 s\u0131nav\u0131ndan kelimeler",
+    icon: "\uD83D\uDCA1",
+    color: "blue",
+    words: [
+      {en:"diversity",tr:"çeşitlilik"},
+      {en:"implication",tr:"ima, sonuç, çıkarım"},
+      {en:"resistance",tr:"direnç, dayanıklılık"},
+      {en:"practical",tr:"pratik, uygulanabilir"},
+      {en:"predict",tr:"tahmin etmek, öngörmek"},
+      {en:"depended on",tr:"bağlı olmak, -e bağlı olmak"},
+      {en:"entirely",tr:"tamamen, bütünüyle"},
+      {en:"differentiate",tr:"ayırt etmek, farklılaştırmak"},
+      {en:"deduced",tr:"sonuç çıkarmak, tümdengelim yapmak"},
+      {en:"expanded",tr:"genişlemiş, büyümüş"},
+      {en:"identified",tr:"tanımlanmış, belirlenmiş"},
+      {en:"harbour",tr:"barındırmak; liman"},
+      {en:"averaging",tr:"ortalama almak"},
+      {en:"evaporation",tr:"buharlaşma"},
+      {en:"reductions",tr:"azaltmalar, indirimler"},
+      {en:"secretive",tr:"gizli, ketum"},
+      {en:"consequently",tr:"sonuç olarak"},
+      {en:"uninhabitable",tr:"yaşanılamaz"},
+      {en:"regardless of",tr:"-e bakılmaksızın, ne olursa olsun"},
+      {en:"by means of",tr:"vasıtasıyla, aracılığıyla"},
+      {en:"other than",tr:"dışında, haricinde"},
+      {en:"on behalf of",tr:"adına, namına"},
+      {en:"in terms of",tr:"açısından, bakımından"},
+      {en:"whose",tr:"kimin, -in (ilgi zamiri)"},
+      {en:"whether / or",tr:"ister ... ister, olup olmadığı"},
+      {en:"tolerates",tr:"tolere etmek, katlanmak"},
+      {en:"disturbs",tr:"rahatsız etmek, bozmak"},
+      {en:"resumes",tr:"devam etmek, sürdürmek"},
+      {en:"along with",tr:"ile birlikte, yanı sıra"},
+      {en:"for instance",tr:"örneğin"},
+      {en:"in short",tr:"kısacası"},
+      {en:"attached",tr:"bağlı, eklenmiş, tutturulmuş"},
+      {en:"acquires",tr:"edinmek, elde etmek, kazanmak"},
+      {en:"contains",tr:"içermek, kapsamak"},
+      {en:"as a result of",tr:"sonucunda, -in sonucu olarak"},
+      {en:"vested interest",tr:"kazanılmış çıkar"},
+      {en:"combustion",tr:"yanma, yakma"},
+      {en:"gradual",tr:"kademeli, aşamalı"},
+      {en:"considerable",tr:"önemli, kayda değer"},
+      {en:"ever-increasing",tr:"sürekli artan"},
+      {en:"die out",tr:"nesli tükenmek, yok olmak"},
+      {en:"outnumber",tr:"sayıca geçmek, sayıca üstün olmak"},
+      {en:"alloys",tr:"alaşımlar"},
+      {en:"conduct",tr:"iletmek; yürütmek; davranış"},
+      {en:"cookware",tr:"mutfak gereçleri, pişirme kapları"},
+      {en:"inferior",tr:"düşük kaliteli, alt düzey"},
+      {en:"installing",tr:"kurmak, monte etmek"},
+      {en:"timber",tr:"kereste, inşaat ahşabı"},
+      {en:"needle-like",tr:"iğne şeklinde"},
+      {en:"revolting",tr:"iğrenç, tiksindirici"},
+      {en:"contagious",tr:"bulaşıcı"},
+      {en:"complexity",tr:"karmaşıklık"},
+      {en:"solubility",tr:"çözünürlük"},
+      {en:"dissolved",tr:"çözünmüş, eritilmiş"},
+      {en:"backbone",tr:"omurga, temel dayanak"},
+      {en:"refrigeration",tr:"soğutma, buzdolabında saklama"},
+      {en:"devised",tr:"tasarlanmış, icat edilmiş"},
+      {en:"petrified",tr:"taşlaşmış; korkmuş"},
+      {en:"footprints",tr:"ayak izleri"},
+      {en:"gradually",tr:"kademeli olarak, yavaş yavaş"},
+      {en:"consumed",tr:"tüketilmiş"},
+      {en:"in particular",tr:"özellikle, bilhassa"},
+      {en:"brought",tr:"getirmek (geçmiş zaman)"},
+      {en:"destruction",tr:"yıkım, tahribat"},
+      {en:"evaporate",tr:"buharlaşmak"},
+      {en:"disposal",tr:"elden çıkarma, bertaraf etme"},
+      {en:"reinforcement",tr:"güçlendirme, pekiştirme"},
+      {en:"circadian",tr:"sirkadiyen, günlük biyolojik ritim"},
+      {en:"nocturnal",tr:"gece aktif olan, gececil"},
+      {en:"fungi",tr:"mantarlar"},
+      {en:"geologists",tr:"jeologlar, yer bilimciler"},
+      {en:"ferry",tr:"taşımak; feribot"},
+      {en:"capsule",tr:"kapsül"},
+      {en:"payload",tr:"yük, faydalı yük"},
+      {en:"heartlands",tr:"kalp bölgesi, merkez topraklar"},
+      {en:"immense",tr:"devasa, muazzam"},
+      {en:"casualties",tr:"kayıplar, zayiat"},
+      {en:"dormant",tr:"uyuyan, hareketsiz, atıl"},
+      {en:"surging",tr:"yükselen, kabaran"},
+      {en:"altimeters",tr:"yükseklik ölçerler"},
+      {en:"precision",tr:"hassasiyet, kesinlik"},
+      {en:"screening out",tr:"elemek, ayıklamak"},
+      {en:"contaminate",tr:"kirletmek, bulaştırmak"},
+      {en:"inhabits",tr:"yaşamak, ikamet etmek"},
+      {en:"graze",tr:"otlamak, otlatmak"},
+      {en:"dismiss",tr:"reddetmek, görevden almak; önemsememek"},
+      {en:"phenomenon",tr:"olay, fenomen"},
+      {en:"executed",tr:"infaz etmek; uygulamak"},
+      {en:"sceptical",tr:"şüpheci, kuşkucu"},
+      {en:"grasping",tr:"kavramak, anlamak"},
+      {en:"stick-pounding",tr:"sopayla dövme"},
+      {en:"perenniation",tr:"çok yıllık bitki stratejisi"},
+      {en:"perennial",tr:"çok yıllık (bitki); sürekli"},
+      {en:"erosion",tr:"erozyon, aşınma"},
+      {en:"fertilisers",tr:"gübreler"},
+      {en:"sustainability",tr:"sürdürülebilirlik"},
+      {en:"livestock",tr:"çiftlik hayvanları, canlı hayvan"},
+      {en:"nanoparticles",tr:"nano parçacıklar"},
+      {en:"pathways",tr:"yollar, patikalar; biyokimyasal yollar"},
+      {en:"biochemical",tr:"biyokimyasal"},
+      {en:"ambient",tr:"ortam, çevresel"},
+      {en:"menthol",tr:"mentol"},
+      {en:"irritation",tr:"tahriş, rahatsızlık"},
+      {en:"abdominal",tr:"karın bölgesine ait"},
+      {en:"drowsiness",tr:"uyuşukluk, uykulu olma"},
+      {en:"inferred",tr:"çıkarım yapmak, sonuç çıkarmak"},
+      {en:"purified",tr:"saflaştırılmış, arıtılmış"},
+      {en:"annual",tr:"yıllık"},
+      {en:"homesteaders",tr:"çiftçi yerleşimciler"},
+      {en:"draft animals",tr:"yük hayvanları"},
+      {en:"husks",tr:"kabuklar (mısır)"},
+      {en:"nutritive",tr:"besleyici, besin değeri olan"},
+      {en:"kernels",tr:"çekirdekler, taneler"}
     ]
   }
 
@@ -1607,6 +1803,7 @@ function go(id){
 function renderHome(){
   var g=document.getElementById('listGrid'); g.innerHTML='';
   var entries=Object.entries(WORD_LISTS);
+  g.className='list-grid'+(entries.length%2===1?' list-grid-5':'');
   for(var i=0;i<entries.length;i++){
     var id=entries[i][0], L=entries[i][1];
     var d=document.createElement('div'); d.className='list-card'; d.setAttribute('data-color',L.color||'purple');
@@ -1688,6 +1885,7 @@ function genQuestions(){
 
 function startQuiz(){
   if(mode==='wordle') return startWordle();
+  if(mode==='crossword') return startCrossword();
   questions=genQuestions(); curQ=0; score=0; wrongArr=[]; answerTimes=[]; clearInterval(timerInt);
   document.getElementById('qBadge').textContent=WORD_LISTS[listId].title+(speedOn?' \u26A1':'');
   document.getElementById('qTot').textContent=questions.length;
@@ -1937,6 +2135,278 @@ function wordleNext(){
     showResult();
   } else showWordle();
 }
+
+// ── CROSSWORD ENGINE ──
+var cxGrid=[], cxWords=[], cxW=0, cxH=0, cxSelIdx=-1, cxSolved=[];
+
+function startCrossword(){
+  var W=WORD_LISTS[listId].words;
+  var cnt=qCount===0?Math.min(W.length,12):Math.min(qCount,W.length,15);
+  // try multiple times, pick the grid with most placed words
+  var bestPlaced=null;
+  for(var attempt=0;attempt<8;attempt++){
+    var pool=shuffle(W).filter(function(w){
+      var e=w.en.toLowerCase().replace(/ /g,'');
+      return /^[a-z]+$/.test(e)&&e.length>=3&&e.length<=14;
+    }).slice(0,cnt+5); // grab extras in case some don't fit
+    var placed=buildCrossword(pool);
+    if(!bestPlaced||placed.length>bestPlaced.length) bestPlaced=placed;
+    if(bestPlaced.length>=cnt) break;
+  }
+  cxWords=bestPlaced; cxSolved=[];
+  for(var i=0;i<bestPlaced.length;i++) cxSolved.push(false);
+  renderCrossGrid();
+  document.getElementById('crossClueNum').textContent='';
+  document.getElementById('crossClueText').textContent=bestPlaced.length+' kelime \u2014 bir kelimeye t\u0131klay\u0131n';
+  document.getElementById('crossInput').value='';
+  document.getElementById('crossInput').disabled=true;
+  document.getElementById('crossSubmit').disabled=true;
+  document.getElementById('crossStatus').innerHTML='<span>0/'+cxWords.length+' bulundu</span>';
+  cxSelIdx=-1;
+  go('scrCross');
+}
+
+function buildCrossword(pool){
+  var words=pool.map(function(w){return{en:w.en.toLowerCase().replace(/ /g,''),tr:w.tr,obj:w}});
+  words.sort(function(a,b){return b.en.length-a.en.length});
+
+  var G=50, grid=[];
+  for(var i=0;i<G;i++){grid[i]=[];for(var j=0;j<G;j++)grid[i][j]=null;}
+  var placed=[];
+
+  // place first word horizontally in center
+  var f=words[0], sr=Math.floor(G/2), sc=Math.floor((G-f.en.length)/2);
+  placeWord(grid,f.en,sr,sc,'h');
+  placed.push({en:f.en,tr:f.tr,obj:f.obj,r:sr,c:sc,dir:'h'});
+
+  // for each remaining word, find best intersection
+  for(var wi=1;wi<words.length;wi++){
+    var w=words[wi], best=null, bestScore=-1;
+
+    // for each letter in new word
+    for(var i=0;i<w.en.length;i++){
+      var ch=w.en[i];
+      // scan entire grid for matching letters
+      for(var r=0;r<G;r++){
+        for(var c=0;c<G;c++){
+          if(grid[r][c]!==ch) continue;
+          // try placing new word so that w.en[i] lands on grid[r][c]
+          // try vertical
+          var vr=r-i, vc=c;
+          if(canPlace(grid,G,w.en,vr,vc,'v')){
+            var sc2=countIntersections(grid,G,w.en,vr,vc,'v');
+            if(sc2>bestScore){bestScore=sc2;best={r:vr,c:vc,dir:'v'};}
+          }
+          // try horizontal
+          var hr=r, hc=c-i;
+          if(canPlace(grid,G,w.en,hr,hc,'h')){
+            var sc3=countIntersections(grid,G,w.en,hr,hc,'h');
+            if(sc3>bestScore){bestScore=sc3;best={r:hr,c:hc,dir:'h'};}
+          }
+        }
+      }
+    }
+    if(best&&bestScore>0){
+      placeWord(grid,w.en,best.r,best.c,best.dir);
+      placed.push({en:w.en,tr:w.tr,obj:w.obj,r:best.r,c:best.c,dir:best.dir});
+    }
+  }
+
+  // trim grid
+  var minR=G,maxR=0,minC=G,maxC=0;
+  for(var r=0;r<G;r++)for(var c=0;c<G;c++) if(grid[r][c]!==null){if(r<minR)minR=r;if(r>maxR)maxR=r;if(c<minC)minC=c;if(c>maxC)maxC=c;}
+  if(minR>maxR){minR=0;maxR=0;minC=0;maxC=0;}
+  cxH=maxR-minR+1; cxW=maxC-minC+1;
+  cxGrid=[];
+  for(var r=0;r<cxH;r++){cxGrid[r]=[];for(var c=0;c<cxW;c++)cxGrid[r][c]=grid[r+minR][c+minC];}
+  for(var i=0;i<placed.length;i++){placed[i].r-=minR;placed[i].c-=minC;}
+
+  // assign numbers (sorted by position: top-to-bottom, left-to-right)
+  placed.sort(function(a,b){return a.r!==b.r?a.r-b.r:a.c-b.c;});
+  for(var i=0;i<placed.length;i++) placed[i].num=i+1;
+  return placed;
+}
+
+function canPlace(grid,G,word,r,c,dir){
+  var dr=dir==='v'?1:0, dc=dir==='h'?1:0;
+  // bounds check
+  for(var i=0;i<word.length;i++){
+    var rr=r+i*dr, cc=c+i*dc;
+    if(rr<0||rr>=G||cc<0||cc>=G) return false;
+  }
+  // cell before word must be empty
+  var br=r-dr, bc=c-dc;
+  if(br>=0&&bc>=0&&br<G&&bc<G&&grid[br][bc]!==null) return false;
+  // cell after word must be empty
+  var ar=r+word.length*dr, ac=c+word.length*dc;
+  if(ar>=0&&ac>=0&&ar<G&&ac<G&&grid[ar][ac]!==null) return false;
+
+  var hasIntersection=false;
+  for(var i=0;i<word.length;i++){
+    var rr=r+i*dr, cc=c+i*dc, ch=word[i];
+    if(grid[rr][cc]!==null){
+      if(grid[rr][cc]!==ch) return false; // letter conflict
+      hasIntersection=true; // valid crossing
+    } else {
+      // empty cell: check perpendicular neighbors aren't occupied (no parallel run)
+      if(dir==='h'){
+        if(rr>0&&grid[rr-1][cc]!==null) return false;
+        if(rr<G-1&&grid[rr+1][cc]!==null) return false;
+      } else {
+        if(cc>0&&grid[rr][cc-1]!==null) return false;
+        if(cc<G-1&&grid[rr][cc+1]!==null) return false;
+      }
+    }
+  }
+  return hasIntersection; // must cross at least one existing letter
+}
+
+function countIntersections(grid,G,word,r,c,dir){
+  var dr=dir==='v'?1:0,dc=dir==='h'?1:0,cnt=0;
+  for(var i=0;i<word.length;i++){var rr=r+i*dr,cc=c+i*dc;if(grid[rr][cc]===word[i])cnt++;}
+  return cnt;
+}
+
+function placeWord(grid,word,r,c,dir){
+  var dr=dir==='v'?1:0,dc=dir==='h'?1:0;
+  for(var i=0;i<word.length;i++) grid[r+i*dr][c+i*dc]=word[i];
+}
+
+function renderCrossGrid(){
+  var g=document.getElementById('crossGrid');
+  var box=document.getElementById('crossGridBox') || document.querySelector('.cross-grid-box');
+
+  // calculate cell size to fit
+  var gap=2;
+  var availW=Math.min(window.innerWidth-40, 560);
+  var availH=window.innerHeight*0.48;
+  var cellW=Math.floor((availW-(cxW-1)*gap)/cxW);
+  var cellH=Math.floor((availH-(cxH-1)*gap)/cxH);
+  var cellSz=Math.max(18, Math.min(38, cellW, cellH));
+  var fontSize=Math.max(9, Math.floor(cellSz*0.42));
+  var numSize=Math.max(6, Math.floor(cellSz*0.24));
+
+  g.style.gridTemplateColumns='repeat('+cxW+','+cellSz+'px)';
+  g.style.gridAutoRows=cellSz+'px';
+  g.innerHTML='';
+
+  // map: which cells belong to which word indices
+  var cellMap=[];
+  for(var r=0;r<cxH;r++){cellMap[r]=[];for(var c=0;c<cxW;c++)cellMap[r][c]=[];}
+  for(var wi=0;wi<cxWords.length;wi++){
+    var w=cxWords[wi],dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
+    for(var i=0;i<w.en.length;i++) cellMap[w.r+i*dr][w.c+i*dc].push(wi);
+  }
+  // number positions
+  var numMap={};
+  for(var wi=0;wi<cxWords.length;wi++) numMap[cxWords[wi].r+','+cxWords[wi].c]=cxWords[wi].num;
+
+  for(var r=0;r<cxH;r++){
+    for(var c=0;c<cxW;c++){
+      var d=document.createElement('div');
+      d.style.fontSize=fontSize+'px';
+      if(cxGrid[r][c]===null){
+        d.className='cx-cell empty';
+      } else {
+        d.className='cx-cell letter';
+        d.setAttribute('data-r',r);d.setAttribute('data-c',c);
+        d.id='cx-'+r+'-'+c;
+        var nk=r+','+c;
+        if(numMap[nk]!==undefined){
+          var nm=document.createElement('span');nm.className='cx-num';
+          nm.style.fontSize=numSize+'px';
+          nm.textContent=numMap[nk];
+          d.appendChild(nm);
+        }
+        var wis=cellMap[r][c];
+        (function(wis){
+          d.onclick=function(){
+            var pick=-1;
+            for(var k=0;k<wis.length;k++) if(!cxSolved[wis[k]]){pick=wis[k];break;}
+            if(pick===-1&&wis.length>0) pick=wis[0];
+            if(pick!==-1) selectCrossWord(pick);
+          };
+        })(wis);
+      }
+      g.appendChild(d);
+    }
+  }
+}
+
+function selectCrossWord(idx){
+  cxSelIdx=idx;
+  var w=cxWords[idx];
+  // clear all selections
+  document.querySelectorAll('.cx-cell.sel').forEach(function(c){c.classList.remove('sel')});
+  // highlight this word's cells
+  var dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
+  for(var i=0;i<w.en.length;i++){
+    var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
+    if(el) el.classList.add('sel');
+  }
+  // show clue
+  document.getElementById('crossClueNum').textContent=(w.dir==='h'?'\u2192':'\u2193')+' '+w.num;
+  document.getElementById('crossClueText').textContent=w.tr;
+  // enable input
+  var inp=document.getElementById('crossInput');
+  inp.disabled=cxSolved[idx];
+  inp.value='';
+  inp.placeholder=cxSolved[idx]?'Çözüldü!':'Cevabı yaz... ('+w.en.replace(/ /g,'').length+' harf)';
+  inp.focus();
+  document.getElementById('crossSubmit').disabled=cxSolved[idx];
+}
+
+function crossCheck(){
+  if(cxSelIdx<0) return;
+  var w=cxWords[cxSelIdx];
+  var inp=document.getElementById('crossInput');
+  var guess=inp.value.toLowerCase().replace(/[^a-z]/g,'');
+  var answer=w.en.toLowerCase().replace(/ /g,'');
+
+  var dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
+
+  if(guess===answer){
+    // correct!
+    cxSolved[cxSelIdx]=true;
+    for(var i=0;i<w.en.length;i++){
+      var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
+      if(el){
+        el.classList.remove('sel');
+        el.classList.add('solved');
+        // show letter (remove old text nodes, keep cx-num)
+        var numEl=el.querySelector('.cx-num');
+        el.textContent=w.en[i].toUpperCase();
+        if(numEl) el.insertBefore(numEl,el.firstChild);
+      }
+    }
+    inp.disabled=true; inp.value=''; inp.placeholder='\u2705 Do\u011fru!';
+    document.getElementById('crossSubmit').disabled=true;
+
+    var solvedCnt=cxSolved.filter(Boolean).length;
+    document.getElementById('crossStatus').innerHTML='<span>'+solvedCnt+'/'+cxWords.length+' bulundu</span>';
+
+    if(solvedCnt===cxWords.length){
+      document.getElementById('crossClueText').textContent='\uD83C\uDF89 Tebrikler! T\u00fcm kelimeleri buldun!';
+      document.getElementById('crossClueNum').textContent='';
+      document.getElementById('crossStatus').innerHTML='<span class="cs-ok">\u2705 Bulmaca tamamland\u0131!</span><br><button class="rb-secondary" style="margin-top:8px" onclick="go(\'scrHome\')">Ana Sayfa</button>';
+    }
+  } else {
+    // wrong - flash red
+    for(var i=0;i<w.en.length;i++){
+      var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
+      if(el&&!el.classList.contains('solved')) el.classList.add('wrong-flash');
+    }
+    setTimeout(function(){
+      document.querySelectorAll('.wrong-flash').forEach(function(c){c.classList.remove('wrong-flash')});
+    },600);
+    inp.value=''; inp.focus();
+  }
+}
+
+// crossword Enter key
+document.getElementById('crossInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter') crossCheck();
+});
 
 // ── RESULT ──
 function showResult(){
