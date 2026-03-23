@@ -335,6 +335,56 @@ body {
 }
 .cross-status .cs-ok { color:var(--correct); }
 
+/* ── QUIZ BACK BUTTON ── */
+.quiz-back-btn {
+  position:absolute; top:12px; left:12px; z-index:10;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+  width:36px; height:36px; border-radius:50%; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .2s;
+}
+.quiz-back-btn:hover { border-color:var(--accent); color:var(--text); }
+.quiz-inner, .cross-wrap { position:relative; }
+
+/* ── QUIT MODAL ── */
+.quit-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:100; align-items:center; justify-content:center;
+}
+.quit-overlay.show { display:flex; }
+.quit-modal {
+  background:var(--surface); border:1px solid var(--border); border-radius:18px;
+  padding:28px 24px; text-align:center; max-width:320px; width:90%;
+  animation:fadeUp .3s ease;
+}
+.quit-icon { font-size:32px; margin-bottom:8px; }
+.quit-title { font-size:18px; font-weight:700; margin-bottom:6px; color:var(--text); }
+.quit-desc { font-size:13px; color:var(--text-dim); margin-bottom:20px; }
+.quit-btns { display:flex; gap:10px; justify-content:center; }
+.quit-yes {
+  padding:10px 24px; border-radius:100px; border:none;
+  background:var(--wrong); color:#fff; font-family:inherit; font-size:13px;
+  font-weight:600; cursor:pointer; transition:all .2s;
+}
+.quit-yes:hover { opacity:.85; }
+.quit-no {
+  padding:10px 24px; border-radius:100px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text); font-family:inherit; font-size:13px;
+  font-weight:600; cursor:pointer; transition:all .2s;
+}
+.quit-no:hover { border-color:var(--accent); }
+
+/* ── RELATIVE CLAUSES ── */
+.rc-sentence {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:20px; margin-bottom:14px; font-size:15px; line-height:1.7; color:var(--text);
+  position:relative; overflow:hidden;
+}
+.rc-sentence::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#0984e3,#6c5ce7,#a29bfe); }
+.rc-blank { display:inline-block; min-width:80px; border-bottom:2px dashed var(--accent); color:var(--accent); font-weight:700; text-align:center; padding:0 4px; }
+
+#rcOpts .opt-btn span:last-child { white-space:normal; line-height:1.4; }
+
 /* ── MOBILE ── */
 @media(max-width:600px){
   .home-logo { font-size:34px; }
@@ -390,7 +440,7 @@ body {
       <div class="s-title" id="sTitle"></div>
       <div class="s-desc" id="sDesc"></div>
 
-      <div class="s-label">Mod</div>
+      <div class="s-label" id="modLabel">Mod</div>
       <div class="mode-row" id="modeRow">
         <button class="mode-btn active" data-m="en-to-tr" onclick="pickMode(this)"><div class="mb-icon">&#127468;&#127463;</div><div class="mb-text">İng→Tr</div></button>
         <button class="mode-btn" data-m="tr-to-en" onclick="pickMode(this)"><div class="mb-icon">&#127481;&#127479;</div><div class="mb-text">Tr→İng</div></button>
@@ -434,6 +484,7 @@ body {
   <!-- SCREEN 3: QUIZ -->
   <div class="screen" id="scrQuiz">
     <div class="quiz-inner">
+      <button class="quiz-back-btn" onclick="confirmQuit()">&#8592;</button>
       <div class="quiz-badge" id="qBadge"></div>
       <div class="progress-wrap"><div class="progress-fill" id="progBar"></div></div>
       <div class="quiz-top">
@@ -455,6 +506,7 @@ body {
   <!-- SCREEN 3b: WORDLE -->
   <div class="screen" id="scrWordle">
     <div class="quiz-inner">
+      <button class="quiz-back-btn" onclick="confirmQuit()">&#8592;</button>
       <div class="quiz-badge" id="wBadge"></div>
       <div class="progress-wrap"><div class="progress-fill" id="wProgBar"></div></div>
       <div class="quiz-top">
@@ -479,6 +531,7 @@ body {
   <!-- SCREEN 3c: CROSSWORD -->
   <div class="screen" id="scrCross">
     <div class="cross-wrap">
+      <button class="quiz-back-btn" onclick="confirmQuit()">&#8592;</button>
       <div class="cross-clue-bar" id="crossClueBar">
         <span class="cross-clue-num" id="crossClueNum"></span>
         <span class="cross-clue-text" id="crossClueText">Bir kelimeye tıklayın</span>
@@ -491,6 +544,22 @@ body {
         <button class="w-submit" id="crossSubmit" onclick="crossCheck()" disabled>&#10003;</button>
       </div>
       <div class="cross-status" id="crossStatus"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3d: RELATIVE CLAUSES / CONJUNCTIONS -->
+  <div class="screen" id="scrRelative" style="overflow-y:auto;">
+    <div class="quiz-inner">
+      <button class="quiz-back-btn" onclick="confirmQuit()">&#8592;</button>
+      <div class="quiz-badge">Relative Clauses</div>
+      <div class="progress-wrap"><div class="progress-fill" id="rcProgBar"></div></div>
+      <div class="quiz-top">
+        <div class="quiz-counter">Soru <span id="rcNum">1</span> / <span id="rcTot">20</span></div>
+        <div class="quiz-score"><span class="dot"></span><span id="rcScore">0</span> doğru</div>
+      </div>
+      <div class="rc-sentence" id="rcSentence"></div>
+      <div class="opts" id="rcOpts"></div>
+      <button class="nxt-btn" id="rcNxt" onclick="rcNext()">Sonraki Soru &#8594;</button>
     </div>
   </div>
 
@@ -510,6 +579,19 @@ body {
       <div class="res-btns">
         <button class="rb-primary" onclick="startQuiz()">Tekrar Çöz</button>
         <button class="rb-secondary" onclick="go('scrHome')">Ana Sayfa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIT CONFIRM MODAL -->
+  <div class="quit-overlay" id="quitOverlay" onclick="closeQuit()">
+    <div class="quit-modal" onclick="event.stopPropagation()">
+      <div class="quit-icon">&#9888;</div>
+      <div class="quit-title">Emin misin?</div>
+      <div class="quit-desc">Geri dönersen ilerleme kaybolacak.</div>
+      <div class="quit-btns">
+        <button class="quit-yes" onclick="doQuit()">Evet, çık</button>
+        <button class="quit-no" onclick="closeQuit()">Hayır, devam et</button>
       </div>
     </div>
   </div>
@@ -859,6 +941,57 @@ const WORD_LISTS = {
       {en:"husks",tr:"kabuklar (mısır)"},
       {en:"nutritive",tr:"besleyici, besin değeri olan"},
       {en:"kernels",tr:"çekirdekler, taneler"}
+    ]
+  }
+
+  ,"alpin-v3": {
+    title: "Alp'in Bilmedikleri v3",
+    desc: "2021 Y\u00d6KD\u0130L s\u0131nav\u0131ndan kelimeler",
+    icon: "\uD83D\uDE80",
+    color: "orange",
+    words: [
+      {en:"inevitably",tr:"kaçınılmaz olarak, muhakkak"},
+      {en:"nonetheless",tr:"buna rağmen, yine de"},
+      {en:"individuals",tr:"bireyler, kişiler"},
+      {en:"seize",tr:"tutmak, kavramak, ele geçirmek"},
+      {en:"withstand",tr:"dayanmak, karşı koymak"},
+      {en:"sizeable",tr:"oldukça büyük, kayda değer"},
+      {en:"though",tr:"her ne kadar, -e karşın, ama"},
+      {en:"puzzled",tr:"şaşırtmak, kafasını karıştırmak"},
+      {en:"likewise",tr:"aynı şekilde, benzer biçimde"},
+      {en:"deities",tr:"tanrılar, ilahi varlıklar"},
+      {en:"defects",tr:"kusurlar, bozukluklar, hatalar"},
+      {en:"initial",tr:"başlangıçtaki, ilk"},
+      {en:"perished",tr:"hayatını kaybetmek, telef olmak"},
+      {en:"severity",tr:"şiddet, ağırlık, ciddiyet"},
+      {en:"hence",tr:"bu nedenle, dolayısıyla"},
+      {en:"tallies",tr:"çentik sayım işaretleri, sayım yöntemi"},
+      {en:"eventually",tr:"sonunda, zamanla, eninde sonunda"},
+      {en:"numerals",tr:"rakamlar, sayısal semboller"},
+      {en:"excessively",tr:"aşırı biçimde, gereğinden fazla"},
+      {en:"render",tr:"yapmak, kılmak, dönüştürmek"},
+      {en:"aided",tr:"yardım etmek, desteklemek"},
+      {en:"willingness",tr:"isteklilik, gönüllülük"},
+      {en:"deviation",tr:"sapma, normdan uzaklaşma"},
+      {en:"depleted",tr:"tükenmiş, azalmış"},
+      {en:"undergo",tr:"geçirmek, maruz kalmak"},
+      {en:"distinctive",tr:"ayırt edici, kendine özgü, belirgin"},
+      {en:"redundant",tr:"gereksiz, fazlalık"},
+      {en:"adverse",tr:"olumsuz, zararlı, aleyhte"},
+      {en:"abruptly",tr:"aniden, birdenbire, beklenmedik şekilde"},
+      {en:"adequate",tr:"yeterli, uygun, elverişli"},
+      {en:"towards",tr:"-e doğru, -e karşı"},
+      {en:"taking up",tr:"ele almak, meşgul olmak, benimsemek"},
+      {en:"in pursuit of",tr:"peşinde, arayışında"},
+      {en:"impaired",tr:"zayıflamış, bozulmuş"},
+      {en:"favouring",tr:"desteklemek, tercih etmek"},
+      {en:"disapproving",tr:"onaylamamak, karşı çıkmak"},
+      {en:"overcritical",tr:"aşırı eleştirel"},
+      {en:"figure out",tr:"çözmek, anlamak, hesaplamak"},
+      {en:"vital",tr:"hayati, çok önemli, yaşamsal"},
+      {en:"deliberate",tr:"kasıtlı, bilinçli, planlı"},
+      {en:"trivial",tr:"önemsiz, değersiz, ufak tefek"},
+      {en:"exposure",tr:"maruz kalma, maruziyet"}
     ]
   }
 
@@ -1516,137 +1649,6 @@ const WORD_LISTS = {
       {en:"yield",tr:"vermek, verim, ürün"}
     ]
   }
-  ,"baglaclar": {
-    title: "Ba\u011fla\u00e7lar & Ba\u011flay\u0131c\u0131lar",
-    desc: "Y\u00d6KD\u0130L i\u00e7in t\u00fcm ba\u011fla\u00e7, edatlar ve ge\u00e7i\u015f ifadeleri",
-    icon: "\uD83D\uDD17",
-    color: "orange",
-    words: [
-      {en:"if",tr:"eğer, -sa/-se"},
-      {en:"unless",tr:"olmadıkça, -medikçe"},
-      {en:"until",tr:"kadar, -inceye kadar"},
-      {en:"while",tr:"iken, süresince; oysa"},
-      {en:"as soon as",tr:"hemen, -ir -mez"},
-      {en:"as long as",tr:"olduğu sürece, -dığı sürece"},
-      {en:"since",tr:"beri, -den beri; çünkü"},
-      {en:"once",tr:"bir kez, bir kere ... -ince"},
-      {en:"before",tr:"önce, -den önce"},
-      {en:"after",tr:"sonra, -den sonra"},
-      {en:"when",tr:"zaman, -dığında"},
-      {en:"whenever",tr:"her ne zaman, -dığında"},
-      {en:"by the time",tr:"zamanında, -e kadar"},
-      {en:"meanwhile",tr:"bu arada, bu sırada"},
-      {en:"subsequently",tr:"ardından, daha sonra"},
-      {en:"because",tr:"çünkü"},
-      {en:"because of",tr:"yüzünden, nedeniyle"},
-      {en:"as",tr:"olarak; çünkü; iken"},
-      {en:"due to",tr:"nedeniyle, yüzünden"},
-      {en:"owing to",tr:"nedeniyle, -den dolayı"},
-      {en:"thanks to",tr:"sayesinde, -den dolayı"},
-      {en:"therefore",tr:"bu nedenle, bu yüzden"},
-      {en:"thus",tr:"böylece, bu şekilde"},
-      {en:"hence",tr:"bu nedenle, dolayısıyla"},
-      {en:"consequently",tr:"sonuç olarak, bunun sonucunda"},
-      {en:"as a result",tr:"sonuç olarak"},
-      {en:"as a consequence of",tr:"sonucunda, -in sonucu olarak"},
-      {en:"accordingly",tr:"buna göre, bu doğrultuda"},
-      {en:"thereby",tr:"bu sayede, böylece"},
-      {en:"so that",tr:"böylece, amacıyla"},
-      {en:"in order to",tr:"amacıyla, için"},
-      {en:"results in",tr:"ile sonuçlanır, yol açar"},
-      {en:"leads to",tr:"yol açmak, neden olmak"},
-      {en:"gives rise to",tr:"yol açmak, ortaya çıkmasına neden olmak"},
-      {en:"but",tr:"ama, fakat, ancak"},
-      {en:"however",tr:"ancak, bununla birlikte"},
-      {en:"although",tr:"rağmen, her ne kadar"},
-      {en:"though",tr:"rağmen, -e karşın"},
-      {en:"even though",tr:"olmasına rağmen"},
-      {en:"even if",tr:"-se bile, olsa bile"},
-      {en:"despite",tr:"-e rağmen"},
-      {en:"in spite of",tr:"-e rağmen, -e karşın"},
-      {en:"nevertheless",tr:"buna rağmen, yine de"},
-      {en:"nonetheless",tr:"buna rağmen, yine de"},
-      {en:"whereas",tr:"oysa ki, iken"},
-      {en:"on the other hand",tr:"öte yandan, diğer taraftan"},
-      {en:"in contrast",tr:"buna karşın, aksine"},
-      {en:"on the contrary",tr:"aksine, tam tersine"},
-      {en:"contrary to",tr:"-in aksine"},
-      {en:"conversely",tr:"tersine, aksine"},
-      {en:"unlike",tr:"-den farklı olarak"},
-      {en:"rather than",tr:"-den ziyade, yerine"},
-      {en:"instead of",tr:"yerine, -in yerine"},
-      {en:"yet",tr:"ancak, yine de, henüz"},
-      {en:"still",tr:"hâlâ, yine de"},
-      {en:"and",tr:"ve"},
-      {en:"also",tr:"ayrıca, da/de"},
-      {en:"furthermore",tr:"ayrıca, üstelik"},
-      {en:"moreover",tr:"üstelik, ayrıca, dahası"},
-      {en:"in addition to",tr:"-e ek olarak"},
-      {en:"besides",tr:"bunun yanı sıra, ayrıca"},
-      {en:"as well as",tr:"yanı sıra, hem de"},
-      {en:"not only / but also",tr:"sadece ... değil, aynı zamanda"},
-      {en:"both / and",tr:"hem ... hem de"},
-      {en:"neither / nor",tr:"ne ... ne de"},
-      {en:"either / or",tr:"ya ... ya da"},
-      {en:"likewise",tr:"aynı şekilde, benzer biçimde"},
-      {en:"similarly",tr:"benzer şekilde"},
-      {en:"what is more",tr:"dahası, üstelik"},
-      {en:"provided that",tr:"şartıyla, koşuluyla"},
-      {en:"on condition that",tr:"şartıyla, koşuluyla"},
-      {en:"whether",tr:"olup olmadığı, ister ... ister"},
-      {en:"whether or not",tr:"olsun ya da olmasın"},
-      {en:"in case",tr:"durumunda, -e karşı"},
-      {en:"supposing",tr:"farz edelim ki, varsayalım ki"},
-      {en:"otherwise",tr:"aksi takdirde, yoksa"},
-      {en:"just as",tr:"tıpkı ... gibi"},
-      {en:"as if",tr:"sanki, -mış gibi"},
-      {en:"as though",tr:"sanki, -mış gibi"},
-      {en:"like",tr:"-e benzer, gibi"},
-      {en:"compared to",tr:"-e kıyasla, ile karşılaştırıldığında"},
-      {en:"in comparison with",tr:"ile karşılaştırıldığında"},
-      {en:"in brief",tr:"kısaca, özetle"},
-      {en:"in short",tr:"kısacası"},
-      {en:"in summary",tr:"özetle, özet olarak"},
-      {en:"in conclusion",tr:"sonuç olarak"},
-      {en:"to sum up",tr:"özetlemek gerekirse"},
-      {en:"overall",tr:"genel olarak"},
-      {en:"all in all",tr:"sonuçta, her şey düşünüldüğünde"},
-      {en:"on the whole",tr:"genel olarak, bütünüyle"},
-      {en:"for instance",tr:"örneğin"},
-      {en:"for example",tr:"örneğin"},
-      {en:"such as",tr:"gibi, örneğin"},
-      {en:"namely",tr:"yani, şöyle ki"},
-      {en:"that is",tr:"yani, başka bir deyişle"},
-      {en:"in other words",tr:"başka bir deyişle"},
-      {en:"specifically",tr:"özellikle, spesifik olarak"},
-      {en:"in particular",tr:"özellikle, bilhassa"},
-      {en:"so as to",tr:"amacıyla, için"},
-      {en:"for the purpose of",tr:"amacıyla"},
-      {en:"with the aim of",tr:"amacıyla, hedefiyle"},
-      {en:"in pursuit of",tr:"peşinde, arayışında"},
-      {en:"where",tr:"nerede, -dığı yer"},
-      {en:"wherever",tr:"her nerede, nereye ... -sa"},
-      {en:"beneath",tr:"altında"},
-      {en:"within",tr:"içinde, dahilinde"},
-      {en:"across",tr:"boyunca, karşıdan karşıya"},
-      {en:"throughout",tr:"boyunca, her yerinde"},
-      {en:"among",tr:"arasında"},
-      {en:"between",tr:"arasında (ikisi)"},
-      {en:"indeed",tr:"gerçekten, nitekim"},
-      {en:"in fact",tr:"aslında, gerçekte"},
-      {en:"admittedly",tr:"kabul edildiği üzere"},
-      {en:"on purpose",tr:"kasıtlı olarak, bilerek"},
-      {en:"remarkably",tr:"dikkat çekici biçimde"},
-      {en:"apparently",tr:"görünüşe göre, anlaşılan"},
-      {en:"presumably",tr:"muhtemelen, büyük olasılıkla"},
-      {en:"primarily",tr:"öncelikle, esas olarak"},
-      {en:"predominantly",tr:"ağırlıklı olarak, çoğunlukla"},
-      {en:"particularly",tr:"özellikle, bilhassa"},
-      {en:"significantly",tr:"önemli ölçüde"},
-      {en:"inevitably",tr:"kaçınılmaz olarak"},
-      {en:"undoubtedly",tr:"kuşkusuz, şüphesiz"}
-    ]
-  }
 
   ,"phrasal-verbs": {
     title: "\u0130fadeler & Phrasal Verbs",
@@ -1785,111 +1787,210 @@ const WORD_LISTS = {
     ]
   }
 
-  ,"baglaclar-v2": {
-    title: "Ba\u011fla\u00e7lar v2",
-    desc: "2021 Y\u00d6KD\u0130L ge\u00e7i\u015f ifadeleri",
-    icon: "\uD83D\uDD04",
-    color: "green",
+  ,"conj-yokdil": {
+    title: "Conjunctions in Y\u00d6KD\u0130L",
+    desc: "PDF'deki t\u00fcm ba\u011fla\u00e7 ve ge\u00e7i\u015f ifadeleri",
+    icon: "\uD83D\uDCDD",
+    color: "orange",
     words: [
+      {en:"while",tr:"iken, süresince"},
+      {en:"whereas",tr:"oysa ki, -e karşın"},
+      {en:"although",tr:"her ne kadar, rağmen"},
+      {en:"unless",tr:"olmadıkça, -medikçe"},
+      {en:"since",tr:"beri, -den beri; çünkü"},
+      {en:"despite",tr:"rağmen"},
       {en:"however",tr:"ancak, bununla birlikte"},
-      {en:"on the contrary",tr:"aksine, tam tersine"},
-      {en:"whereas",tr:"oysa ki, -iken"},
-      {en:"although",tr:"her ne kadar, -se de"},
-      {en:"even though",tr:"her ne kadar, -se de"},
-      {en:"even so",tr:"buna rağmen, yine de"},
-      {en:"much as",tr:"her ne kadar -se de"},
-      {en:"despite",tr:"-e rağmen"},
-      {en:"unlike",tr:"-in aksine, -den farklı olarak"},
-      {en:"yet",tr:"yine de, ama"},
-      {en:"nevertheless",tr:"buna rağmen, yine de"},
-      {en:"nonetheless",tr:"buna rağmen, yine de"},
-      {en:"in spite of",tr:"-e rağmen"},
-      {en:"on the other hand",tr:"öte yandan"},
-      {en:"in contrast",tr:"aksine, buna karşın"},
-      {en:"by contrast",tr:"buna karşılık"},
-      {en:"accordingly",tr:"buna göre, bu nedenle"},
-      {en:"thus",tr:"bu nedenle, dolayısıyla"},
-      {en:"therefore",tr:"bu nedenle, dolayısıyla"},
-      {en:"as a result",tr:"sonuç olarak"},
-      {en:"because",tr:"çünkü"},
-      {en:"since",tr:"-den beri, -dığı için"},
-      {en:"thanks to",tr:"-nin sayesinde"},
-      {en:"consequently",tr:"sonuç olarak, dolayısıyla"},
-      {en:"hence",tr:"bundan dolayı, bu yüzden"},
-      {en:"due to",tr:"-den dolayı, -nin nedeniyle"},
-      {en:"as a consequence",tr:"sonuç olarak"},
-      {en:"in fact",tr:"aslında, gerçekte"},
-      {en:"that is",tr:"yani, şöyle ki"},
-      {en:"in other words",tr:"başka bir deyişle"},
-      {en:"in short",tr:"kısaca, özetle"},
-      {en:"in particular",tr:"özellikle, bilhassa"},
-      {en:"for example",tr:"örneğin"},
-      {en:"for instance",tr:"örneğin"},
-      {en:"such as",tr:"gibi, örneğin"},
-      {en:"furthermore",tr:"dahası, üstelik"},
-      {en:"moreover",tr:"dahası, bunun yanı sıra"},
-      {en:"what is more",tr:"dahası, üstelik"},
-      {en:"in addition",tr:"ek olarak, bunun yanında"},
-      {en:"in addition to",tr:"-e ek olarak"},
-      {en:"besides",tr:"bunun dışında, ayrıca"},
-      {en:"namely",tr:"yani, şöyle ki"},
-      {en:"even if",tr:"olsa bile"},
-      {en:"as if",tr:"sanki, -mış gibi"},
-      {en:"as though",tr:"sanki, -mış gibi"},
-      {en:"given that",tr:"göz önünde bulundurulduğunda"},
-      {en:"provided",tr:"şartıyla, -dığı takdirde"},
-      {en:"provided that",tr:"şartıyla, -dığı takdirde"},
-      {en:"unless",tr:"-medikçe, -mezse"},
       {en:"otherwise",tr:"aksi takdirde, yoksa"},
-      {en:"so that",tr:"-sın diye, -mek için"},
-      {en:"in order that",tr:"-mek için, -sın diye"},
-      {en:"as long as",tr:"-dığı sürece"},
-      {en:"in case",tr:"-dığı takdirde, ihtimaline karşı"},
-      {en:"assuming that",tr:"varsayarak, farz ederek"},
-      {en:"while",tr:"-iken, sırada"},
-      {en:"by the time",tr:"-e kadar, -dığında"},
-      {en:"as soon as",tr:"-er ermez, -dığında"},
-      {en:"no sooner... than",tr:"-ir -mez, hemen ardından"},
+      {en:"in short",tr:"kısaca, özetle"},
+      {en:"in other words",tr:"başka bir deyişle"},
+      {en:"for example",tr:"örneğin"},
+      {en:"such as",tr:"gibi, örneğin"},
+      {en:"because of",tr:"yüzünden, nedeniyle"},
+      {en:"in case of",tr:"durumunda"},
+      {en:"contrary to",tr:"aksine"},
+      {en:"in comparison with",tr:"ile karşılaştırıldığında"},
+      {en:"similar to",tr:"benzer şekilde"},
+      {en:"as opposed to",tr:"aksine, karşıt olarak"},
+      {en:"in need of",tr:"ihtiyacı olan"},
+      {en:"compared to",tr:"ile karşılaştırıldığında"},
+      {en:"because",tr:"çünkü"},
+      {en:"supposing that",tr:"farz edelim ki"},
+      {en:"until",tr:"kadar, -inceye kadar"},
+      {en:"just as",tr:"tıpkı gibi"},
+      {en:"not only / but also",tr:"sadece değil aynı zamanda"},
+      {en:"the more / the more",tr:"ne kadar çok ... o kadar çok"},
+      {en:"rather / than",tr:"yerine, -den ziyade"},
+      {en:"whether / or",tr:"ister ... ister"},
+      {en:"as / as",tr:"kadar, ile aynı"},
+      {en:"thanks to",tr:"sayesinde"},
+      {en:"now that",tr:"artık, madem ki"},
+      {en:"due to",tr:"nedeniyle, yüzünden"},
+      {en:"both / and",tr:"hem ... hem de"},
+      {en:"neither / nor",tr:"ne ... ne de"},
+      {en:"in case",tr:"durumunda, ihtimaline karşı"},
+      {en:"so that",tr:"böylece, amacıyla"},
+      {en:"even though",tr:"rağmen, olsa bile"},
+      {en:"as long as",tr:"olduğu sürece"},
       {en:"once",tr:"bir kez, -dıktan sonra"},
-      {en:"subsequently",tr:"daha sonra, akabinde"},
-      {en:"prior to",tr:"-den önce"},
-      {en:"not only... but also",tr:"sadece değil aynı zamanda"},
-      {en:"rather than",tr:"-dan ziyade, yerine"},
-      {en:"instead of",tr:"yerine, -in yerine"},
-      {en:"as opposed to",tr:"-nin aksine, -ye karşıt olarak"},
-      {en:"in conclusion",tr:"sonuç olarak"},
-      {en:"to sum up",tr:"özetle"},
-      {en:"in summary",tr:"özetle, kısaca"},
-      {en:"still",tr:"yine de"},
-      {en:"all the same",tr:"yine de"},
-      {en:"albeit",tr:"her ne kadar"},
-      {en:"conversely",tr:"tersine"},
-      {en:"by comparison",tr:"karşılaştırıldığında"},
-      {en:"because of",tr:"-den dolayı"},
-      {en:"owing to",tr:"-den dolayı"},
-      {en:"result in",tr:"ile sonuçlanmak"},
-      {en:"lead to",tr:"yol açmak"},
-      {en:"bring about",tr:"neden olmak"},
-      {en:"likewise",tr:"benzer şekilde"},
+      {en:"as if",tr:"sanki, -mış gibi"},
+      {en:"in addition to",tr:"ek olarak"},
+      {en:"even if",tr:"olsa bile"},
+      {en:"therefore",tr:"bu nedenle, dolayısıyla"},
+      {en:"for instance",tr:"örneğin"},
+      {en:"in contrast",tr:"buna karşın, aksine"},
+      {en:"likewise",tr:"aynı şekilde"},
+      {en:"moreover",tr:"üstelik, dahası"},
+      {en:"in spite of",tr:"rağmen"},
+      {en:"as a result of",tr:"sonucunda"},
+      {en:"owing to",tr:"nedeniyle, dolayı"},
+      {en:"even after",tr:"sonra bile"},
+      {en:"provided",tr:"şartıyla, koşuluyla"},
+      {en:"consequently",tr:"sonuç olarak"},
+      {en:"nevertheless",tr:"buna rağmen, yine de"},
+      {en:"when",tr:"zaman, -dığında"},
+      {en:"if",tr:"eğer, -sa/-se"},
+      {en:"as though",tr:"sanki, -mış gibi"},
       {en:"similarly",tr:"benzer şekilde"},
-      {en:"correspondingly",tr:"buna paralel olarak"},
-      {en:"indeed",tr:"gerçekten, hatta"},
-      {en:"above all",tr:"her şeyden önce"},
-      {en:"whether or not",tr:"olup olmadığına bakılmaksızın"},
-      {en:"in the event that",tr:"eğer olursa"},
-      {en:"on condition that",tr:"şartıyla"},
-      {en:"meanwhile",tr:"bu sırada"},
-      {en:"at the same time",tr:"aynı zamanda"},
-      {en:"eventually",tr:"sonunda"},
-      {en:"thereafter",tr:"ondan sonra"},
-      {en:"formerly",tr:"eskiden"},
-      {en:"overall",tr:"genel olarak"},
-      {en:"ultimately",tr:"nihayetinde"},
-      {en:"in brief",tr:"kısaca"},
-      {en:"on the whole",tr:"genel olarak"}
+      {en:"on behalf of",tr:"adına, namına"},
+      {en:"according to",tr:"göre"},
+      {en:"regardless of",tr:"bakılmaksızın"},
+      {en:"prior to",tr:"önce"},
+      {en:"in addition",tr:"ek olarak, ayrıca"},
+      {en:"besides",tr:"bunun yanı sıra, ayrıca"},
+      {en:"on the other hand",tr:"öte yandan"},
+      {en:"on the contrary",tr:"aksine, tam tersine"},
+      {en:"as a result",tr:"sonuç olarak"},
+      {en:"in fact",tr:"aslında, gerçekte"},
+      {en:"but",tr:"ama, fakat, ancak"},
+      {en:"yet",tr:"ancak, yine de, henüz"},
+      {en:"and",tr:"ve, ile"},
+      {en:"or",tr:"veya, ya da"},
+      {en:"so",tr:"bu yüzden, dolayısıyla"},
+      {en:"though",tr:"her ne kadar, rağmen, -e karşın"},
+      {en:"after",tr:"sonra, -den sonra"},
+      {en:"before",tr:"önce, -den önce"},
+      {en:"where",tr:"nerede, -dığı yer"},
+      {en:"provided that",tr:"şartıyla, -dığı takdirde"},
+      {en:"either / or",tr:"ya ... ya da"},
+      {en:"too / to",tr:"çok ... -mek için"},
+      {en:"so / that",tr:"o kadar ... ki"},
+      {en:"such / that",tr:"öyle ... ki"},
+      {en:"more / than",tr:"daha ... -den"},
+      {en:"as well as",tr:"yanı sıra, ile birlikte"}
     ]
   }
 };
+
+// ── RELATIVE CLAUSE QUESTION BANK ──
+var RELATIVE_QS = [
+  {q:"The scientist ---- discovered penicillin was awarded the Nobel Prize.",o:["who","which","whose","where","whom"],a:"who"},
+  {q:"Researchers ---- study marine biology often spend months at sea.",o:["whom","which","who","whose","where"],a:"who"},
+  {q:"The engineer ---- designed the bridge received international recognition.",o:["which","who","whose","where","whom"],a:"who"},
+  {q:"Students ---- fail to submit their thesis on time will not graduate.",o:["whose","which","who","where","whom"],a:"who"},
+  {q:"The biologist ---- observations changed our understanding of evolution spent years in the Gal\u00e1pagos.",o:["who","whose","which","where","whom"],a:"whose"},
+  {q:"The experiment, ---- lasted three months, produced unexpected results.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"Carbon dioxide is a greenhouse gas ---- contributes to global warming.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The telescope, ---- was launched in 1990, has captured thousands of images.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"Photosynthesis is the process ---- plants convert sunlight into energy.",o:["on which","from which","at which","for which","in which"],a:"in which"},
+  {q:"The theory ---- Einstein proposed revolutionised modern physics.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The planet ---- orbit is closest to the Sun experiences extreme temperatures.",o:["which","who","whose","where","that"],a:"whose"},
+  {q:"Animals ---- habitats are destroyed are forced to migrate.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"The researcher ---- findings were published in Nature became well known.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"Silicon refers to organic compounds ---- molecules consist of organic groups.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"Trees ---- roots extend deep into the soil are more resistant to drought.",o:["which","who","whose","where","that"],a:"whose"},
+  {q:"The country ---- economy depends on oil exports faces serious challenges.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"Patients ---- symptoms persist should consult a specialist.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"The laboratory ---- the vaccine was developed is located in Cambridge.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"Tropical rainforests are ecosystems ---- biodiversity is remarkably high.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The region ---- the earthquake struck had poor infrastructure.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"Antarctica is the only continent ---- no indigenous human population exists.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The university ---- she conducted her research is in Germany.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The manner ---- the data was collected raised ethical concerns.",o:["for which","at which","to which","in which","under which"],a:"in which"},
+  {q:"The environment ---- organisms evolve determines their traits.",o:["from which","for which","of which","in which","by which"],a:"in which"},
+  {q:"The century ---- modern chemistry was established saw many breakthroughs.",o:["for which","under which","on which","by which","in which"],a:"in which"},
+  {q:"The conditions ---- the experiment was performed must be replicated.",o:["to which","of which","by which","under which","on which"],a:"under which"},
+  {q:"The study describes the mechanism ---- cells communicate with each other.",o:["on which","from which","of which","by which","to which"],a:"by which"},
+  {q:"The rate ---- glaciers are melting has increased dramatically.",o:["from which","by which","at which","for which","on which"],a:"at which"},
+  {q:"The temperature ---- water boils depends on atmospheric pressure.",o:["in which","at which","on which","to which","under which"],a:"at which"},
+  {q:"The degree ---- pollution affects marine life varies by region.",o:["for which","to which","in which","on which","under which"],a:"to which"},
+  {q:"The extent ---- deforestation has occurred is alarming.",o:["at which","to which","on which","of which","in which"],a:"to which"},
+  {q:"The Jurassic period was an era ---- dinosaurs dominated the Earth.",o:["which","who","whose","where","when"],a:"when"},
+  {q:"The 18th century was a time ---- major scientific discoveries were made.",o:["which","who","whose","where","when"],a:"when"},
+  {q:"The professor ---- the students admired retired last year.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The physician to ---- the patient was referred specialises in neurology.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The colleague with ---- she collaborated received a grant.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The compound, the structure ---- was unknown, was finally identified.",o:["on which","for which","of which","at which","from which"],a:"of which"},
+  {q:"The forest, most ---- has been cleared, once covered the entire valley.",o:["for which","by which","to which","of which","under which"],a:"of which"},
+  {q:"The report contains data, much ---- was collected during field studies.",o:["from which","on which","to which","under which","of which"],a:"of which"},
+  {q:"The only element ---- can exist in three states at room temperature is water.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"It was the first study ---- demonstrated a clear link between diet and cancer.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"Everything ---- scientists know about black holes comes from indirect observation.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The soil ---- nutrients have been depleted cannot support crops.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The method ---- researchers used involved genome sequencing.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The volcano, ---- eruption destroyed the city, had been dormant for centuries.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The wavelength ---- visible light is emitted determines its colour.",o:["under which","to which","in which","at which","by which"],a:"at which"},
+  {q:"The process ---- fossil fuels are formed takes millions of years.",o:["at which","by which","in which","of which","from which"],a:"by which"},
+  {q:"Coral reefs are habitats ---- thousands of marine species coexist.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The bacteria ---- cause food poisoning can multiply rapidly in warm conditions.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The samples, all ---- were contaminated, had to be discarded.",o:["to which","on which","of which","for which","at which"],a:"of which"},
+  {q:"The astronomer ---- calculations predicted the existence of Neptune never saw it.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"The device ---- measures seismic activity is called a seismograph.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The ocean floor, from ---- samples were taken, revealed ancient fossils.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The speed ---- light travels is approximately 300,000 km per second.",o:["at which","to which","under which","from which","in which"],a:"at which"},
+  {q:"Enzymes are proteins ---- speed up chemical reactions in the body.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The island ---- Darwin collected specimens is now a UNESCO site.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The surgeon ---- performed the operation had decades of experience.",o:["whom","which","who","whose","where"],a:"who"},
+  {q:"The cave ---- ancient paintings were found dates back 40,000 years.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The mineral ---- hardness is measured on the Mohs scale is diamond.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The river ---- flows through six countries is the Danube.",o:["who","which","whose","where","that"],a:"which"},
+  {q:"The hypothesis ---- the scientist proposed was later disproven.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The astronauts to ---- the mission was assigned trained for two years.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The substance ---- the drug is derived from is found in tropical plants.",o:["from which","by which","under which","for which","of which"],a:"from which"},
+  {q:"The frequency ---- earthquakes occur varies by tectonic region.",o:["in which","of which","by which","at which","on which"],a:"at which"},
+  {q:"The foundation on ---- modern genetics is built was laid by Mendel.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The disease ---- symptoms include fever and fatigue is highly contagious.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The layer of atmosphere ---- the ozone is found is the stratosphere.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The satellite ---- orbit passes over the poles collects global data.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The technique ---- scientists clone organisms involves nuclear transfer.",o:["of which","for which","to which","from which","by which"],a:"by which"},
+  {q:"The museum ---- the fossil collection is displayed attracts millions of visitors.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The element ---- atomic number is 79 is gold.",o:["which","who","whose","where","that"],a:"whose"},
+  {q:"It is the gravity of the Moon ---- causes tides on Earth.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The material from ---- the aircraft is built must withstand extreme stress.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The patients for ---- the drug was prescribed showed rapid improvement.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The principle according to ---- objects fall at the same rate was proven by Galileo.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The altitude ---- aircraft typically cruise is around 35,000 feet.",o:["of which","from which","for which","at which","under which"],a:"at which"},
+  {q:"Mars is a planet ---- surface shows evidence of ancient water flows.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The channel through ---- blood flows to the heart can become blocked.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"Photovoltaic cells are devices ---- convert sunlight directly into electricity.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The ecosystem ---- biodiversity is greatest is the tropical rainforest.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The geologist ---- research focuses on plate tectonics published a new study.",o:["who","which","whose","where","whom"],a:"whose"},
+  {q:"The era during ---- the Industrial Revolution took place transformed society.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The pressure ---- the material breaks is called its tensile strength.",o:["by which","of which","at which","from which","in which"],a:"at which"},
+  {q:"The colleague ---- she worked with for years moved to another university.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The minerals ---- the human body requires include calcium and iron.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The concept ---- natural selection is based was developed by Darwin.",o:["for which","on which","from which","at which","to which"],a:"on which"},
+  {q:"Glaciers, ---- size has decreased by 30%, are indicators of climate change.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The laboratory ---- capacity has recently doubled can now run parallel experiments.",o:["which","who","whose","where","whom"],a:"whose"},
+  {q:"The depth ---- marine organisms can survive depends on light penetration.",o:["by which","at which","on which","for which","of which"],a:"at which"},
+  {q:"The reason ---- the experiment failed was contamination of the samples.",o:["under which","for which","to which","of which","in which"],a:"for which"},
+  {q:"The biome ---- precipitation is lowest is the desert.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The tools with ---- early humans hunted were made of stone.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"DNA is the molecule ---- carries genetic information in all living organisms.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The period during ---- the Earth's temperature rose sharply is well documented.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The scientist by ---- the law of gravity was formulated is Isaac Newton.",o:["who","which","whose","where","whom"],a:"whom"},
+  {q:"The wetlands ---- migratory birds rest during their journey must be protected.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"The factor ---- most influences plant growth is the availability of water.",o:["who","which","whose","where","that"],a:"that"},
+  {q:"The insects ---- pollinate crops are essential for food production.",o:["who","whose","which","where","that"],a:"that"},
+  {q:"The glacier from ---- the river originates is retreating rapidly.",o:["who","which","whose","where","whom"],a:"which"},
+  {q:"The habitat ---- these endangered species breed is under threat.",o:["which","who","whose","where","whom"],a:"where"},
+  {q:"Researchers ---- are based at the University of Tokyo have discovered that larger earthquakes are more likely to occur when the moon is nearly full or new.",o:["who","whose","in which","what","where"],a:"who"},
+  {q:"The underlying principle of spam filters is ---- if you e-mail enough people, some are likely to be interested in or taken in by your offer.",o:["that","when","which","what","where"],a:"that"},
+  {q:"A new theory claims that the cosmos is full of unseen particle families ---- do not interact with each other.",o:["whose","in which","where","when","that"],a:"that"},
+  {q:"Physicists observe the phenomena of nature and try to find patterns ---- relate these phenomena.",o:["in which","when","where","which","what"],a:"which"},
+  {q:"Fat cells contain enzymes that can break down fat into glycerol and fatty acids, ---- can be transported in the blood to the liver.",o:["whether","how","which","what","where"],a:"which"},
+  {q:"Scientists connected the LEDs to a sensor ---- measures blood oxygen levels.",o:["how","why","when","that","where"],a:"that"},
+  {q:"A desert is a region ---- the potential evaporation is greater than the average annual precipitation.",o:["when","that","where","which","whose"],a:"where"}
+];
 
 // ── STATE ──
 var listId=null, mode='en-to-tr', qCount=20, speedOn=false, timerSec=10;
@@ -1907,7 +2008,8 @@ function go(id){
 function renderHome(){
   var g=document.getElementById('listGrid'); g.innerHTML='';
   var entries=Object.entries(WORD_LISTS);
-  g.className='list-grid'+(entries.length%2===1?' list-grid-5':'');
+  var totalCards=entries.length+1; // +1 for relative clauses
+  g.className='list-grid'+(totalCards%2===1?' list-grid-5':'');
   for(var i=0;i<entries.length;i++){
     var id=entries[i][0], L=entries[i][1];
     var d=document.createElement('div'); d.className='list-card'; d.setAttribute('data-color',L.color||'purple');
@@ -1915,12 +2017,22 @@ function renderHome(){
     d.onclick=(function(lid){return function(){selectList(lid)}})(id);
     g.appendChild(d);
   }
+  // Add Relative Clauses special card - goes to settings
+  var rc=document.createElement('div'); rc.className='list-card'; rc.setAttribute('data-color','blue');
+  rc.innerHTML='<div class="lc-icon">\uD83D\uDD00</div><div class="lc-name">Relative Clauses</div><div class="lc-count">'+RELATIVE_QS.length+' soru</div>';
+  rc.onclick=function(){selectRC()};
+  g.appendChild(rc);
 }
 
+var isRC=false;
+
 function selectList(id){
+  isRC=false;
   listId=id; var L=WORD_LISTS[id];
   document.getElementById('sTitle').textContent=L.title;
   document.getElementById('sDesc').textContent=L.words.length+' kelime';
+  document.getElementById('modeRow').style.display='';
+  document.getElementById('modLabel').style.display='';
   // reset settings
   mode='en-to-tr'; qCount=20; speedOn=false;
   document.querySelectorAll('#modeRow .mode-btn').forEach(function(b,i){b.classList.toggle('active',i===0)});
@@ -1931,6 +2043,26 @@ function selectList(id){
   timerSec=10;
   document.querySelectorAll('.time-pill').forEach(function(b,i){b.classList.toggle('active',i===2)});
   var mx=Math.floor(L.words.length/5)*5;
+  var sl=document.getElementById('sliderInput'); sl.max=mx; sl.value=Math.min(25,mx);
+  document.getElementById('sliderVal').textContent=sl.value;
+  document.getElementById('sliderMax').textContent=mx;
+  go('scrSettings');
+}
+
+function selectRC(){
+  isRC=true; listId=null;
+  document.getElementById('sTitle').textContent='Relative Clauses';
+  document.getElementById('sDesc').textContent=RELATIVE_QS.length+' soru';
+  document.getElementById('modeRow').style.display='none';
+  document.getElementById('modLabel').style.display='none';
+  // reset count
+  qCount=20; speedOn=false;
+  document.querySelectorAll('#countRow .pill-btn').forEach(function(b,i){b.classList.toggle('active',i===1)});
+  document.getElementById('sliderWrap').classList.remove('show');
+  document.getElementById('speedRow').classList.remove('active');
+  document.getElementById('timePills').classList.remove('show');
+  timerSec=10;
+  var mx=Math.floor(RELATIVE_QS.length/5)*5;
   var sl=document.getElementById('sliderInput'); sl.max=mx; sl.value=Math.min(25,mx);
   document.getElementById('sliderVal').textContent=sl.value;
   document.getElementById('sliderMax').textContent=mx;
@@ -1988,6 +2120,7 @@ function genQuestions(){
 }
 
 function startQuiz(){
+  if(isRC) return startRelative();
   if(mode==='wordle') return startWordle();
   if(mode==='crossword') return startCrossword();
   questions=genQuestions(); curQ=0; score=0; wrongArr=[]; answerTimes=[]; clearInterval(timerInt);
@@ -2512,6 +2645,73 @@ document.getElementById('crossInput').addEventListener('keydown',function(e){
   if(e.key==='Enter') crossCheck();
 });
 
+// ── SENTENCE QUIZ ENGINE (Relative Clauses & Conjunctions) ──
+var rcPool=[], rcCur=0, rcScoreVal=0, rcWrongArr=[], rcBadge='';
+
+function startRelative(){
+  rcBadge='Relative Clauses';
+  var pool=shuffle(RELATIVE_QS.slice());
+  var cnt=qCount===0?pool.length:Math.min(qCount,pool.length);
+  rcPool=pool.slice(0,cnt);
+  rcCur=0; rcScoreVal=0; rcWrongArr=[];
+  document.getElementById('rcTot').textContent=rcPool.length;
+  document.querySelector('#scrRelative .quiz-badge').textContent=rcBadge;
+  go('scrRelative'); showRC();
+}
+
+function showRC(){
+  var q=rcPool[rcCur];
+  document.getElementById('rcNum').textContent=rcCur+1;
+  document.getElementById('rcScore').textContent=rcScoreVal;
+  document.getElementById('rcProgBar').style.width=(rcCur/rcPool.length*100)+'%';
+  // render sentence with blank
+  var parts=q.q.split('----');
+  document.getElementById('rcSentence').innerHTML=parts[0]+'<span class="rc-blank">????</span>'+parts[1];
+  // render options as 5 buttons
+  var g=document.getElementById('rcOpts'); g.innerHTML='';
+  var letters=['A','B','C','D','E'];
+  q.o.forEach(function(opt,i){
+    var b=document.createElement('button'); b.className='opt-btn';
+    b.innerHTML='<span class="ol">'+letters[i]+'</span><span>'+opt+'</span>';
+    b.onclick=function(){rcAnswer(b,opt,q)};
+    g.appendChild(b);
+  });
+  document.getElementById('rcNxt').classList.remove('live');
+  document.getElementById('rcNxt').textContent='Sonraki Soru \u2192';
+}
+
+function rcAnswer(btn,sel,q){
+  var all=document.querySelectorAll('#rcOpts .opt-btn');
+  for(var i=0;i<all.length;i++) all[i].classList.add('dis');
+  // update blank with answer
+  var blank=document.querySelector('.rc-blank');
+  if(sel===q.a){
+    btn.classList.add('ok'); rcScoreVal++;
+    if(blank) blank.textContent=q.a;
+    blank.style.color='var(--correct)'; blank.style.borderColor='var(--correct)';
+  } else {
+    btn.classList.add('no');
+    for(var i=0;i<all.length;i++){
+      if(all[i].querySelector('span:nth-child(2)').textContent===q.a) all[i].classList.add('ok');
+    }
+    if(blank) blank.textContent=q.a;
+    blank.style.color='var(--wrong)'; blank.style.borderColor='var(--wrong)';
+    rcWrongArr.push({en:q.q.replace('----','['+q.a+']'),tr:q.a});
+  }
+  document.getElementById('rcScore').textContent=rcScoreVal;
+  var nb=document.getElementById('rcNxt');
+  nb.textContent=rcCur===rcPool.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.classList.add('live');
+}
+
+function rcNext(){
+  rcCur++;
+  if(rcCur>=rcPool.length){
+    score=rcScoreVal; wrongArr=rcWrongArr; questions=rcPool; answerTimes=[]; speedOn=false;
+    showResult();
+  } else showRC();
+}
+
 // ── RESULT ──
 function showResult(){
   var pct=Math.round(score/questions.length*100);
@@ -2537,6 +2737,19 @@ function showResult(){
   go('scrResult');
 }
 
+// ── QUIT CONFIRMATION ──
+function confirmQuit(){
+  document.getElementById('quitOverlay').classList.add('show');
+}
+function closeQuit(){
+  document.getElementById('quitOverlay').classList.remove('show');
+}
+function doQuit(){
+  closeQuit();
+  clearInterval(timerInt);
+  go('scrHome');
+}
+
 // ── KEYBOARD ──
 document.addEventListener('keydown',function(e){
   // Quiz mode keys
@@ -2551,6 +2764,12 @@ document.addEventListener('keydown',function(e){
       if(document.getElementById('wNxt').classList.contains('live')) wordleNext();
       else if(!wDone) wordleGuess();
     }
+  }
+  // Relative Clauses keys
+  if(document.getElementById('scrRelative').classList.contains('active')){
+    var k2=['1','2','3','4','5','a','b','c','d','e'],x2=k2.indexOf(e.key.toLowerCase());
+    if(x2!==-1){var b2=document.querySelectorAll('#rcOpts .opt-btn:not(.dis)');if(b2[x2%5])b2[x2%5].click()}
+    if(e.key==='Enter'){var n2=document.getElementById('rcNxt');if(n2.classList.contains('live'))n2.click()}
   }
 });
 
