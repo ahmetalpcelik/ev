@@ -65,6 +65,7 @@ body {
 .list-card[data-color="orange"] .lc-icon { background:rgba(255,159,67,0.15); }
 .list-card[data-color="pink"] .lc-icon { background:rgba(253,121,168,0.15); }
 .list-card[data-color="blue"] .lc-icon { background:rgba(9,132,227,0.15); }
+.list-card[data-color="teal"] .lc-icon { background:rgba(0,206,201,0.15); }
 
 /* ── SCREEN 2: SETTINGS ── */
 .settings-inner { width:100%; max-width:460px; }
@@ -824,7 +825,7 @@ const WORD_LISTS = {
 
   ,"alpin-v2": {
     title: "Alp'in Bilmedikleri v2",
-    desc: "2020 Y\u00d6KD\u0130L/2 s\u0131nav\u0131ndan kelimeler",
+    desc: "2020 YÖKDİL/2 sınavından kelimeler",
     icon: "\uD83D\uDCA1",
     color: "blue",
     words: [
@@ -946,7 +947,7 @@ const WORD_LISTS = {
 
   ,"alpin-v3": {
     title: "Alp'in Bilmedikleri v3",
-    desc: "2021 Y\u00d6KD\u0130L s\u0131nav\u0131ndan kelimeler",
+    desc: "2021 YÖKDİL sınavından kelimeler",
     icon: "\uD83D\uDE80",
     color: "orange",
     words: [
@@ -992,6 +993,112 @@ const WORD_LISTS = {
       {en:"deliberate",tr:"kasıtlı, bilinçli, planlı"},
       {en:"trivial",tr:"önemsiz, değersiz, ufak tefek"},
       {en:"exposure",tr:"maruz kalma, maruziyet"}
+    ]
+  }
+
+  ,"alpin-v4": {
+    title: "Alp'in Bilmedikleri v4",
+    desc: "Yeni YÖKDİL sınavından kelimeler ve ifadeler",
+    icon: "\uD83C\uDF1F",
+    color: "teal",
+    words: [
+      {en:"occupation",tr:"meslek, işgal, uğraş"},
+      {en:"distribution",tr:"dağılım, dağıtım"},
+      {en:"confirmation",tr:"onay, doğrulama, teyit"},
+      {en:"regulation",tr:"düzenleme, yönetmelik, kural"},
+      {en:"resilience",tr:"dayanıklılık, çabuk toparlanma"},
+      {en:"fluctuation",tr:"dalgalanma, değişkenlik"},
+      {en:"deceptive",tr:"aldatıcı, yanıltıcı"},
+      {en:"remarkable",tr:"dikkat çekici, olağanüstü"},
+      {en:"cautionary",tr:"uyarıcı, ihtiyat niteliğinde"},
+      {en:"ambiguous",tr:"belirsiz, çok anlamlı, muğlak"},
+      {en:"reversible",tr:"geri döndürülebilir, tersine çevrilebilir"},
+      {en:"incidentally",tr:"bu arada, tesadüfen"},
+      {en:"severely",tr:"şiddetle, ciddi biçimde"},
+      {en:"diminished",tr:"azalmış, küçülmüş, zayıflamış"},
+      {en:"implied",tr:"ima edilen, örtük"},
+      {en:"depend on",tr:"bağlı olmak, -e dayanmak"},
+      {en:"make up",tr:"oluşturmak; uydurmak; barışmak"},
+      {en:"turnout",tr:"katılım oranı, seçmen kitlesi"},
+      {en:"put forward",tr:"ileri sürmek, öne sürmek"},
+      {en:"in case",tr:"durumunda, ihtimaline karşı"},
+      {en:"therefore",tr:"bu nedenle, dolayısıyla"},
+      {en:"for instance",tr:"örneğin"},
+      {en:"as",tr:"olarak; iken; gibi"},
+      {en:"given that",tr:"göz önüne alındığında, -dığı için"},
+      {en:"as if",tr:"sanki, -mış gibi"},
+      {en:"once",tr:"bir kez; -dıktan sonra"},
+      {en:"so that",tr:"böylece, amacıyla"},
+      {en:"due to",tr:"nedeniyle, yüzünden"},
+      {en:"rather than",tr:"yerine, -den ziyade"},
+      {en:"contrary to",tr:"aksine, zıt olarak"},
+      {en:"despite",tr:"rağmen"},
+      {en:"for the sake of",tr:"uğruna, amacıyla"},
+      {en:"regardless of",tr:"bakılmaksızın, ne olursa olsun"},
+      {en:"toward",tr:"-e doğru, yönelik"},
+      {en:"about",tr:"hakkında, yaklaşık"},
+      {en:"along",tr:"boyunca, ile birlikte"},
+      {en:"yet",tr:"ancak, yine de, henüz"},
+      {en:"thus",tr:"bu nedenle, böylece"},
+      {en:"privilege",tr:"ayrıcalık, imtiyaz"},
+      {en:"in place of",tr:"yerine, onun yerine"},
+      {en:"by means of",tr:"vasıtasıyla, aracılığıyla"},
+      {en:"with the help of",tr:"yardımıyla, sayesinde"},
+      {en:"in spite of",tr:"rağmen, -e karşın"},
+      {en:"as though",tr:"sanki, -mış gibi"},
+      {en:"provided that",tr:"şartıyla, -dığı takdirde"},
+      {en:"unto",tr:"-e kadar, -e doğru (eskimiş/resmi)"},
+      {en:"fierce",tr:"şiddetli, azılı, sert"},
+      {en:"prevalent",tr:"yaygın, sık görülen"},
+      {en:"medium",tr:"ortam, araç, orta"},
+      {en:"inadvertently",tr:"farkında olmadan, kazara"},
+      {en:"ingest",tr:"yutmak, almak (besin)"},
+      {en:"occur",tr:"meydana gelmek, oluşmak"},
+      {en:"confine",tr:"sınırlamak, hapsetmek"},
+      {en:"irrigation",tr:"sulama, irigasyon"},
+      {en:"cultivate",tr:"yetiştirmek, ekip biçmek"},
+      {en:"fertility",tr:"verimlilik, doğurganlık"},
+      {en:"sediments",tr:"tortular, çökeltiler"},
+      {en:"deposition",tr:"çökelme, birikme; ifade"},
+      {en:"governed by",tr:"tarafından yönetilen, -e tabi"},
+      {en:"scarce",tr:"kıt, nadir, yetersiz"},
+      {en:"maintain",tr:"sürdürmek, korumak"},
+      {en:"accumulated",tr:"birikmiş, toplanmış"},
+      {en:"barely",tr:"güçlükle, ancak, neredeyse hiç"},
+      {en:"lean forward",tr:"öne eğilmek"},
+      {en:"revise",tr:"gözden geçirmek, revize etmek"},
+      {en:"although",tr:"her ne kadar, rağmen, -e karşın"},
+      {en:"blow away",tr:"savurmak, uçurmak; etkilemek"},
+      {en:"considerably",tr:"önemli ölçüde, oldukça"},
+      {en:"several",tr:"birçok, birkaç"},
+      {en:"urging",tr:"teşvik etmek, zorlamak"},
+      {en:"directly through",tr:"doğrudan, aracısız"},
+      {en:"transmit",tr:"iletmek, aktarmak, bulaştırmak"},
+      {en:"furthermore",tr:"ayrıca, dahası, üstelik"},
+      {en:"wrap around",tr:"etrafına sarmak, çevrelemek"},
+      {en:"dermis",tr:"dermis, deri altı tabakası"},
+      {en:"ornamental",tr:"süsleyici, dekoratif"},
+      {en:"appreciation",tr:"takdir, değer bilme, artış"},
+      {en:"basis",tr:"temel, dayanak, esas"},
+      {en:"sparsely",tr:"seyrek olarak, az miktarda"},
+      {en:"spring up",tr:"aniden ortaya çıkmak, bitmek"},
+      {en:"considerable",tr:"önemli, kayda değer"},
+      {en:"empirical",tr:"ampirik, deneysel, gözleme dayalı"},
+      {en:"perceptual",tr:"algısal, algıya ilişkin"},
+      {en:"assign",tr:"atamak, görevlendirmek, vermek"},
+      {en:"reflect from",tr:"-den yansımak"},
+      {en:"excite",tr:"heyecanlandırmak, uyarmak"},
+      {en:"intromission",tr:"girme, sokma; ışık girişi"},
+      {en:"recognize",tr:"tanımak, fark etmek, kabul etmek"},
+      {en:"regarding",tr:"hakkında, ile ilgili olarak"},
+      {en:"dense",tr:"yoğun, sık, kalabalık"},
+      {en:"abandoned",tr:"terk edilmiş, bırakılmış"},
+      {en:"captivate",tr:"büyülemek, hayran bırakmak"},
+      {en:"facilitate",tr:"kolaylaştırmak, mümkün kılmak"},
+      {en:"prey",tr:"av, kurban; avlanmak"},
+      {en:"digestion",tr:"sindirim"},
+      {en:"invertebrate",tr:"omurgasız (hayvan)"},
+      {en:"exaggerate",tr:"abartmak, mübalağa etmek"}
     ]
   }
 
@@ -1651,8 +1758,8 @@ const WORD_LISTS = {
   }
 
   ,"phrasal-verbs": {
-    title: "\u0130fadeler & Phrasal Verbs",
-    desc: "Y\u00d6KD\u0130L phrasal verb'ler, deyimler ve kal\u0131p ifadeler",
+    title: "İfadeler & Phrasal Verbs",
+    desc: "YÖKDİL phrasal verb'ler, deyimler ve kalıp ifadeler",
     icon: "\uD83D\uDCAC",
     color: "pink",
     words: [
@@ -1788,8 +1895,8 @@ const WORD_LISTS = {
   }
 
   ,"conj-yokdil": {
-    title: "Conjunctions in Y\u00d6KD\u0130L",
-    desc: "PDF'deki t\u00fcm ba\u011fla\u00e7 ve ge\u00e7i\u015f ifadeleri",
+    title: "Conjunctions in YÖKDİL",
+    desc: "PDF'deki tüm bağlaç ve geçiş ifadeleri",
     icon: "\uD83D\uDCDD",
     color: "orange",
     words: [
@@ -1887,7 +1994,7 @@ var RELATIVE_QS = [
   {q:"Researchers ---- study marine biology often spend months at sea.",o:["whom","which","who","whose","where"],a:"who"},
   {q:"The engineer ---- designed the bridge received international recognition.",o:["which","who","whose","where","whom"],a:"who"},
   {q:"Students ---- fail to submit their thesis on time will not graduate.",o:["whose","which","who","where","whom"],a:"who"},
-  {q:"The biologist ---- observations changed our understanding of evolution spent years in the Gal\u00e1pagos.",o:["who","whose","which","where","whom"],a:"whose"},
+  {q:"The biologist ---- observations changed our understanding of evolution spent years in the Galápagos.",o:["who","whose","which","where","whom"],a:"whose"},
   {q:"The experiment, ---- lasted three months, produced unexpected results.",o:["who","which","whose","where","whom"],a:"which"},
   {q:"Carbon dioxide is a greenhouse gas ---- contributes to global warming.",o:["who","which","whose","where","whom"],a:"which"},
   {q:"The telescope, ---- was launched in 1990, has captured thousands of images.",o:["who","which","whose","where","whom"],a:"which"},
@@ -2017,7 +2124,7 @@ function renderHome(){
     d.onclick=(function(lid){return function(){selectList(lid)}})(id);
     g.appendChild(d);
   }
-  // Add Relative Clauses special card - goes to settings
+  // Add Relative Clauses special card
   var rc=document.createElement('div'); rc.className='list-card'; rc.setAttribute('data-color','blue');
   rc.innerHTML='<div class="lc-icon">\uD83D\uDD00</div><div class="lc-name">Relative Clauses</div><div class="lc-count">'+RELATIVE_QS.length+' soru</div>';
   rc.onclick=function(){selectRC()};
@@ -2033,7 +2140,6 @@ function selectList(id){
   document.getElementById('sDesc').textContent=L.words.length+' kelime';
   document.getElementById('modeRow').style.display='';
   document.getElementById('modLabel').style.display='';
-  // reset settings
   mode='en-to-tr'; qCount=20; speedOn=false;
   document.querySelectorAll('#modeRow .mode-btn').forEach(function(b,i){b.classList.toggle('active',i===0)});
   document.querySelectorAll('#countRow .pill-btn').forEach(function(b,i){b.classList.toggle('active',i===1)});
@@ -2055,7 +2161,6 @@ function selectRC(){
   document.getElementById('sDesc').textContent=RELATIVE_QS.length+' soru';
   document.getElementById('modeRow').style.display='none';
   document.getElementById('modLabel').style.display='none';
-  // reset count
   qCount=20; speedOn=false;
   document.querySelectorAll('#countRow .pill-btn').forEach(function(b,i){b.classList.toggle('active',i===1)});
   document.getElementById('sliderWrap').classList.remove('show');
@@ -2124,7 +2229,7 @@ function startQuiz(){
   if(mode==='wordle') return startWordle();
   if(mode==='crossword') return startCrossword();
   questions=genQuestions(); curQ=0; score=0; wrongArr=[]; answerTimes=[]; clearInterval(timerInt);
-  document.getElementById('qBadge').textContent=WORD_LISTS[listId].title+(speedOn?' \u26A1':'');
+  document.getElementById('qBadge').textContent=WORD_LISTS[listId].title+(speedOn?' ⚡':'');
   document.getElementById('qTot').textContent=questions.length;
   document.getElementById('timerBox').classList.toggle('show',speedOn);
   go('scrQuiz'); showQ();
@@ -2135,9 +2240,9 @@ function showQ(){
   document.getElementById('qNum').textContent=curQ+1;
   document.getElementById('qScore').textContent=score;
   document.getElementById('progBar').style.width=(curQ/questions.length*100)+'%';
-  document.getElementById('qLabel').textContent=q.etr?'\u0130ng \u2192 Tr':'Tr \u2192 \u0130ng';
+  document.getElementById('qLabel').textContent=q.etr?'İng → Tr':'Tr → İng';
   document.getElementById('qWord').textContent=q.word;
-  document.getElementById('qHint').textContent=q.etr?'T\u00fcrk\u00e7e anlam\u0131n\u0131 se\u00e7in':'\u0130ngilizce kar\u015f\u0131l\u0131\u011f\u0131n\u0131 se\u00e7in';
+  document.getElementById('qHint').textContent=q.etr?'Türkçe anlamını seçin':'İngilizce karşılığını seçin';
   var g=document.getElementById('optsGrid'); g.innerHTML='';
   var L=['A','B','C','D'];
   q.options.forEach(function(o,i){
@@ -2146,7 +2251,7 @@ function showQ(){
     b.onclick=function(){answer(b,o,q)}; g.appendChild(b);
   });
   document.getElementById('nxtBtn').classList.remove('live');
-  document.getElementById('nxtBtn').textContent='Sonraki Soru \u2192';
+  document.getElementById('nxtBtn').textContent='Sonraki Soru →';
   if(speedOn) startTimer();
 }
 
@@ -2159,22 +2264,22 @@ function answer(btn,sel,q){
   function getMeaning(t){for(var j=0;j<W.length;j++)if(W[j][af]===t)return W[j][qf];return '';}
   if(sel===q.correct){
     btn.classList.add('ok'); score++;
-    var m=getMeaning(sel); if(m) btn.innerHTML+='<span class="opt-mean ok-mean">\u2192 '+m+'</span>';
+    var m=getMeaning(sel); if(m) btn.innerHTML+='<span class="opt-mean ok-mean">→ '+m+'</span>';
   } else {
     btn.classList.add('no');
-    var wm=getMeaning(sel); if(wm) btn.innerHTML+='<span class="opt-mean no-mean">\u2192 '+wm+'</span>';
+    var wm=getMeaning(sel); if(wm) btn.innerHTML+='<span class="opt-mean no-mean">→ '+wm+'</span>';
     for(var i=0;i<all.length;i++){
       var txt=all[i].querySelector('span:nth-child(2)').textContent;
       if(txt===q.correct){
         all[i].classList.add('ok');
-        var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">\u2192 '+cm+'</span>';
+        var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">→ '+cm+'</span>';
       }
     }
     wrongArr.push({en:q.en,tr:q.tr});
   }
   document.getElementById('qScore').textContent=score;
   var nb=document.getElementById('nxtBtn');
-  nb.textContent=curQ===questions.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.textContent=curQ===questions.length-1?'Sonuçları Gör':'Sonraki →';
   nb.classList.add('live');
 }
 
@@ -2207,12 +2312,12 @@ function timeUp(){
     var txt=all[i].querySelector('span:nth-child(2)').textContent;
     if(txt===q.correct){
       all[i].classList.add('ok');
-      var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">\u2192 '+cm+'</span>';
+      var cm=getMeaning(q.correct); if(cm) all[i].innerHTML+='<span class="opt-mean ok-mean">→ '+cm+'</span>';
     }
   }
   wrongArr.push({en:q.en,tr:q.tr}); answerTimes.push(timerSec);
   var nb=document.getElementById('nxtBtn');
-  nb.textContent=curQ===questions.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.textContent=curQ===questions.length-1?'Sonuçları Gör':'Sonraki →';
   nb.classList.add('live');
 }
 
@@ -2226,7 +2331,7 @@ function startWordle(){
   var cnt=qCount===0?wWords.length:Math.min(qCount,wWords.length);
   wWords=wWords.slice(0,cnt);
   wCur=0; wScore=0; wWrongArr=[];
-  document.getElementById('wBadge').textContent=WORD_LISTS[listId].title+' \uD83E\uDDE9';
+  document.getElementById('wBadge').textContent=WORD_LISTS[listId].title+' 🧩';
   document.getElementById('wTot').textContent=wWords.length;
   go('scrWordle'); showWordle();
 }
@@ -2234,7 +2339,7 @@ function startWordle(){
 function showWordle(){
   var w=wWords[wCur];
   wAnswer=w.en.toLowerCase();
-  wTemplate=[]; // each char: letter or ' ' for space
+  wTemplate=[];
   for(var i=0;i<wAnswer.length;i++) wTemplate.push(wAnswer[i]===' '?'space':'letter');
   wTry=0; wDone=false;
 
@@ -2244,37 +2349,32 @@ function showWordle(){
   document.getElementById('wClue').textContent=w.tr;
   document.getElementById('wTries').textContent='Kalan hak: '+wMaxTries;
 
-  // build empty board
   var board=document.getElementById('wBoard'); board.innerHTML='';
   for(var r=0;r<wMaxTries;r++){
     var row=document.createElement('div'); row.className='w-row'; row.id='wr'+r;
     for(var c=0;c<wAnswer.length;c++){
       var cell=document.createElement('div'); cell.className='w-cell';
-      if(wTemplate[c]==='space'){ cell.classList.add('space'); cell.textContent='\u00B7'; }
+      if(wTemplate[c]==='space'){ cell.classList.add('space'); cell.textContent='·'; }
       row.appendChild(cell);
     }
     board.appendChild(row);
   }
 
-  // remove old answer display if any
   var oldAns=document.querySelector('.w-answer');
   if(oldAns) oldAns.remove();
 
-  // reset input
   var inp=document.getElementById('wInput'); inp.disabled=false; inp.value=''; inp.focus();
   document.getElementById('wSubmit').disabled=false;
   document.getElementById('wNxt').classList.remove('live');
-  document.getElementById('wNxt').textContent='Sonraki Soru \u2192';
+  document.getElementById('wNxt').textContent='Sonraki Soru →';
 }
 
 function wordleGuess(){
   if(wDone) return;
   var inp=document.getElementById('wInput');
-  // build guess: user types without spaces, we insert spaces at template positions
   var raw=inp.value.toLowerCase().replace(/[^a-z]/g,'');
   if(raw.length===0) return;
 
-  // count how many letters (non-space) the answer has
   var ansLetters=wAnswer.replace(/ /g,'');
   if(raw.length!==ansLetters.length){
     inp.style.borderColor='var(--wrong)';
@@ -2282,28 +2382,24 @@ function wordleGuess(){
     return;
   }
 
-  // map raw guess into full guess with spaces
   var guess='', ri=0;
   for(var i=0;i<wAnswer.length;i++){
     if(wTemplate[i]==='space') guess+=' ';
     else guess+=raw[ri++];
   }
 
-  // evaluate
   var row=document.getElementById('wr'+wTry);
   var cells=row.querySelectorAll('.w-cell');
   var ansArr=wAnswer.split(''), guessArr=guess.split('');
-  var result=[]; // 'g','y','x','space'
+  var result=[];
   var ansUsed=[], guessUsed=[];
   for(var i=0;i<ansArr.length;i++){ ansUsed.push(false); guessUsed.push(false); }
 
-  // pass 1: greens
   for(var i=0;i<ansArr.length;i++){
     if(wTemplate[i]==='space'){ result.push('space'); continue; }
     if(guessArr[i]===ansArr[i]){ result.push('g'); ansUsed[i]=true; guessUsed[i]=true; }
     else result.push('');
   }
-  // pass 2: yellows
   for(var i=0;i<guessArr.length;i++){
     if(result[i]!=='') continue;
     var found=false;
@@ -2315,7 +2411,6 @@ function wordleGuess(){
     if(!found) result[i]='x';
   }
 
-  // render with stagger
   for(var i=0;i<cells.length;i++){
     (function(idx){
       setTimeout(function(){
@@ -2350,23 +2445,21 @@ function showWordleResult(win){
   var inp=document.getElementById('wInput'); inp.disabled=true;
   document.getElementById('wSubmit').disabled=true;
 
-  // show answer text
   var div=document.createElement('div');
   div.className='w-answer '+(win?'w-win':'w-lose');
-  div.innerHTML=win?'\u2705 Do\u011fru!':'\u274C Cevap: <strong>'+wWords[wCur].en+'</strong>';
+  div.innerHTML=win?'✅ Doğru!':'❌ Cevap: <strong>'+wWords[wCur].en+'</strong>';
   document.getElementById('wBoard').after(div);
 
   document.getElementById('wScore').textContent=wScore;
   document.getElementById('wTries').textContent='';
   var nb=document.getElementById('wNxt');
-  nb.textContent=wCur===wWords.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.textContent=wCur===wWords.length-1?'Sonuçları Gör':'Sonraki →';
   nb.classList.add('live');
 }
 
 function wordleNext(){
   wCur++;
   if(wCur>=wWords.length){
-    // transfer to result screen
     score=wScore; wrongArr=wWrongArr; questions=wWords; answerTimes=[];
     speedOn=false;
     showResult();
@@ -2379,13 +2472,12 @@ var cxGrid=[], cxWords=[], cxW=0, cxH=0, cxSelIdx=-1, cxSolved=[];
 function startCrossword(){
   var W=WORD_LISTS[listId].words;
   var cnt=qCount===0?Math.min(W.length,12):Math.min(qCount,W.length,15);
-  // try multiple times, pick the grid with most placed words
   var bestPlaced=null;
   for(var attempt=0;attempt<8;attempt++){
     var pool=shuffle(W).filter(function(w){
       var e=w.en.toLowerCase().replace(/ /g,'');
       return /^[a-z]+$/.test(e)&&e.length>=3&&e.length<=14;
-    }).slice(0,cnt+5); // grab extras in case some don't fit
+    }).slice(0,cnt+5);
     var placed=buildCrossword(pool);
     if(!bestPlaced||placed.length>bestPlaced.length) bestPlaced=placed;
     if(bestPlaced.length>=cnt) break;
@@ -2394,7 +2486,7 @@ function startCrossword(){
   for(var i=0;i<bestPlaced.length;i++) cxSolved.push(false);
   renderCrossGrid();
   document.getElementById('crossClueNum').textContent='';
-  document.getElementById('crossClueText').textContent=bestPlaced.length+' kelime \u2014 bir kelimeye t\u0131klay\u0131n';
+  document.getElementById('crossClueText').textContent=bestPlaced.length+' kelime — bir kelimeye tıklayın';
   document.getElementById('crossInput').value='';
   document.getElementById('crossInput').disabled=true;
   document.getElementById('crossSubmit').disabled=true;
@@ -2411,30 +2503,22 @@ function buildCrossword(pool){
   for(var i=0;i<G;i++){grid[i]=[];for(var j=0;j<G;j++)grid[i][j]=null;}
   var placed=[];
 
-  // place first word horizontally in center
   var f=words[0], sr=Math.floor(G/2), sc=Math.floor((G-f.en.length)/2);
   placeWord(grid,f.en,sr,sc,'h');
   placed.push({en:f.en,tr:f.tr,obj:f.obj,r:sr,c:sc,dir:'h'});
 
-  // for each remaining word, find best intersection
   for(var wi=1;wi<words.length;wi++){
     var w=words[wi], best=null, bestScore=-1;
-
-    // for each letter in new word
     for(var i=0;i<w.en.length;i++){
       var ch=w.en[i];
-      // scan entire grid for matching letters
       for(var r=0;r<G;r++){
         for(var c=0;c<G;c++){
           if(grid[r][c]!==ch) continue;
-          // try placing new word so that w.en[i] lands on grid[r][c]
-          // try vertical
           var vr=r-i, vc=c;
           if(canPlace(grid,G,w.en,vr,vc,'v')){
             var sc2=countIntersections(grid,G,w.en,vr,vc,'v');
             if(sc2>bestScore){bestScore=sc2;best={r:vr,c:vc,dir:'v'};}
           }
-          // try horizontal
           var hr=r, hc=c-i;
           if(canPlace(grid,G,w.en,hr,hc,'h')){
             var sc3=countIntersections(grid,G,w.en,hr,hc,'h');
@@ -2449,7 +2533,6 @@ function buildCrossword(pool){
     }
   }
 
-  // trim grid
   var minR=G,maxR=0,minC=G,maxC=0;
   for(var r=0;r<G;r++)for(var c=0;c<G;c++) if(grid[r][c]!==null){if(r<minR)minR=r;if(r>maxR)maxR=r;if(c<minC)minC=c;if(c>maxC)maxC=c;}
   if(minR>maxR){minR=0;maxR=0;minC=0;maxC=0;}
@@ -2458,7 +2541,6 @@ function buildCrossword(pool){
   for(var r=0;r<cxH;r++){cxGrid[r]=[];for(var c=0;c<cxW;c++)cxGrid[r][c]=grid[r+minR][c+minC];}
   for(var i=0;i<placed.length;i++){placed[i].r-=minR;placed[i].c-=minC;}
 
-  // assign numbers (sorted by position: top-to-bottom, left-to-right)
   placed.sort(function(a,b){return a.r!==b.r?a.r-b.r:a.c-b.c;});
   for(var i=0;i<placed.length;i++) placed[i].num=i+1;
   return placed;
@@ -2466,15 +2548,12 @@ function buildCrossword(pool){
 
 function canPlace(grid,G,word,r,c,dir){
   var dr=dir==='v'?1:0, dc=dir==='h'?1:0;
-  // bounds check
   for(var i=0;i<word.length;i++){
     var rr=r+i*dr, cc=c+i*dc;
     if(rr<0||rr>=G||cc<0||cc>=G) return false;
   }
-  // cell before word must be empty
   var br=r-dr, bc=c-dc;
   if(br>=0&&bc>=0&&br<G&&bc<G&&grid[br][bc]!==null) return false;
-  // cell after word must be empty
   var ar=r+word.length*dr, ac=c+word.length*dc;
   if(ar>=0&&ac>=0&&ar<G&&ac<G&&grid[ar][ac]!==null) return false;
 
@@ -2482,10 +2561,9 @@ function canPlace(grid,G,word,r,c,dir){
   for(var i=0;i<word.length;i++){
     var rr=r+i*dr, cc=c+i*dc, ch=word[i];
     if(grid[rr][cc]!==null){
-      if(grid[rr][cc]!==ch) return false; // letter conflict
-      hasIntersection=true; // valid crossing
+      if(grid[rr][cc]!==ch) return false;
+      hasIntersection=true;
     } else {
-      // empty cell: check perpendicular neighbors aren't occupied (no parallel run)
       if(dir==='h'){
         if(rr>0&&grid[rr-1][cc]!==null) return false;
         if(rr<G-1&&grid[rr+1][cc]!==null) return false;
@@ -2495,7 +2573,7 @@ function canPlace(grid,G,word,r,c,dir){
       }
     }
   }
-  return hasIntersection; // must cross at least one existing letter
+  return hasIntersection;
 }
 
 function countIntersections(grid,G,word,r,c,dir){
@@ -2511,9 +2589,6 @@ function placeWord(grid,word,r,c,dir){
 
 function renderCrossGrid(){
   var g=document.getElementById('crossGrid');
-  var box=document.getElementById('crossGridBox') || document.querySelector('.cross-grid-box');
-
-  // calculate cell size to fit
   var gap=2;
   var availW=Math.min(window.innerWidth-40, 560);
   var availH=window.innerHeight*0.48;
@@ -2527,14 +2602,12 @@ function renderCrossGrid(){
   g.style.gridAutoRows=cellSz+'px';
   g.innerHTML='';
 
-  // map: which cells belong to which word indices
   var cellMap=[];
   for(var r=0;r<cxH;r++){cellMap[r]=[];for(var c=0;c<cxW;c++)cellMap[r][c]=[];}
   for(var wi=0;wi<cxWords.length;wi++){
     var w=cxWords[wi],dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
     for(var i=0;i<w.en.length;i++) cellMap[w.r+i*dr][w.c+i*dc].push(wi);
   }
-  // number positions
   var numMap={};
   for(var wi=0;wi<cxWords.length;wi++) numMap[cxWords[wi].r+','+cxWords[wi].c]=cxWords[wi].num;
 
@@ -2573,18 +2646,14 @@ function renderCrossGrid(){
 function selectCrossWord(idx){
   cxSelIdx=idx;
   var w=cxWords[idx];
-  // clear all selections
   document.querySelectorAll('.cx-cell.sel').forEach(function(c){c.classList.remove('sel')});
-  // highlight this word's cells
   var dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
   for(var i=0;i<w.en.length;i++){
     var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
     if(el) el.classList.add('sel');
   }
-  // show clue
-  document.getElementById('crossClueNum').textContent=(w.dir==='h'?'\u2192':'\u2193')+' '+w.num;
+  document.getElementById('crossClueNum').textContent=(w.dir==='h'?'→':'↓')+' '+w.num;
   document.getElementById('crossClueText').textContent=w.tr;
-  // enable input
   var inp=document.getElementById('crossInput');
   inp.disabled=cxSolved[idx];
   inp.value='';
@@ -2599,36 +2668,32 @@ function crossCheck(){
   var inp=document.getElementById('crossInput');
   var guess=inp.value.toLowerCase().replace(/[^a-z]/g,'');
   var answer=w.en.toLowerCase().replace(/ /g,'');
-
   var dr=w.dir==='v'?1:0,dc=w.dir==='h'?1:0;
 
   if(guess===answer){
-    // correct!
     cxSolved[cxSelIdx]=true;
     for(var i=0;i<w.en.length;i++){
       var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
       if(el){
         el.classList.remove('sel');
         el.classList.add('solved');
-        // show letter (remove old text nodes, keep cx-num)
         var numEl=el.querySelector('.cx-num');
         el.textContent=w.en[i].toUpperCase();
         if(numEl) el.insertBefore(numEl,el.firstChild);
       }
     }
-    inp.disabled=true; inp.value=''; inp.placeholder='\u2705 Do\u011fru!';
+    inp.disabled=true; inp.value=''; inp.placeholder='✅ Doğru!';
     document.getElementById('crossSubmit').disabled=true;
 
     var solvedCnt=cxSolved.filter(Boolean).length;
     document.getElementById('crossStatus').innerHTML='<span>'+solvedCnt+'/'+cxWords.length+' bulundu</span>';
 
     if(solvedCnt===cxWords.length){
-      document.getElementById('crossClueText').textContent='\uD83C\uDF89 Tebrikler! T\u00fcm kelimeleri buldun!';
+      document.getElementById('crossClueText').textContent='🎉 Tebrikler! Tüm kelimeleri buldun!';
       document.getElementById('crossClueNum').textContent='';
-      document.getElementById('crossStatus').innerHTML='<span class="cs-ok">\u2705 Bulmaca tamamland\u0131!</span><br><button class="rb-secondary" style="margin-top:8px" onclick="go(\'scrHome\')">Ana Sayfa</button>';
+      document.getElementById('crossStatus').innerHTML='<span class="cs-ok">✅ Bulmaca tamamlandı!</span><br><button class="rb-secondary" style="margin-top:8px" onclick="go(\'scrHome\')">Ana Sayfa</button>';
     }
   } else {
-    // wrong - flash red
     for(var i=0;i<w.en.length;i++){
       var el=document.getElementById('cx-'+(w.r+i*dr)+'-'+(w.c+i*dc));
       if(el&&!el.classList.contains('solved')) el.classList.add('wrong-flash');
@@ -2640,12 +2705,11 @@ function crossCheck(){
   }
 }
 
-// crossword Enter key
 document.getElementById('crossInput').addEventListener('keydown',function(e){
   if(e.key==='Enter') crossCheck();
 });
 
-// ── SENTENCE QUIZ ENGINE (Relative Clauses & Conjunctions) ──
+// ── SENTENCE QUIZ ENGINE (Relative Clauses) ──
 var rcPool=[], rcCur=0, rcScoreVal=0, rcWrongArr=[], rcBadge='';
 
 function startRelative(){
@@ -2664,10 +2728,8 @@ function showRC(){
   document.getElementById('rcNum').textContent=rcCur+1;
   document.getElementById('rcScore').textContent=rcScoreVal;
   document.getElementById('rcProgBar').style.width=(rcCur/rcPool.length*100)+'%';
-  // render sentence with blank
   var parts=q.q.split('----');
   document.getElementById('rcSentence').innerHTML=parts[0]+'<span class="rc-blank">????</span>'+parts[1];
-  // render options as 5 buttons
   var g=document.getElementById('rcOpts'); g.innerHTML='';
   var letters=['A','B','C','D','E'];
   q.o.forEach(function(opt,i){
@@ -2677,13 +2739,12 @@ function showRC(){
     g.appendChild(b);
   });
   document.getElementById('rcNxt').classList.remove('live');
-  document.getElementById('rcNxt').textContent='Sonraki Soru \u2192';
+  document.getElementById('rcNxt').textContent='Sonraki Soru →';
 }
 
 function rcAnswer(btn,sel,q){
   var all=document.querySelectorAll('#rcOpts .opt-btn');
   for(var i=0;i<all.length;i++) all[i].classList.add('dis');
-  // update blank with answer
   var blank=document.querySelector('.rc-blank');
   if(sel===q.a){
     btn.classList.add('ok'); rcScoreVal++;
@@ -2700,7 +2761,7 @@ function rcAnswer(btn,sel,q){
   }
   document.getElementById('rcScore').textContent=rcScoreVal;
   var nb=document.getElementById('rcNxt');
-  nb.textContent=rcCur===rcPool.length-1?'Sonu\u00e7lar\u0131 G\u00f6r':'Sonraki \u2192';
+  nb.textContent=rcCur===rcPool.length-1?'Sonuçları Gör':'Sonraki →';
   nb.classList.add('live');
 }
 
@@ -2727,10 +2788,10 @@ function showResult(){
   var arc=document.getElementById('resArc'), C=2*Math.PI*68, off=C-(pct/100)*C;
   arc.style.transition='none'; arc.style.strokeDashoffset=C;
   setTimeout(function(){arc.style.transition='stroke-dashoffset 1s ease';arc.style.strokeDashoffset=off},80);
-  if(pct>=90){arc.style.stroke='var(--correct)';document.getElementById('resTitle').textContent='M\u00fckemmel! \uD83C\uDF89';document.getElementById('resDesc').textContent='Kelime bilgin \u00e7ok g\u00fc\u00e7l\u00fc!';}
-  else if(pct>=70){arc.style.stroke='var(--accent)';document.getElementById('resTitle').textContent='\u0130yi Gidiyorsun! \uD83D\uDCAA';document.getElementById('resDesc').textContent='Yanl\u0131\u015flar\u0131n\u0131 tekrar et, daha da ilerle.';}
-  else if(pct>=50){arc.style.stroke='var(--gold)';document.getElementById('resTitle').textContent='Fena De\u011fil \uD83D\uDCDA';document.getElementById('resDesc').textContent='Pratik yapmaya devam et.';}
-  else{arc.style.stroke='var(--wrong)';document.getElementById('resTitle').textContent='Daha \u00c7ok \u00c7al\u0131\u015f \uD83D\uDD01';document.getElementById('resDesc').textContent='Yanl\u0131\u015flar\u0131n\u0131 not al ve tekrar et.';}
+  if(pct>=90){arc.style.stroke='var(--correct)';document.getElementById('resTitle').textContent='Mükemmel! 🎉';document.getElementById('resDesc').textContent='Kelime bilgin çok güçlü!';}
+  else if(pct>=70){arc.style.stroke='var(--accent)';document.getElementById('resTitle').textContent='İyi Gidiyorsun! 💪';document.getElementById('resDesc').textContent='Yanlışlarını tekrar et, daha da ilerle.';}
+  else if(pct>=50){arc.style.stroke='var(--gold)';document.getElementById('resTitle').textContent='Fena Değil 📚';document.getElementById('resDesc').textContent='Pratik yapmaya devam et.';}
+  else{arc.style.stroke='var(--wrong)';document.getElementById('resTitle').textContent='Daha Çok Çalış 🔁';document.getElementById('resDesc').textContent='Yanlışlarını not al ve tekrar et.';}
   var ws=document.getElementById('wrongSec'),wl=document.getElementById('wrongList');
   if(wrongArr.length){ws.style.display='block';wl.innerHTML=wrongArr.map(function(w){return'<div class="ww-item"><span class="we">'+w.en+'</span><span class="wt">'+w.tr+'</span></div>'}).join('');}
   else ws.style.display='none';
@@ -2752,20 +2813,17 @@ function doQuit(){
 
 // ── KEYBOARD ──
 document.addEventListener('keydown',function(e){
-  // Quiz mode keys
   if(document.getElementById('scrQuiz').classList.contains('active')){
     var k=['1','2','3','4','a','b','c','d'],x=k.indexOf(e.key.toLowerCase());
     if(x!==-1){var b=document.querySelectorAll('.opt-btn:not(.dis)');if(b[x%4])b[x%4].click()}
     if(e.key==='Enter'){var n=document.getElementById('nxtBtn');if(n.classList.contains('live'))n.click()}
   }
-  // Wordle mode keys
   if(document.getElementById('scrWordle').classList.contains('active')){
     if(e.key==='Enter'){
       if(document.getElementById('wNxt').classList.contains('live')) wordleNext();
       else if(!wDone) wordleGuess();
     }
   }
-  // Relative Clauses keys
   if(document.getElementById('scrRelative').classList.contains('active')){
     var k2=['1','2','3','4','5','a','b','c','d','e'],x2=k2.indexOf(e.key.toLowerCase());
     if(x2!==-1){var b2=document.querySelectorAll('#rcOpts .opt-btn:not(.dis)');if(b2[x2%5])b2[x2%5].click()}
